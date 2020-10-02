@@ -25,7 +25,7 @@ struct MovieListView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 ZStack(alignment: .topTrailing, content: {
-                    ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, ganresDictionary: genresModel.dictionaryGanresRealm)
+                    ScrollViewMovies(arrayDataFromAPI: viewModel.movieModelArray, ganresDictionary: genresModel.dictionaryGanresRealm)
                     if self.showFilters {
                         VStack(alignment: .center, spacing: 40) {
                             Picker("", selection: $viewModel.filteringMoviesIndex) {
@@ -40,8 +40,11 @@ struct MovieListView: View {
                         .cornerRadius(15)
                         .shadow(color: Color.blue.opacity(0.3), radius: 20, x: 0, y: 10)
                     }
+                    
                 })
-            }
+            }.alert(item: self.$viewModel.moviesError) { error in
+                Alert(title: Text("Network error"), message: Text(error.localizedDescription), dismissButton: .default(Text("OK")))
+                }
             .navigationBarTitle("Movies", displayMode: .inline)
             .navigationBarItems(leading:
                                     HStack {
