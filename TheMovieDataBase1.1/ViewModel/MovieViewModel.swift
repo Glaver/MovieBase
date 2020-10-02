@@ -14,6 +14,7 @@ let realm = try! Realm()
 final class MovieViewModel: ObservableObject {
     @Published var indexOfMoviesList: MoviesList = .nowPlaying
     @Published var filteringMoviesIndex: FilterMovies = .releaseDate
+    @Published var moviesError: MoviesError?
     @Published var moviesDTO = [ResultDTO]() {
         didSet {
             if moviesDTO.count > 0 {
@@ -38,14 +39,21 @@ final class MovieViewModel: ObservableObject {
         self.filteringMoviesIndex = filteringMoviesIndex
         
         $indexOfMoviesList
-            .flatMap{ (indexOfMoviesList) -> AnyPublisher<[ResultDTO], Never> in
-                FetchData.shared.fetchMovies(from: Endpoint(index: indexOfMoviesList)!)
-        }
-        .assign(to: \.moviesDTO, on: self)
-        .store(in: &self.cancellationSet)
+            .setFailureType(to: MoviesError.self)
+            .flatMap { (indexOfMoviesList) -> AnyPublisher<[ResultDTO], MoviesError> in
+                FetchData.shared.fetchMoviesError(from: Endpoint(index: indexOfMoviesList)!)
+                    .eraseToAnyPublisher()
+            }
+            .sink(receiveCompletion: { [unowned self] (completion) in
+                if case let .failure(error) = completion {
+                    self.moviesError = error
+                }},
+                  receiveValue: { [unowned self] in
+                    self.moviesDTO = $0
+                  })
     }
     
-    var cancellationSet: Set<AnyCancellable> = []
+    private var cancellationSet: Set<AnyCancellable> = []
     
     deinit {
         for cancell in cancellationSet {
@@ -53,3 +61,10 @@ final class MovieViewModel: ObservableObject {
         }
     }
 }
+
+/* $indexOfMoviesList
+ .flatMap{ (indexOfMoviesList) -> AnyPublisher<[ResultDTO], Never> in
+ FetchData.shared.fetchMovies(from: Endpoint(index: indexOfMoviesList)!)
+}
+.assign(to: \.moviesDTO, on: self)
+.store(in: &self.cancellationSet)*/
