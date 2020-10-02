@@ -55,4 +55,50 @@ final class FetchData {
                         .replaceError(with: [MovieCast]())
                         .eraseToAnyPublisher()
         }
+    var subscriptions = Set<AnyCancellable>()
+    func fetchMoviesError(from endpoint: Endpoint) -> AnyPublisher<[ResultDTO], MoviesError> {
+        Future<[ResultDTO], MoviesError> { [unowned self] promise in
+            guard let url = endpoint.finalURL else { //check for validation of url for nil, if nil error
+                return promise(.failure(.urlError(URLError(.unsupportedURL))))
+            }
+            
+            URLSession.shared.dataTaskPublisher(for: url)
+                //output (data: Data, response: URLResponse) and URLError
+                .tryMap{ (data, response) -> Data in //if response betwen 200...299 use only data or error
+                    guard let httpResponse = response as? HTTPURLResponse,
+                          200...299 ~= httpResponse.statusCode else {
+                        throw MoviesError.responseError(
+                        ((response as? HTTPURLResponse)?.statusCode ?? 500,
+                         String(data: data, encoding: .utf8) ?? ""))
+                    }
+                    return data
+                }
+                .decode(type: MovieDataDTO.self, decoder: NetworkAPI.jsonDecoder)//decode data to type
+                .receive(on: RunLoop.main) //send results to main thread
+                .sink(receiveCompletion: { (completion) in //subscribe on publisher
+                    if case let .failure(error) = completion { //if receiveCompletion has error
+                        switch error {                         //send it to promise(.failure)
+                        case let urlError as URLError:
+                            promise(.failure(.urlError(urlError)))
+                        case let decodingError as DecodingError:
+                            promise(.failure(.decodingError(decodingError)))
+                        case let apiError as MoviesError:
+                            promise(.failure(apiError))
+                        default: promise(.failure(.genericError))
+                        }
+                    }
+                },
+                receiveValue: { promise(.success($0.results)) }) //notificate about successful fecth data
+                .store(in: &self.subscriptions)
+        }
+        .eraseToAnyPublisher() //erase type of publisher and return AnyPublisher
+    }
+}
+
+enum MoviesError: Error, LocalizedError, Identifiable {
+    var id: String { localizedDescription }
+    case urlError(URLError)
+    case responseError((Int, String))
+    case decodingError(DecodingError)
+    case genericError
 }
