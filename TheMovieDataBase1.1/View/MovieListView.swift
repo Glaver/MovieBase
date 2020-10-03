@@ -25,7 +25,7 @@ struct MovieListView: View {
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 ZStack(alignment: .topTrailing, content: {
-                    ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, ganresDictionary: genresModel.dictionaryGanresRealm)
+                    ScrollViewMovies(arrayDataFromAPI: viewModel.movieModelArray, ganresDictionary: genresModel.dictionaryGanresRealm)
                     if self.showFilters {
                         VStack(alignment: .center, spacing: 40) {
                             Picker("", selection: $viewModel.filteringMoviesIndex) {
