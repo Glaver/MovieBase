@@ -51,6 +51,7 @@ final class MovieViewModel: ObservableObject {
                   receiveValue: { [unowned self] in
                     self.moviesDTO = $0
                   })
+            .store(in: &self.cancellationSet)
     }
     
     private var cancellationSet: Set<AnyCancellable> = []
