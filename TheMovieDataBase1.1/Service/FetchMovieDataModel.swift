@@ -21,6 +21,14 @@ final class FetchData {
             .eraseToAnyPublisher()
     }
     
+    func fetchInSnakeCase<T: Decodable>(_ url: URL) -> AnyPublisher<T, Error> {
+        URLSession.shared.dataTaskPublisher(for: url)
+            .map { $0.data}
+            .decode(type: T.self, decoder: JSONDecoder())
+            .receive(on: RunLoop.main)
+            .eraseToAnyPublisher()
+    }
+    
     func fetchMovies(from endpoint: Endpoint) -> AnyPublisher<[ResultDTO], Never> {
         guard let url = endpoint.finalURL else {
             return Just([ResultDTO]()).eraseToAnyPublisher()
@@ -55,6 +63,20 @@ final class FetchData {
                         .replaceError(with: [MovieCast]())
                         .eraseToAnyPublisher()
         }
+    
+    func fetchVideos(for movieID: Int) -> AnyPublisher<[MovieVideoResult], Never> {
+            guard let url =
+                Endpoint.videos(movieID: movieID).finalURL else {
+                    return Just([MovieVideoResult]()).eraseToAnyPublisher()
+            }
+            return
+                fetchInSnakeCase(url)
+                    .map { (response: MovieVideo) -> [MovieVideoResult] in
+                        response.results}
+                    .replaceError(with: [MovieVideoResult]())
+                    .eraseToAnyPublisher()
+    }
+    
     var subscriptions = Set<AnyCancellable>()
     func fetchMoviesError(from endpoint: Endpoint) -> AnyPublisher<[ResultDTO], MoviesError> {
         Future<[ResultDTO], MoviesError> { [unowned self] promise in
