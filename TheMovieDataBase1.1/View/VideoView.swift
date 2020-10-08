@@ -10,15 +10,33 @@ import SwiftUI
 
 struct VideoView: View {
     @ObservedObject var videoViewModel: MovieVideoViewModel
-
     var body: some View {
-        Text("Here should be trailers")
-            .frame(width: 370, height: 120, alignment: .center)
+        if videoViewModel.videos.isEmpty{
+        } else {
+            Text("Trailers")
+                .font(.system(size: 25))
+                .bold()
+        }
+        ScrollView(.horizontal) {
+            Divider()
+            HStack(spacing: 15) {
+                ForEach(videoViewModel.videos) { video in
+                    VStack {
+                        if video.site == "YouTube"{
+                        WebView(request: URLRequest(url: URL(string: "https://www.youtube.com/embed/\(video.key)")!))
+                            .frame(width:337, height:190, alignment: .center)
+                            .aspectRatio(contentMode: .fill)
+                            .cornerRadius(10)
+                        Text(video.name)
+                            .lineLimit(3)
+                            .frame(width:337, height:45, alignment: .center)
+                            .multilineTextAlignment(.center)
+                        }
+                    }
+                }
+            }
+            Divider()
+        }
+        .frame(width:350, alignment: .center)
     }
 }
-
-//struct VideoView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        VideoView()
-//    }
-//}

@@ -22,6 +22,7 @@ class MoviesDataBase: Object {
 }
 
 class MovieModelObject: Object {
+    @objc dynamic var popularity: Float = 0
     @objc dynamic var id: Int = 0
     @objc dynamic var title: String = ""
     @objc dynamic var backdropPosterPath: String? = ""
@@ -36,8 +37,9 @@ class MovieModelObject: Object {
             return "id"
         }
     
-    convenience init(id: Int, title: String, backdropPosterPath: String?, posterPath: String?, overview: String, releaseDate: Date, rating: Float) {
+    convenience init(popularity: Float, id: Int, title: String, backdropPosterPath: String?, posterPath: String?, overview: String, releaseDate: Date, rating: Float) {
         self.init()
+        self.popularity = popularity
         self.id = id
         self.title = title
         self.backdropPosterPath = backdropPosterPath

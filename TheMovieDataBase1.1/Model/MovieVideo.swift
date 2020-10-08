@@ -13,7 +13,7 @@ struct MovieVideo: Codable {
     let results: [MovieVideoResult]
 }
 
-struct MovieVideoResult: Codable {
+struct MovieVideoResult: Identifiable, Codable {
     let id: String
     let iso_639_1: String
     let iso_3166_1: String

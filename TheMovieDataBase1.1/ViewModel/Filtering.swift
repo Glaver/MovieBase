@@ -15,6 +15,7 @@ struct Filtering {
         case .releaseDate: filteredMovies = array.sorted{ $0.releaseDate > $1.releaseDate }
         case .title: filteredMovies = array.sorted{ $0.title < $1.title }
         case .rating: filteredMovies = array.sorted{ $0.rating > $1.rating }
+        case .popularity: filteredMovies = array.sorted{ $0.popularity > $1.popularity };
         }
         return filteredMovies
     }
@@ -28,6 +29,7 @@ enum MoviesList {
 }
 
 enum FilterMovies {
+    case popularity
     case releaseDate
     case title
     case rating

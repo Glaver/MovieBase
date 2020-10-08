@@ -9,6 +9,7 @@
 import Foundation
 
 struct MovieModel {
+    let popularity: Float
     let id: Int
     let title: String
     let backdropPosterPath: String?

@@ -9,6 +9,8 @@
 import Foundation
 import SwiftUI
 import Combine
+import WebKit
+import UIKit
 
 class MovieVideoViewModel: ObservableObject {
     @Published var movieId: Int = 0
@@ -19,6 +21,7 @@ class MovieVideoViewModel: ObservableObject {
                 print(video.name)
                 print(video.site)
                 print(video.key)
+                //print(videos.count)
             }
             //SaveModelObject.forGenres(from: genres, to: realm)
         }
