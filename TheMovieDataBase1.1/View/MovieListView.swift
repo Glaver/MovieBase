@@ -32,6 +32,7 @@ struct MovieListView: View {
                                 Text("Date").tag(FilterMovies.releaseDate).font(.system(size: 25))
                                 Text("Name").tag(FilterMovies.title).font(.system(size: 25))
                                 Text("Rating").tag(FilterMovies.rating).font(.system(size: 25))
+                                Text("Popularity").tag(FilterMovies.popularity).font(.system(size: 25))
                                     }
                         }
                         .frame(width: 130, height: 130)
@@ -108,9 +109,9 @@ struct SectionView: View {
             
             VStack(alignment: .leading) {
                 Text(section.title)
-                    .font(.system(size: 18))
+                    .font(.system(size: 15))
                     .bold()
-                    .frame(width: 220, height: 70, alignment: .center)
+                    .frame(width: 190, height: 70, alignment: .center)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
                 Text(Mappers.convertorGenresToString(ganresDict: ganresDictionary, genresOfMovie: section.genres))
@@ -132,7 +133,7 @@ struct SectionView: View {
                                 )
                         .shadow(color: Color.yellow.opacity(0.4), radius: 14, x: 0, y: 10)
                 }
-                .frame(width: 205)
+                .frame(width: 180)
             }
         }
     }

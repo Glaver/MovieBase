@@ -13,7 +13,8 @@ struct Mappers {
     static func toMovieModel(from movieDataModel: [ResultDTO]) -> [MovieModel] {
         var movies = [MovieModel]()
         movieDataModel.forEach{ result in
-            movies.append(MovieModel(id: result.id,
+            movies.append(MovieModel(popularity: result.popularity,
+                                     id: result.id,
                                      title: result.title,
                                      backdropPosterPath: result.backdropPath,
                                      posterPath: result.posterPath,
@@ -28,7 +29,8 @@ struct Mappers {
     static func toMovieModel(from movieModelObject: [MovieModelObject]) -> [MovieModel] {
             var movies = [MovieModel]()
             movieModelObject.forEach { result in
-                movies.append(MovieModel(id: result.id,
+                movies.append(MovieModel(popularity: result.popularity,
+                                         id: result.id,
                                          title: result.title,
                                          backdropPosterPath: result.backdropPosterPath,
                                          posterPath: result.posterPath,
@@ -81,7 +83,8 @@ struct Mappers {
         let listOfMovie = List<MovieModelObject>()
         movieDataModel.forEach{ model in
             
-            let newMovie = MovieModelObject(id: model.id,
+            let newMovie = MovieModelObject(popularity: model.popularity,
+                                            id: model.id,
                                             title: model.title,
                                             backdropPosterPath: model.backdropPath ?? "",
                                             posterPath: model.posterPath ?? "",

@@ -32,8 +32,8 @@ struct CastList: View {
                     .frame(width:130, height:280, alignment: .top)
                 }
             }
-            //.padding(10)
-        }.frame(width:400)
+        }
+        .frame(width:360)
     }
 }
 

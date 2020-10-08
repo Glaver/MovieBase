@@ -45,6 +45,7 @@ enum Endpoint {
     case movieGenres
     case search (searchString: String)
     case credits (movieID: Int)
+    case videos (movieID: Int)
     
     var baseURLv3: URL { URL(string: "https://api.themoviedb.org/3")! }
     
@@ -64,6 +65,8 @@ enum Endpoint {
             return "/search/movie"
         case let .credits(movieID):
             return "movie/\(String(movieID))/credits"
+        case let .videos(movieID):
+            return "movie/\(String(movieID))/videos"
         }
     }
     

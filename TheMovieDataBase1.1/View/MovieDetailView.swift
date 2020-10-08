@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MovieDetailView: View {
-    var movie = MovieModel(id: 0, title: "", backdropPosterPath: "", posterPath: "", genres: [0], overview: "", releaseDate: Date.init("2020-10-09"), rating: 0)
+    var movie = MovieModel(popularity: 0, id: 0, title: "", backdropPosterPath: "", posterPath: "", genres: [0], overview: "", releaseDate: Date.init("2020-10-09"), rating: 0)
     
     var body: some View {
         ScrollView(.vertical){
@@ -56,13 +56,12 @@ struct MovieDetailView: View {
                         .font(.system(size: 24))
                    
                 }
-                
-                
-                
+                VideoView(videoViewModel: MovieVideoViewModel(movieId: movie.id))
+                Text("Movie cast")
+                    .font(.system(size: 25))
+                    .bold()
+                CastList(castsViewModel: CastViewModel(movieId: movie.id))
             }
-            
-            CastList(castsViewModel: CastViewModel(movieId: movie.id))
-        
         }
     }
 }
