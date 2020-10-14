@@ -79,6 +79,71 @@ struct Mappers {
         return GenresDictionary(genres: dictionaryOfGenres)
     }
     
+    static func toMovieDetailObject(from movieDetailModel: MovieDetailModel) -> MovieDetailObject {
+        
+//        var productionCountriesTemp = [ProductionCountriesObject]()
+        
+//        movieDetailModel.productionCountries.forEach{ object in
+//            productionCountriesTemp.append(ProductionCountriesObject(iso31661: object.iso31661, name: object.iso31661))
+//        }
+        
+        let movieDetailObject = MovieDetailObject(adult: movieDetailModel.adult,
+                                                  backdropPath: movieDetailModel.backdropPath,
+                                                  budget: movieDetailModel.budget,
+                                                  homepage: movieDetailModel.homepage,
+                                                  id: movieDetailModel.id,
+                                                  imdbId: movieDetailModel.imdbId,
+                                                  originalLanguage: movieDetailModel.originalLanguage,
+                                                  originalTitle: movieDetailModel.originalTitle,
+                                                  overview: movieDetailModel.overview,
+                                                  popularity: movieDetailModel.popularity,
+                                                  posterPath: movieDetailModel.posterPath,
+                                                  releaseDate: movieDetailModel.releaseDate,
+                                                  revenue: movieDetailModel.revenue,
+                                                  runtime: movieDetailModel.runtime,
+                                                  status: movieDetailModel.status,
+                                                  tagline: movieDetailModel.tagline,
+                                                  title: movieDetailModel.title,
+                                                  video: movieDetailModel.video,
+                                                  voteAverage: movieDetailModel.voteAverage,
+                                                  voteCount: movieDetailModel.voteCount)
+
+        return movieDetailObject
+    }
+    
+    static func toMovieDetailModel(from movieDetailObject: MovieDetailObject) -> MovieDetailModel {
+//        var productionCountriesTemp = [ProductionCountries]()
+        
+//        movieDetailObject.productionCountries.forEach{ object in
+//           productionCountriesTemp.append(ProductionCountries(iso31661: object.iso31661, name: object.name))
+//        }
+        
+        let movieDetailObject = MovieDetailModel(adult: movieDetailObject.adult,
+                                                 backdropPath: movieDetailObject.backdropPath,
+                                                 budget: movieDetailObject.budget,
+                                                 homepage: movieDetailObject.homepage,
+                                                 id: movieDetailObject.id,
+                                                 imdbId: movieDetailObject.imdbId,
+                                                 originalLanguage: movieDetailObject.originalLanguage,
+                                                 originalTitle: movieDetailObject.originalTitle,
+                                                 overview: movieDetailObject.overview,
+                                                 popularity: movieDetailObject.popularity,
+                                                 posterPath: movieDetailObject.posterPath,
+                                                 //productionCountries: productionCountriesTemp,
+                                                 releaseDate: movieDetailObject.releaseDate,
+                                                 revenue: movieDetailObject.revenue,
+                                                 runtime: movieDetailObject.runtime,
+                                                 status: movieDetailObject.status,
+                                                 tagline: movieDetailObject.tagline,
+                                                 title: movieDetailObject.title,
+                                                 video: movieDetailObject.video,
+                                                 voteAverage: movieDetailObject.voteAverage,
+                                                 voteCount: movieDetailObject.voteCount)
+
+        return movieDetailObject
+    }
+    
+    
     static func toMovieModelObjectList(from movieDataModel: [ResultDTO]) -> List<MovieModelObject> {
         let listOfMovie = List<MovieModelObject>()
         movieDataModel.forEach{ model in

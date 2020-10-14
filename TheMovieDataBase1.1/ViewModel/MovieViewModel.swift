@@ -14,7 +14,7 @@ let realm = try! Realm()
 final class MovieViewModel: ObservableObject {
     @Published var indexOfMoviesList: MoviesList = .nowPlaying
     @Published var filteringMoviesIndex: FilterMovies = .releaseDate
-    @Published var moviesError: MoviesError?
+    @Published var moviesError: MoviesError? 
     @Published var moviesDTO = [ResultDTO]() {
         didSet {
             if moviesDTO.count > 0 {

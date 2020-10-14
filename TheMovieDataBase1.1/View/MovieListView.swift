@@ -86,7 +86,7 @@ struct ScrollViewMovies: View {
     var body: some View {
             VStack {
                 List(self.arrayDataFromAPI,  id: \.id){ item in
-                    NavigationLink(destination: MovieDetailView(movie: item)){
+                    NavigationLink(destination: MovieDetailView(movie: item)){ //MovieDetailViewModel(movieId: item.id)))viewModel: MovieDetailViewModel(movieId: item.id),{
                         SectionView(section: item, inputURLforImage: ImageAPI.Size.original.path(poster: (item.posterPath ?? "")), ganresDictionary: self.ganresDictionary)
                     }
                 }

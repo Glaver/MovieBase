@@ -14,18 +14,18 @@ import UIKit
 
 class MovieVideoViewModel: ObservableObject {
     @Published var movieId: Int = 0
-    @Published var videos = [MovieVideoResult](){
-        didSet {
-            for video in videos{
-                print(video.id)
-                print(video.name)
-                print(video.site)
-                print(video.key)
+    @Published var videos = [MovieVideoResult]()//{
+//        didSet {
+//            for video in videos{
+//                print(video.id)
+//                print(video.name)
+//                print(video.site)
+//                print(video.key)
                 //print(videos.count)
-            }
+//            }
             //SaveModelObject.forGenres(from: genres, to: realm)
-        }
-    }
+//        }
+//    }
     
     init(movieId: Int) {
         self.movieId = movieId
