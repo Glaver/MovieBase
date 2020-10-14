@@ -15,8 +15,8 @@ struct MovieVideo: Codable {
 
 struct MovieVideoResult: Identifiable, Codable {
     let id: String
-    let iso_639_1: String
-    let iso_3166_1: String
+    let iso6391: String
+    let iso31661: String
     let key: String
     let name: String
     let site: String

@@ -20,15 +20,7 @@ final class FetchData {
             .receive(on: RunLoop.main)
             .eraseToAnyPublisher()
     }
-    
-    func fetchInSnakeCase<T: Decodable>(_ url: URL) -> AnyPublisher<T, Error> {
-        URLSession.shared.dataTaskPublisher(for: url)
-            .map { $0.data}
-            .decode(type: T.self, decoder: JSONDecoder())
-            .receive(on: RunLoop.main)
-            .eraseToAnyPublisher()
-    }
-    
+// MARK: Fetch MoviesModel
     func fetchMovies(from endpoint: Endpoint) -> AnyPublisher<[ResultDTO], Never> {
         guard let url = endpoint.finalURL else {
             return Just([ResultDTO]()).eraseToAnyPublisher()
@@ -40,7 +32,7 @@ final class FetchData {
             
             .eraseToAnyPublisher()
     }
-    
+// MARK: Fetch Genres
     func fetchGenres(from endpoint: Endpoint) -> AnyPublisher<[GenresDTO], Never> {
         guard let url = endpoint.finalURL else {
             return Just([GenresDTO]()).eraseToAnyPublisher()
@@ -50,7 +42,7 @@ final class FetchData {
             .replaceError(with: [GenresDTO]())
             .eraseToAnyPublisher()
     }
-    
+// MARK: Fetch Credits
         func fetchCredits(for movieID: Int) -> AnyPublisher<[MovieCast], Never> {
                 guard let url =
                     Endpoint.credits(movieID: movieID).finalURL else {
@@ -63,20 +55,33 @@ final class FetchData {
                         .replaceError(with: [MovieCast]())
                         .eraseToAnyPublisher()
         }
-    
+// MARK: Fetch Videos
     func fetchVideos(for movieID: Int) -> AnyPublisher<[MovieVideoResult], Never> {
             guard let url =
                 Endpoint.videos(movieID: movieID).finalURL else {
                     return Just([MovieVideoResult]()).eraseToAnyPublisher()
             }
             return
-                fetchInSnakeCase(url)
+                fetch(url)
                     .map { (response: MovieVideo) -> [MovieVideoResult] in
                         response.results}
                     .replaceError(with: [MovieVideoResult]())
                     .eraseToAnyPublisher()
     }
-    
+// MARK: Fetch MoviesDetail
+    func fetchMovieDetail(for movieID: Int) -> AnyPublisher<MovieDetailModel, Never> {
+            guard let url =
+                Endpoint.movieDetail(movieID: movieID).finalURL else {
+                    return Just(MovieDetailModel()).eraseToAnyPublisher()
+            }
+            return
+                fetch(url)
+                    .map { $0 }
+                    .replaceError(with: MovieDetailModel())
+                    .eraseToAnyPublisher()
+    }
+  
+// MARK: Fetch MoviesModel with Errors
     var subscriptions = Set<AnyCancellable>()
     func fetchMoviesError(from endpoint: Endpoint) -> AnyPublisher<[ResultDTO], MoviesError> {
         Future<[ResultDTO], MoviesError> { [unowned self] promise in
@@ -116,7 +121,7 @@ final class FetchData {
         .eraseToAnyPublisher() //erase type of publisher and return AnyPublisher
     }
 }
-
+// MARK: Enum MoviesError
 enum MoviesError: Error, LocalizedError, Identifiable {
     var id: String { localizedDescription }
     case urlError(URLError)
