@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct MovieModel {
+struct MovieModel: MovieAndShowProperty, Hashable {
     let popularity: Float
     let id: Int
     let title: String
@@ -17,12 +17,26 @@ struct MovieModel {
     let genres: [Int]
     let overview: String
     let releaseDate: Date
-    let rating: Float
-    
-    var posterFilemanagerName: String {
+    let voteAverage: Float
+
+    var posterFileManagerName: String {
         return "\(id)poster"
     }
-    var backdropFilemanagerName: String {
+    var backdropFileManagerName: String {
         return "\(id)backDrop"
     }
+}
+
+protocol MovieAndShowProperty {
+    var popularity: Float { get }
+    var id: Int { get }
+    var title: String { get }
+    var backdropPosterPath: String? { get }
+    var posterPath: String? { get }
+    var genres: [Int] { get }
+    var overview: String { get }
+    var releaseDate: Date { get }
+    var voteAverage: Float { get }
+    var posterFileManagerName: String { get }
+    var backdropFileManagerName: String { get }
 }

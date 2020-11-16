@@ -9,30 +9,39 @@
 import SwiftUI
 import RealmSwift
 
-struct MovieListView: View {    
+struct MovieListView: View {
     @ObservedObject var viewModel = MovieViewModel(indexOfMoviesList: MoviesList.nowPlaying, filteringMoviesIndex: FilterMovies.releaseDate)
-    @ObservedObject var genresModel = GanreViewModel(genresEndpoint: Endpoint.movieGenres)
+    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres)
     @State var showFilters = false
-    
+    @State var isGrid = false
+
     var body: some View {
         NavigationView {
             VStack {
                 Picker("", selection: $viewModel.indexOfMoviesList) {
-                    Text("Now Playing").tag(MoviesList.nowPlaying)
-                    Text("Popular").tag(MoviesList.popular)
-                    Text("Upcoming").tag(MoviesList.upcoming)
-                    Text("Top Rated").tag(MoviesList.topRated)
+                    Text(LocalizedStringKey("Now Playing")).tag(MoviesList.nowPlaying)
+                    Text(LocalizedStringKey("Popular")).tag(MoviesList.popular)
+                    Text(LocalizedStringKey("Upcoming")).tag(MoviesList.upcoming)
+                    Text(LocalizedStringKey("Top Rated")).tag(MoviesList.topRated)
                 }
                 .pickerStyle(SegmentedPickerStyle())
                 ZStack(alignment: .topTrailing, content: {
-                    ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, ganresDictionary: genresModel.dictionaryGanresRealm)
+                    if isGrid {
+                        if #available(iOS 14.0, *) {
+                            GridView(arrayOfData: viewModel.moviesFromRealm)
+                        } else {
+                            ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, genresDictionary: genresModel.dictionaryGenresRealm)
+                        }
+                    } else {
+                        ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, genresDictionary: genresModel.dictionaryGenresRealm)
+                    }
                     if self.showFilters {
                         VStack(alignment: .center, spacing: 40) {
                             Picker("", selection: $viewModel.filteringMoviesIndex) {
-                                Text("Date").tag(FilterMovies.releaseDate).font(.system(size: 25))
-                                Text("Name").tag(FilterMovies.title).font(.system(size: 25))
-                                Text("Rating").tag(FilterMovies.rating).font(.system(size: 25))
-                                Text("Popularity").tag(FilterMovies.popularity).font(.system(size: 25))
+                                Text(LocalizedStringKey("Date")).tag(FilterMovies.releaseDate).font(.system(size: 25))
+                                Text(LocalizedStringKey("Name")).tag(FilterMovies.title).font(.system(size: 25))
+                                Text(LocalizedStringKey("Rating")).tag(FilterMovies.rating).font(.system(size: 25))
+                                Text(LocalizedStringKey("Popularity")).tag(FilterMovies.popularity).font(.system(size: 25))
                                     }
                         }
                         .frame(width: 130, height: 130)
@@ -41,106 +50,74 @@ struct MovieListView: View {
                         .cornerRadius(15)
                         .shadow(color: Color.blue.opacity(0.3), radius: 20, x: 0, y: 10)
                     }
-                    
+
                 })
             }.alert(item: self.$viewModel.moviesError) { error in
-                Alert(title: Text("Network error"), message: Text(error.localizedDescription), dismissButton: .default(Text("OK")))
+                Alert(title: Text("Network error"),
+                      message: Text(error.localizedDescription),
+                      dismissButton: .default(Text("OK")))
                 }
-            .navigationBarTitle("Movies", displayMode: .inline)
+            .alert(item: self.$genresModel.errorGenres) { error in
+                Alert(title: Text("Network error"),
+                      message: Text(error.localizedDescription),
+                      dismissButton: .default(Text("OK")))
+                }
+            .navigationBarTitle(LocalizedStringKey("Movies"), displayMode: .inline)
             .navigationBarItems(leading:
                                     HStack {
                                         Button(action: {
-                                            FileManager.clearAllFile()
-                                            //delete all files from filemangaer and realm database file
-                                            //print("FileManager clear")
+                                            isGrid.toggle()
                                         }) {
-                                            Image(systemName: "trash")
+                                            Image(systemName: changeButton(isGrid))
                                                 .resizable()
                                                 .frame(width: 23, height: 23)
                                                 .padding()
                                         }
-                             }, trailing:
-                                    HStack{
+                }, trailing:
+                                    HStack {
                                         Button(action: {
-                                            withAnimation(.spring()){
+                                            withAnimation(.spring()) {
                                                 self.showFilters.toggle()
                                             }
                                         }) {
-                                            Image(systemName: "shuffle")
+                                            Image(systemName: "slider.horizontal.3")
                                                 .resizable()
                                                 .frame(width: 23, height: 23)
                                                 .padding()
                                             }
                                 })
-            
         }
     }
-    
 }
 
+func changeButton(_ isList: Bool) -> String {
+    if isList {
+        return "square.fill.text.grid.1x2"
+    } else {
+        return "square.grid.2x2"
+    }
+}
+//ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, genresDictionary: genresModel.dictionaryGenresRealm)
+
+//GridView(arrayOfData: viewModel.moviesFromRealm)
 
 struct ScrollViewMovies: View {
     var arrayDataFromAPI: [MovieModel]
-    var ganresDictionary: GenresDictionary
-    
-    var body: some View {
-            VStack {
-                List(self.arrayDataFromAPI,  id: \.id){ item in
-                    NavigationLink(destination: MovieDetailView(movie: item)){ //MovieDetailViewModel(movieId: item.id)))viewModel: MovieDetailViewModel(movieId: item.id),{
-                        SectionView(section: item, inputURLforImage: ImageAPI.Size.original.path(poster: (item.posterPath ?? "")), ganresDictionary: self.ganresDictionary)
-                    }
-                }
-        }
-    }
-}
+    var genresDictionary: GenresDictionary
 
-
-struct SectionView: View {
-    var section: MovieModel
-    let inputURLforImage: URL?
-    let ganresDictionary: GenresDictionary
     var body: some View {
-        HStack {
-            ImageViewModel(imageLoader: ImageLoaderViewModel(url: inputURLforImage), imageName: section.posterFilemanagerName)
-                            .frame(width:130, height:195, alignment: .top)
-                            .aspectRatio(contentMode: .fill)
-                            .cornerRadius(5)
-                            .shadow(color: Color.blue.opacity(0.5), radius: 20, x: 0, y: 10)
-            
-            VStack(alignment: .leading) {
-                Text(section.title)
-                    .font(.system(size: 15))
-                    .bold()
-                    .frame(width: 190, height: 70, alignment: .center)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(3)
-                Text(Mappers.convertorGenresToString(ganresDict: ganresDictionary, genresOfMovie: section.genres))
-                    .frame(width: 150, alignment: .leading)
-                Spacer()
-                HStack {
-                    Text(section.releaseDate.printFormattedDate(format: "MMM dd,yyyy"))
-                        .foregroundColor(Color.blue)
-                    Spacer()
-                    Text(String(section.rating))
-                        .font(Font.body.bold())
-                        
-                        .frame(width: 40, height: 25)
-                        .background(Color.yellow)
-                        .cornerRadius(14)
-                        .overlay(
-                                    RoundedRectangle(cornerRadius: 14)
-                                        .stroke(Color.black.opacity(0.2), lineWidth: 1)
-                                )
-                        .shadow(color: Color.yellow.opacity(0.4), radius: 14, x: 0, y: 10)
+        VStack {
+            List(self.arrayDataFromAPI, id: \.id) { item in
+                NavigationLink(destination: MovieDetailView(movie: item)) {
+                    SectionView(section: item, inputURLforImage: ImageAPI.Size.medium.path(poster: (item.posterPath ?? "")), genresDictionary: self.genresDictionary)
                 }
-                .frame(width: 180)
             }
         }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        MovieListView()
-    }
-}
+//struct ContentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        MovieListView()
+//    }
+//}

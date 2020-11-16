@@ -11,11 +11,11 @@ import Combine
 
 final class SearchMovieViewModel: ObservableObject {
     @Published var name: String = ""
+    @Published var searchError: Errors?
     @Published var moviesDTO = [ResultDTO]()
-    
-    var movies : [MovieModel] {
-        return Mappers.toMovieModel(from: moviesDTO)}
-    
+
+    var movies: [MovieModel] { return Mappers.toMovieModel(from: moviesDTO) }
+
     init() {
         $name
             .debounce(for: 0.5, scheduler: RunLoop.main)
@@ -23,23 +23,24 @@ final class SearchMovieViewModel: ObservableObject {
             .flatMap { name -> AnyPublisher<[ResultDTO], Never> in
                 Future<[ResultDTO], Never> { (promise) in
                     if 2...30 ~= name.count {
-                        FetchData.shared.fetchMovies(from: .search(searchString: name))
-                            .sink(receiveValue: {value in promise(.success(value)) } )
+                        FetchData.shared.fetchMovies(from: Endpoint.search(searchString: name))
+                            .sink(receiveValue: {value in promise(.success(value)) })
                             .store(in: &self.cancellableSet)
+
                     } else {
                         promise(.success([ResultDTO]()))
                     }
                 }
                 .eraseToAnyPublisher()
-        }
-        .assign(to: \.moviesDTO, on: self)
-        .store(in: &self.cancellableSet)
+            }
+            .assign(to: \.moviesDTO, on: self)
+            .store(in: &self.cancellableSet)
     }
-    
+
     private var cancellableSet: Set<AnyCancellable> = []
     deinit {
-        for cancell in cancellableSet {
-            cancell.cancel()
+        for cancel in cancellableSet {
+            cancel.cancel()
         }
     }
 }

@@ -12,18 +12,18 @@ struct SearchBarView: View {
     @Binding var searchText: String
     @State private var showCancelButton: Bool = false
     var onCommit: () -> Void = { print("onCommit") }
-    
+
     var body: some View {
         HStack {
             HStack {
                 Image(systemName: "magnifyingglass")
-                
+
                 // Search text field
-                ZStack (alignment: .leading) {
+                ZStack(alignment: .leading) {
                     if searchText.isEmpty { // Separate text for placeholder to give it the proper color
-                        Text("Search")
+                        Text(LocalizedStringKey("Search"))
                     }
-                    TextField("", text: $searchText, onEditingChanged: { isEditing in
+                    TextField("", text: $searchText, onEditingChanged: { _ in
                         self.showCancelButton = true
                     }, onCommit: onCommit).foregroundColor(.primary)
                 }
@@ -38,7 +38,7 @@ struct SearchBarView: View {
                 .foregroundColor(.secondary) // For magnifying glass and placeholder test
                 .background(Color(.tertiarySystemFill))
                 .cornerRadius(10.0)
-            
+
             if showCancelButton {
                 // Cancel button
                 Button("Cancel") {
@@ -56,20 +56,20 @@ struct SearchBarView: View {
 
 struct SearchView: View {
     @ObservedObject var searchMovieModel = SearchMovieViewModel()
-    @ObservedObject var ganresModel = GanreViewModel(genresEndpoint: Endpoint.movieGenres)
+    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres)
     var body: some View {
         NavigationView {
             VStack {
                 SearchBarView(searchText: $searchMovieModel.name)
-                ScrollViewMovies(arrayDataFromAPI: searchMovieModel.movies, ganresDictionary: ganresModel.dictionaryGanres)
+                ScrollViewMovies(arrayDataFromAPI: searchMovieModel.movies, genresDictionary: genresModel.dictionaryGenres)
             }
-                .navigationBarTitle("Search")//, displayMode: .inline)
+                .navigationBarTitle(LocalizedStringKey("Search"))//, displayMode: .inline)
         }
     }
 }
 
 struct ResignKeyboardOnDragGesture: ViewModifier {
-    var gesture = DragGesture().onChanged{_ in
+    var gesture = DragGesture().onChanged {_ in
         UIApplication.shared.endEditing(true)
     }
     func body(content: Content) -> some View {
@@ -77,10 +77,8 @@ struct ResignKeyboardOnDragGesture: ViewModifier {
     }
 }
 
-
-struct SearchView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchView()
-    }
-}
-
+//struct SearchView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SearchView()
+//    }
+//}

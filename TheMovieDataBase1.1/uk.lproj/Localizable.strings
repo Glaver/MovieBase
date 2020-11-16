@@ -1,0 +1,21 @@
+/* 
+  Localizable.strings
+  TheMovieDataBase1.1
+
+  Created by Vladyslav on 23/10/20.
+  Copyright © 2020 Vladyslav Gubanov. All rights reserved.
+*/
+"Overview" = "Опис";
+"Movies" = "Фільми";
+"Search" = "Пошук";
+"Now Playing" = "Зараз в ефірі";
+"Popular" = "Популярні";
+"Upcoming" = "Очікувані";
+"Top Rated" = "Рейтингові";
+"Date" = "Дата";
+"Name" = "По назві";
+"Rating" = "За рейтингом";
+"Popularity" = "Популярні";
+"Trailers" = "Трейлери";
+"Movie cast" = "У ролях";
+"TV Show" = "Серіали";

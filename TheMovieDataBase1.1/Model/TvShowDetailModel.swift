@@ -1,0 +1,188 @@
+//
+//  TvShowDetailModel.swift
+//  TheMovieDataBase1.1
+//
+//  Created by Vladyslav on 6/11/20.
+//  Copyright © 2020 Vladyslav Gubanov. All rights reserved.
+//
+
+import Foundation
+
+struct TvShowDetailModel: Codable {
+    let backdropPath: String?
+    let createdBy: [CreatedBy]
+    let episodeRunTime: [Int]
+    let firstAirDate: Date
+    let genres: [GenresDTO]
+    let homepage: String
+    let id: Int
+    let inProduction: Bool
+    let languages: [String]
+    let lastAirDate: Date
+    let lastEpisodeToAir: [Episode]
+    let name: String
+    //let nextEpisodeToAir: Date?
+    let networks: [Networks]
+    let numberOfEpisodes: Int
+    let numberOfSeasons: Int
+    let originCountry: [String]
+    let originalLanguage: String
+    let originalName: String
+    let overview: String
+    let popularity: Float
+    let posterPath: String?
+    let productionCompanies: [ProductionCompaniesModel]
+    let seasons: [Seasons]
+    let status: String
+    let type: String
+    let voteAverage: Float
+    let voteCount: Int
+
+    var posterFileManagerName: String {
+        return "\(id)poster"
+    }
+    var backdropFileManagerName: String {
+        return "\(id)backDrop"
+    }
+
+    init() {
+        backdropPath = nil
+        createdBy = [CreatedBy(id: 0, creditId: "", name: "", gender: 0, profilePath: "")]
+        episodeRunTime = [0]
+        firstAirDate = Date()
+        genres = [GenresDTO(id: 0, name: "")]
+        homepage = ""
+        id = 0
+        inProduction = false
+        languages = [""]
+        lastAirDate = Date()
+        lastEpisodeToAir = [Episode(airDate: Date(),
+                                    episodeNumber: 0,
+                                    id: 0,
+                                    name: "",
+                                    overview: "",
+                                    productionCode: "",
+                                    seasonNumber: 0,
+                                    showId: 0,
+                                    stillPath: "",
+                                    voteAverage: 0,
+                                    voteCount: 0)]
+        name = ""
+        networks = [Networks(name: "", id: 0, logoPath: "", originCountry: "")]
+        numberOfEpisodes = 0
+        numberOfSeasons = 0
+        originCountry = [""]
+        originalLanguage = ""
+        originalName = ""
+        overview = "empty"
+        popularity = 0
+        posterPath = nil
+        productionCompanies = [ProductionCompaniesModel(name: "", id: 0, logoPath: "", originCountry: "")]
+        seasons = [Seasons(airDate: Date(),
+                           episodeCount: 0,
+                           id: 0,
+                           name: "",
+                           overview: "",
+                           posterPath: "",
+                           seasonNumber: 0)]
+        status = ""
+        type = ""
+        voteAverage = 0
+        voteCount = 0
+    }
+
+    init(backdropPath: String?,
+         createdBy: [CreatedBy],
+         episodeRunTime: [Int],
+         firstAirDate: Date,
+         genres: [GenresDTO],
+         homepage: String,
+         id: Int,
+         inProduction: Bool,
+         languages: [String],
+         lastAirDate: Date,
+         lastEpisodeToAir: [Episode],
+         name: String,
+         networks: [Networks],
+         numberOfEpisodes: Int,
+         numberOfSeasons: Int,
+         originCountry: [String],
+         originalLanguage: String,
+         originalName: String,
+         overview: String,
+         popularity: Float,
+         posterPath: String?,
+         productionCompanies: [ProductionCompaniesModel],
+         seasons: [Seasons],
+         status: String,
+         type: String,
+         voteAverage: Float,
+         voteCount: Int) {
+            self.backdropPath = backdropPath
+            self.createdBy = createdBy
+            self.episodeRunTime = episodeRunTime
+            self.firstAirDate = firstAirDate
+            self.genres = genres
+            self.homepage = homepage
+            self.id = id
+            self.inProduction = inProduction
+            self.languages = languages
+            self.lastAirDate = lastAirDate
+            self.lastEpisodeToAir = lastEpisodeToAir
+            self.name = name
+            self.networks = networks
+            self.numberOfEpisodes = numberOfEpisodes
+            self.numberOfSeasons = numberOfSeasons
+            self.originCountry = originCountry
+            self.originalLanguage = originalLanguage
+            self.originalName = originalName
+            self.overview = overview
+            self.popularity = popularity
+            self.posterPath = posterPath
+            self.productionCompanies = productionCompanies
+            self.seasons = seasons
+            self.status = status
+            self.type = type
+            self.voteAverage = voteAverage
+            self.voteCount = voteCount
+    }
+}
+
+struct CreatedBy: Codable {
+    let id: Int
+    let creditId: String
+    let name: String
+    let gender: Int
+    let profilePath: String
+}
+//82856
+struct Episode: Codable {
+    let airDate: Date
+    let episodeNumber: Int
+    let id: Int
+    let name: String
+    let overview: String
+    let productionCode: String
+    let seasonNumber: Int
+    let showId: Int
+    let stillPath: String
+    let voteAverage: Float
+    let voteCount: Int
+}
+
+struct Networks: Codable {
+    let name: String
+    let id: Int
+    let logoPath: String
+    let originCountry: String
+}
+
+struct Seasons: Codable {
+    let airDate: Date
+    let episodeCount: Int
+    let id: Int
+    let name: String
+    let overview: String
+    let posterPath: String
+    let seasonNumber: Int
+}

@@ -20,6 +20,22 @@ struct MovieVideoResult: Identifiable, Codable {
     let key: String
     let name: String
     let site: String
-    let size: Int       //Allowed Values: 360, 480, 720, 1080
-    let type: String    //Allowed Values: Trailer, Teaser, Clip, Featurette, Behind the Scenes, Bloopers
+    let size: ResolutionVideo       //Allowed Values: 360, 480, 720, 1080
+    let type: TypeVideo    //Allowed Values: Trailer, Teaser, Clip, Featurette, Behind the Scenes, Bloopers
+}
+
+enum TypeVideo: String, Codable {
+    case trailer = "Trailer"
+    case teaser = "Teaser"
+    case clip = "Clip"
+    case featurette = "Featurette"
+    case behindTheScenes = "Behind The Scenes"
+    case bloopers = "Bloopers"
+}
+
+enum ResolutionVideo: Int, Codable {
+    case nHD = 360
+    case dvd = 480
+    case hdReady = 720
+    case fullHD = 1080
 }

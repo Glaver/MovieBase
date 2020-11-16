@@ -8,12 +8,12 @@
 
 import Foundation
 
-struct MovieCreditResponse: Codable{
+struct MovieCreditResponse: Codable {
     let cast: [MovieCast]
     let crew: [MovieCrew]
 }
 
-struct MovieCast: Identifiable, Codable{
+struct MovieCast: Identifiable, Codable {
     let id: Int
     let character: String
     let name: String

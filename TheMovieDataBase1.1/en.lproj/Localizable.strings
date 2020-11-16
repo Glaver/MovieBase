@@ -1,0 +1,21 @@
+/* 
+  Localizable.strings
+  TheMovieDataBase1.1
+
+  Created by Vladyslav on 23/10/20.
+  Copyright © 2020 Vladyslav Gubanov. All rights reserved.
+*/
+"Overview" = "Overview";
+"Movies" = "Movies";
+"Search" = "Search";
+"Now Playing" = "Now Playing";
+"Popular" = "Popular";
+"Upcoming" = "Upcoming";
+"Top Rated" = "Top Rated";
+"Date" = "Date";
+"Name" = "Name";
+"Rating" = "Rating";
+"Popularity" = "Popularity";
+"Trailers" = "Trailers";
+"Movie cast" = "Movie cast";
+"TV Show" = "TV Show";

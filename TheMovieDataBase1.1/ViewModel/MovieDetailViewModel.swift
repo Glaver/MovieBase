@@ -11,7 +11,8 @@ import Combine
 import SwiftUI
 
 class MovieDetailViewModel: ObservableObject {
-    @Published var movieId : Int
+    @Published var movieId: Int
+    @Published var movieDetailError: Errors?
     @Published var movieDetail = MovieDetailModel() {
             didSet {
                 if movieDetail.id != 0 {
@@ -19,32 +20,49 @@ class MovieDetailViewModel: ObservableObject {
                 }
             }
         }
-        
+
         var movieDetailsFromRealm: MovieDetailModel {
             if realm.isEmpty {
                 return movieDetail
             } else {
-                print("load from Realm " + String(movieId))
                 return Mappers.toMovieDetailModel(from: Array(FetchModelObject.forMovieDetails(from: realm, for: movieId))[0])
             }
         }
-        
+
     init(movieId: Int) {
         self.movieId = movieId
         $movieId
-            //.setFailureType(to: MoviesError.self)
-            .flatMap { (movieId) -> AnyPublisher<MovieDetailModel, Never> in
-                FetchData.shared.fetchMovieDetail(for: movieId )
-                    //.eraseToAnyPublisher()
+
+            .setFailureType(to: Errors.self)
+            .flatMap { (movieId) -> AnyPublisher<MovieDetailModel, Errors> in
+                FetchData.shared.fetchMovieDetailError(from: movieId)
+                    .eraseToAnyPublisher()
             }
-            .assign(to: \.movieDetail, on: self)
+            .sink(receiveCompletion: { [unowned self] (completion) in
+                if case let .failure(error) = completion {
+                    self.movieDetailError = error
+                }},
+                  receiveValue: { [unowned self] in
+                    self.movieDetail = $0
+                  })
             .store(in: &self.cancellableSet)
     }
+
     private var cancellableSet: Set<AnyCancellable> = []
-    
+
     deinit {
         for cancell in cancellableSet {
             cancell.cancel()
         }
     }
 }
+
+/*
+ 
+ //.setFailureType(to: MoviesError.self)
+ .flatMap { (movieId) -> AnyPublisher<MovieDetailModel, Never> in
+     FetchData.shared.fetchMovieDetail(for: Endpoint.movieDetail(movieID: movieId).finalURL)
+         //.eraseToAnyPublisher()
+ }
+ .assign(to: \.movieDetail, on: self)
+ .store(in: &self.cancellableSet)*/

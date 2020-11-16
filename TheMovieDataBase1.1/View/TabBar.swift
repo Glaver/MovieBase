@@ -12,19 +12,25 @@ struct TabBar: View {
     var body: some View {
         TabView {
             MovieListView().tabItem {
-                Image(systemName: "play")
-                Text("Movies")
+                Image(systemName: "film")
+                Text(LocalizedStringKey("Movies"))
             }
+
+            TvShowListView().tabItem {
+                Image(systemName: "tv")
+                Text("TV Show")
+            }
+
             SearchView().tabItem {
                 Image(systemName: "magnifyingglass")
-                Text("Search")
+                Text(LocalizedStringKey("Search"))
             }
         }
     }
 }
 
-struct TabBar_Previews: PreviewProvider {
-    static var previews: some View {
-        TabBar()
-    }
-}
+//struct TabBar_Previews: PreviewProvider {
+//    static var previews: some View {
+//        TabBar()
+//    }
+//}

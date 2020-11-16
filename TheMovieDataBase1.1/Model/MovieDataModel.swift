@@ -8,7 +8,6 @@
 
 import SwiftUI
 
-
 public struct MovieDataDTO: Codable {
     let page: Int
     let totalResults: Int
@@ -30,7 +29,5 @@ public struct ResultDTO: Codable {
     let title: String
     let voteAverage: Float
     let overview: String
-    let releaseDate: String
+    let releaseDate: Date
 }
-
-

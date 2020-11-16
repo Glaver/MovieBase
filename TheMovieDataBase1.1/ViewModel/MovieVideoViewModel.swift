@@ -14,33 +14,41 @@ import UIKit
 
 class MovieVideoViewModel: ObservableObject {
     @Published var movieId: Int = 0
-    @Published var videos = [MovieVideoResult]()//{
-//        didSet {
-//            for video in videos{
-//                print(video.id)
-//                print(video.name)
-//                print(video.site)
-//                print(video.key)
-                //print(videos.count)
-//            }
-            //SaveModelObject.forGenres(from: genres, to: realm)
-//        }
-//    }
-    
-    init(movieId: Int) {
+    @Published var trailerError: Errors?
+    @Published var videos = [MovieVideoResult]()
+    let endpoint: Endpoint
+
+    init(movieId: Int, endpoint: Endpoint) {
         self.movieId = movieId
+        self.endpoint = endpoint
         $movieId
-            .flatMap { (movieId) -> AnyPublisher<[MovieVideoResult], Never> in
-                FetchData.shared.fetchVideos(for: movieId)
-            }
-            .assign(to: \.videos, on: self)
+            .setFailureType(to: Errors.self)
+            .flatMap { (_) -> AnyPublisher<[MovieVideoResult], Errors> in
+                FetchData.shared.fetchVideosError(fromEndpoint: endpoint)
+                    .eraseToAnyPublisher()
+            } // some how make it more simple
+            .sink(receiveCompletion: { [unowned self] (completion) in
+                    if case let .failure(error) = completion {
+                        self.trailerError = error
+                    }},
+                  receiveValue: { [unowned self] in
+                    self.videos = $0
+                  })
             .store(in: &self.cancellableSet)
     }
+
     private var cancellableSet: Set<AnyCancellable> = []
-    
+
     deinit {
-        for cancell in cancellableSet {
-            cancell.cancel()
+        for cancel in cancellableSet {
+            cancel.cancel()
         }
     }
 }
+
+/*            .flatMap { (movieId) -> AnyPublisher<[MovieVideoResult], Never> in
+ FetchData.shared.fetchVideos(for: Endpoint.videos(movieID: movieId).finalURL)
+}
+.assign(to: \.videos, on: self)
+.store(in: &self.cancellableSet)
+}*/

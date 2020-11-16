@@ -13,23 +13,23 @@ import SwiftUI
 class ImageLoaderViewModel: ObservableObject {
     @Published var image: UIImage?
     @Published var url: URL?
-    
+
     init(url: URL?) {
         self.url = url
         $url
-            .flatMap{ (path) -> AnyPublisher<UIImage?, Never> in self.fetchImage(for: url) }
+            .flatMap { (_) -> AnyPublisher<UIImage?, Never> in self.fetchImage(for: url) }
             .assign(to: \.image, on: self)
             .store(in: &self.cancellationSet)
     }
-    
+
     var cancellationSet: Set<AnyCancellable> = []
-    
+
     deinit {
-        for cancell in cancellationSet {
-            cancell.cancel()
+        for cancel in cancellationSet {
+            cancel.cancel()
         }
     }
-    
+
     func fetchImage(for url: URL?) -> AnyPublisher<UIImage?, Never> {
         guard url != nil, image == nil else {
             return Just(nil).eraseToAnyPublisher()

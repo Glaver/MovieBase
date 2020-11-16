@@ -11,9 +11,9 @@ import SwiftUI
 struct VideoView: View {
     @ObservedObject var videoViewModel: MovieVideoViewModel
     var body: some View {
-        if videoViewModel.videos.isEmpty{
+        if videoViewModel.videos.isEmpty {
         } else {
-            Text("Trailers")
+            Text(LocalizedStringKey("Trailers"))
                 .font(.system(size: 25))
                 .bold()
         }
@@ -24,12 +24,12 @@ struct VideoView: View {
                     VStack {
                         if video.site == "YouTube"{
                         WebView(request: URLRequest(url: URL(string: "https://www.youtube.com/embed/\(video.key)")!))
-                            .frame(width:337, height:190, alignment: .center)
+                            .frame(width: 337, height: 190, alignment: .center)
                             .aspectRatio(contentMode: .fill)
                             .cornerRadius(10)
                         Text(video.name)
                             .lineLimit(3)
-                            .frame(width:337, height:45, alignment: .center)
+                            .frame(width: 337, height: 45, alignment: .center)
                             .multilineTextAlignment(.center)
                         }
                     }
@@ -37,6 +37,6 @@ struct VideoView: View {
             }
             Divider()
         }
-        .frame(width:350, alignment: .center)
+        .frame(width: 350, alignment: .center)
     }
 }

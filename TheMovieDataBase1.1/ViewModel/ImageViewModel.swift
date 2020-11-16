@@ -13,7 +13,7 @@ struct ImageViewModel: View {
     @ObservedObject var imageLoader: ImageLoaderViewModel
     @State private var isAnimating = false
     var imageName: String
-    
+
     var body: some View {
         ZStack {
             if self.downloadAndStore(imageName: imageName) != nil {
@@ -28,22 +28,18 @@ struct ImageViewModel: View {
             }
         }
     }
-    
+
     func downloadAndStore(imageName: String) -> UIImage? {
-        if let loader = FileManager.fecthImage(imageName: imageName){
-            //print("upload from fileman \(imageName)")
+        if let loader = FileManager.fetchImage(imageName: imageName) {
+            //print("upload from file manager \(imageName)")
             return loader
-        }else{
+        } else {
             var imageOutput: UIImage?
             if let loaders = imageLoader.image {
                 imageOutput = loaders
-                if FileManager.saveImage(image: loaders, imageName: imageName) {
-                    //print("save to FileManager \(imageName)")
-                }
+                try? FileManager.saveImage(image: loaders, imageName: imageName)
             }
             return imageOutput
         }
     }
 }
-
-

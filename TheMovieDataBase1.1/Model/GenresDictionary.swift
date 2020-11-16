@@ -6,7 +6,6 @@
 //  Copyright © 2020 Vladyslav Gubanov. All rights reserved.
 //
 
-
 import Foundation
 
 struct GenresDictionary {

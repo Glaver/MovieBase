@@ -9,40 +9,38 @@ import Foundation
 import Combine
 import RealmSwift
 
-let realm = try! Realm()
-
 final class MovieViewModel: ObservableObject {
     @Published var indexOfMoviesList: MoviesList = .nowPlaying
     @Published var filteringMoviesIndex: FilterMovies = .releaseDate
-    @Published var moviesError: MoviesError? 
+    @Published var moviesError: Errors?
     @Published var moviesDTO = [ResultDTO]() {
         didSet {
-            if moviesDTO.count > 0 {
+            if !moviesDTO.isEmpty {
                 SaveModelObject.forMovies(from: Mappers.toMovieModelObjectList(from: moviesDTO), to: realm, with: indexOfMoviesList)
             }
-            print("Path to realm file and images: \(realm.configuration.fileURL!)")
+            debugPrint("Path to realm file and images: \(realm.configuration.fileURL!)")
         }
     }
-    
+
     var moviesFromRealm: [MovieModel] {
         if realm.isEmpty {
             return Filtering.movies(movieModelArray, by: filteringMoviesIndex)
         } else {
-            return Filtering.movies(FetchModelObject.forMovies(from: realm, with: indexOfMoviesList), by: filteringMoviesIndex)
+            return Filtering.movies(Mappers.toMovieModel(from: Array(FetchModelObject.forMovies(from: realm, with: indexOfMoviesList) ?? Mappers.toMovieModelObjectList(from: moviesDTO))), by: filteringMoviesIndex)
         }
     }
-    
+
     var movieModelArray: [MovieModel] { return Mappers.toMovieModel(from: moviesDTO) }
-    
+
     init(indexOfMoviesList: MoviesList, filteringMoviesIndex: FilterMovies) {
         self.indexOfMoviesList = indexOfMoviesList
         self.filteringMoviesIndex = filteringMoviesIndex
-        
+
         $indexOfMoviesList
-            .setFailureType(to: MoviesError.self)
-            .flatMap { (indexOfMoviesList) -> AnyPublisher<[ResultDTO], MoviesError> in
-                FetchData.shared.fetchMoviesError(from: Endpoint(index: indexOfMoviesList)!)
-                    .eraseToAnyPublisher()
+            .setFailureType(to: Errors.self)
+            .flatMap { (indexOfMoviesList) -> AnyPublisher<[ResultDTO], Errors> in
+                FetchData.shared.fetchMoviesError(from: Endpoint(index: indexOfMoviesList))
+                    //.eraseToAnyPublisher()
             }
             .sink(receiveCompletion: { [unowned self] (completion) in
                 if case let .failure(error) = completion {
@@ -53,9 +51,9 @@ final class MovieViewModel: ObservableObject {
                   })
             .store(in: &self.cancellationSet)
     }
-    
+
     private var cancellationSet: Set<AnyCancellable> = []
-    
+
     deinit {
         for cancell in cancellationSet {
             cancell.cancel()
@@ -63,9 +61,9 @@ final class MovieViewModel: ObservableObject {
     }
 }
 
-/* $indexOfMoviesList
- .flatMap{ (indexOfMoviesList) -> AnyPublisher<[ResultDTO], Never> in
- FetchData.shared.fetchMovies(from: Endpoint(index: indexOfMoviesList)!)
+enum MoviesList {
+    case nowPlaying
+    case popular
+    case upcoming
+    case topRated
 }
-.assign(to: \.moviesDTO, on: self)
-.store(in: &self.cancellationSet)*/

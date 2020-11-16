@@ -11,36 +11,53 @@ import Combine
 
 final class CastViewModel: ObservableObject {
     @Published var movieId: Int = 0
-    @Published var casts = [MovieCast](){
+    @Published var castCrewError: Errors?
+    @Published var castAndCrew: MovieCreditResponse? {
         didSet {
-            if casts.count > 0 {
-                SaveModelObject.forCast(from: Mappers.toMovieCastObject(from: casts, for: movieId), to: realm)
+            if castAndCrew != nil {
+                SaveModelObject.forCredits(from: Mappers.toMovieCreditLists(from: castAndCrew!, for: movieId), to: realm, with: movieId)
             }
         }
     }
-    
-    var castsFromRealm: [MovieCast] {
+
+    var castAndCrewFromRealm: MovieCreditResponse {
         if realm.isEmpty {
-            return casts
+            return castAndCrew!
         } else {
-            return Mappers.toMovieCast(from: Array(FetchModelObject.forCast(from: realm, for: movieId)), for: movieId)
+            return Mappers.toMovieCreditResponse(from: (Array(FetchModelObject.forCredits(from: realm, for: movieId)))[0])
         }
     }
-    
-    init(movieId: Int) {
+
+    init(movieId: Int, castAndCrew: MovieCreditResponse) {
         self.movieId = movieId
+        self.castAndCrew = castAndCrew
         $movieId
-            .flatMap { (movieId) -> AnyPublisher<[MovieCast], Never> in
-                FetchData.shared.fetchCredits(for: movieId)
+            .setFailureType(to: Errors.self)
+            .flatMap { (movieId) -> AnyPublisher<MovieCreditResponse, Errors> in
+                FetchData.shared.fetchCastAndCrew(endpoint: Endpoint.credits(movieID: movieId))
+                    .eraseToAnyPublisher()
             }
-            .assign(to: \.casts, on: self)
+            .sink(receiveCompletion: { [unowned self] (completion) in
+                if case let .failure(error) = completion {
+                    self.castCrewError = error
+                }
+            },
+                  receiveValue: { [unowned self] in
+                    self.castAndCrew = $0
+                  })
             .store(in: &self.cancellableSet)
     }
     private var cancellableSet: Set<AnyCancellable> = []
-    
+
     deinit {
-        for cancell in cancellableSet {
-            cancell.cancel()
+        for cancel in cancellableSet {
+            cancel.cancel()
         }
     }
 }
+/*            .flatMap { (movieId) -> AnyPublisher<[MovieCast], Never> in
+ FetchData.shared.fetchCredits(for: Endpoint.credits(movieID: movieId).finalURL)
+}
+.assign(to: \.casts, on: self)
+.store(in: &self.cancellableSet)
+}*/
