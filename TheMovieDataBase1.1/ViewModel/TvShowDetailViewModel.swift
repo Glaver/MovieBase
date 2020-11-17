@@ -41,7 +41,8 @@ class TvShowDetailViewModel: ObservableObject {
         $tvShowId
             .setFailureType(to: Errors.self)
             .flatMap { (tvShowId) -> AnyPublisher<TvShowDetailModel, Errors> in
-                FetchData.shared.fetchTvShowDetailError(from: tvShowId)
+                FetchData.shared.fetchInstance(for: TvShowDetailModel(), endpoint: Endpoint.tvShowDetail(tvShowID: tvShowId))
+                //FetchData.shared.fetchTvShowDetailError(from: tvShowId)
                     .eraseToAnyPublisher()
             }
             .sink(receiveCompletion: { [unowned self] (completion) in

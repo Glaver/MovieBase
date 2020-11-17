@@ -35,7 +35,8 @@ class MovieDetailViewModel: ObservableObject {
 
             .setFailureType(to: Errors.self)
             .flatMap { (movieId) -> AnyPublisher<MovieDetailModel, Errors> in
-                FetchData.shared.fetchMovieDetailError(from: movieId)
+                FetchData.shared.fetchInstance(for: MovieDetailModel(), endpoint: Endpoint.movieDetail(movieID: movieId))
+                //FetchData.shared.fetchMovieDetailError(from: movieId)
                     .eraseToAnyPublisher()
             }
             .sink(receiveCompletion: { [unowned self] (completion) in

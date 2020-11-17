@@ -14,15 +14,22 @@ final class CastViewModel: ObservableObject {
     @Published var castCrewError: Errors?
     @Published var castAndCrew: MovieCreditResponse? {
         didSet {
-            if castAndCrew != nil {
-                SaveModelObject.forCredits(from: Mappers.toMovieCreditLists(from: castAndCrew!, for: movieId), to: realm, with: movieId)
+            if let casts = castAndCrew {
+                SaveModelObject.forCredits(from: Mappers.toMovieCreditLists(from: casts, for: movieId), to: realm, with: movieId)
             }
         }
     }
 
     var castAndCrewFromRealm: MovieCreditResponse {
         if realm.isEmpty {
-            return castAndCrew!
+            let castOutput: MovieCreditResponse
+            if let casts = castAndCrew {
+                castOutput = casts
+            } else {
+                castOutput = MovieCreditResponse()
+                debugPrint("can't recive MovieCreditResponse from network and realm")
+            }
+            return castOutput
         } else {
             return Mappers.toMovieCreditResponse(from: (Array(FetchModelObject.forCredits(from: realm, for: movieId)))[0])
         }
@@ -34,7 +41,8 @@ final class CastViewModel: ObservableObject {
         $movieId
             .setFailureType(to: Errors.self)
             .flatMap { (movieId) -> AnyPublisher<MovieCreditResponse, Errors> in
-                FetchData.shared.fetchCastAndCrew(endpoint: Endpoint.credits(movieID: movieId))
+                FetchData.shared.fetchInstance(for: MovieCreditResponse(), endpoint: Endpoint.credits(movieID: movieId))
+                //FetchData.shared.fetchCastAndCrew(endpoint: Endpoint.credits(movieID: movieId))
                     .eraseToAnyPublisher()
             }
             .sink(receiveCompletion: { [unowned self] (completion) in

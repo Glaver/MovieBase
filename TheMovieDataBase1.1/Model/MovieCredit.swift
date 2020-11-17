@@ -26,3 +26,10 @@ struct MovieCrew: Identifiable, Codable {
     let job: String
     let name: String
 }
+
+extension MovieCreditResponse {
+    init() {
+        self.cast = [MovieCast(id: 0, character: "", name: "", profilePath: nil)]
+        self.crew = [MovieCrew(id: 0, department: "", job: "", name: "")]
+    }
+}

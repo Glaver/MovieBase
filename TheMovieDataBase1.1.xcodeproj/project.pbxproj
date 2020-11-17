@@ -55,7 +55,7 @@
 		87CDA47824F8F35900F4B48F /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87CDA47724F8F35900F4B48F /* SearchView.swift */; };
 		87E3D84124EED0570062C48B /* MovieModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3D84024EED0570062C48B /* MovieModel.swift */; };
 		87E3D84324EEDCDE0062C48B /* GenresDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3D84224EEDCDE0062C48B /* GenresDictionary.swift */; };
-		87E3D84524EEDD6E0062C48B /* GanresModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3D84424EEDD6E0062C48B /* GanresModel.swift */; };
+		87E3D84524EEDD6E0062C48B /* GenresModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87E3D84424EEDD6E0062C48B /* GenresModel.swift */; };
 		87F03FC7250C8BDA009F1560 /* RealmDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F03FC6250C8BDA009F1560 /* RealmDataModel.swift */; };
 		87F3EE40252362C90051A789 /* CastViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F3EE3F252362C90051A789 /* CastViewModel.swift */; };
 		87F3EE43252366640051A789 /* CastList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87F3EE42252366640051A789 /* CastList.swift */; };
@@ -129,7 +129,7 @@
 		87CDA47724F8F35900F4B48F /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		87E3D84024EED0570062C48B /* MovieModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieModel.swift; sourceTree = "<group>"; };
 		87E3D84224EEDCDE0062C48B /* GenresDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresDictionary.swift; sourceTree = "<group>"; };
-		87E3D84424EEDD6E0062C48B /* GanresModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GanresModel.swift; sourceTree = "<group>"; };
+		87E3D84424EEDD6E0062C48B /* GenresModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresModel.swift; sourceTree = "<group>"; };
 		87F03FC6250C8BDA009F1560 /* RealmDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDataModel.swift; sourceTree = "<group>"; };
 		87F3EE3F252362C90051A789 /* CastViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastViewModel.swift; sourceTree = "<group>"; };
 		87F3EE42252366640051A789 /* CastList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastList.swift; sourceTree = "<group>"; };
@@ -277,7 +277,7 @@
 				87C2DCE524DA851700C4C522 /* MovieDataModel.swift */,
 				87E3D84024EED0570062C48B /* MovieModel.swift */,
 				876AC59625304997005AD2BD /* MovieDetailModel.swift */,
-				87E3D84424EEDD6E0062C48B /* GanresModel.swift */,
+				87E3D84424EEDD6E0062C48B /* GenresModel.swift */,
 				87E3D84224EEDCDE0062C48B /* GenresDictionary.swift */,
 				87B62482255544F7007A4FFB /* TvShowDetailModel.swift */,
 				87B62486255569B1007A4FFB /* TvShowDetailObject.swift */,
@@ -447,7 +447,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"error: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\n  exit 1\nfi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftlint >/dev/null; then\n # swiftlint\n#else\n # echo \"error: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\n # exit 1\n#fi\n";
 		};
 		EAC2E059D950364D5FC0288C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -521,7 +521,7 @@
 				87C2DCD424DA84C800C4C522 /* SceneDelegate.swift in Sources */,
 				87C2DCD624DA84C800C4C522 /* MovieListView.swift in Sources */,
 				8775D53724F103AA008D38CE /* MovieViewModel.swift in Sources */,
-				87E3D84524EEDD6E0062C48B /* GanresModel.swift in Sources */,
+				87E3D84524EEDD6E0062C48B /* GenresModel.swift in Sources */,
 				87F3EE43252366640051A789 /* CastList.swift in Sources */,
 				87C2DCE624DA851700C4C522 /* MovieDataModel.swift in Sources */,
 				8735E38C251F8E5400CD1542 /* Filtering.swift in Sources */,

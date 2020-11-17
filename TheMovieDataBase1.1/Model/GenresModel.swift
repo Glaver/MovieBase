@@ -12,8 +12,7 @@ public struct GenreDTO: Codable {
     let genres: [GenresDTO]
 }
 
-
-struct GenresDTO: Codable{
+struct GenresDTO: Codable {
     let id: Int
     let name: String
 }
