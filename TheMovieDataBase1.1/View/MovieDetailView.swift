@@ -82,7 +82,7 @@ struct ContentHeadImagesTitlePoster: View {
                     .shadow(color: Color.blue.opacity(0.7), radius: 20, x: 0, y: 10)
                     .padding(.leading, 5)
 
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: 5) {
                     Text(title)
                         .font(.system(size: 22))
                         .bold()
@@ -93,7 +93,6 @@ struct ContentHeadImagesTitlePoster: View {
                         .bold()
                         .lineLimit(2)
                         .frame(width: 230, alignment: .leading)
-
                 }
                 .offset(y: 45)
             }
@@ -107,7 +106,7 @@ struct GenresBlock: View {
         ScrollView(.horizontal, showsIndicators: false) {
         HStack {
             ForEach(Mappers.convertsToArrayString(from: genres), id: \.self) { genre in
-                Text(genre)
+                Text(genre.capitalizingFirstLetter())
                     .font(.system(size: 15))
                     .lineLimit(1)
                     .padding(5)
@@ -137,7 +136,7 @@ struct InfoDetailContentView: View {
                     .resizable()
                     .frame(width: 30, height: 30, alignment: .center)
                     .foregroundColor(.red)
-                Text(DateFormattingHelper.shared.printFormattedDate(releaseDate, printFormat: "MMM dd,yyyy"))
+                Text(DateFormattingHelper.shared.printFormattedDate(releaseDate, printFormat: "MMM dd,yyyy")) //DDMonYY
                     //.foregroundColor(Color.blue)
                     .font(Font.body.bold())
                     .foregroundColor(Color.blue)
@@ -167,8 +166,11 @@ struct InfoDetailContentView: View {
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
                         .foregroundColor(Color.purple)
-                    Text(Mappers.convertsIntToHoursAndMin(timeInMin: runtime))
-                        .font(Font.body.bold())
+                    HStack {
+                    Text(String(runtime!))
+                    Text(LocalizedStringKey("min"))
+                    //Text(Mappers.convertsIntToHoursAndMin(timeInMin: runtime))
+                    }.font(Font.body.bold())
                 }
             }
             VStack {
@@ -192,7 +194,7 @@ struct InfoDetailContentView: View {
                                 .resizable()
                                 .frame(width: 30, height: 30, alignment: .center)
                                 .foregroundColor(Color.blue)
-                            Text("Homepage")
+                            Text(LocalizedStringKey("Homepage"))
                                 .font(Font.body.bold())
                         }
                     }

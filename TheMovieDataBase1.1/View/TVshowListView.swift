@@ -18,8 +18,8 @@ struct TvShowListView: View {
             NavigationView {
                 VStack {
                     Picker("", selection: $tvShowViewModel.indexOfTvShowList) {
-                        Text("Airing today").tag(TvShowList.airingToday)
-                        Text("On The Air").tag(TvShowList.onTheAir)
+                        Text(LocalizedStringKey("Airing today")).tag(TvShowList.airingToday)
+                        Text(LocalizedStringKey("On The Air")).tag(TvShowList.onTheAir)
                         Text("Popular").tag(TvShowList.popularTV)
                         Text("Top Rated").tag(TvShowList.topRatedTV)
                     }

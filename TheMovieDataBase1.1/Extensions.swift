@@ -78,6 +78,15 @@ extension URL {
     }
 }
 
+extension String {
+    func capitalizingFirstLetter() -> String {
+        return prefix(1).capitalized + dropFirst()
+    }
+
+    mutating func capitalizeFirstLetter() {
+        self = self.capitalizingFirstLetter()
+    }
+}
 /*
  static func saveImage(image: UIImage, imageName: String) -> Bool {
  guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else { return false }

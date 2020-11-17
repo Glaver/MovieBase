@@ -447,7 +447,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftlint >/dev/null; then\n # swiftlint\n#else\n # echo \"error: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\n # exit 1\n#fi\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n#if which swiftlint >/dev/null; then\n#  swiftlint\n#else\n#  echo \"error: SwiftLint does not exist, download it from https://github.com/realm/SwiftLint\"\n # exit 1\n#fi\n";
 		};
 		EAC2E059D950364D5FC0288C /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

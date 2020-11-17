@@ -31,7 +31,7 @@ struct SectionView: View {
                 VStack(alignment: .leading) {
                     HStack {
                         ForEach(Mappers.convertorGenresToString(genresDict: genresDictionary, genresOfMovie: section.genres).prefix(2), id: \.self) { genre in
-                            Text(genre)
+                            Text(genre.capitalizingFirstLetter())
                                 .lineLimit(1)
                                 .font(.system(size: 13))
                                 .padding(4)
@@ -41,7 +41,7 @@ struct SectionView: View {
                     }
                     HStack {
                         ForEach(Mappers.convertorGenresToString(genresDict: genresDictionary, genresOfMovie: section.genres).dropFirst(2), id: \.self) { genre in
-                            Text(genre)
+                            Text(genre.capitalizingFirstLetter())
                                 .lineLimit(1)
                                 .font(.system(size: 13))
                                 .padding(4)

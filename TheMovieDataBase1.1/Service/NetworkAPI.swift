@@ -99,6 +99,7 @@ enum Endpoint {
     }
 
     var finalURL: URL? {
+        let language = Bundle.main.preferredLocalizations.first! as NSString
         let queryURL = baseURLv3.appendingPathComponent(self.path())
         let components = URLComponents(url: queryURL, resolvingAgainstBaseURL: true)
         guard var urlComponents = components else { return nil }
@@ -106,12 +107,12 @@ enum Endpoint {
         case .search (let name):
             urlComponents.queryItems = [URLQueryItem(name: "query", value: name),
                                         URLQueryItem(name: "api_key", value: NetworkAPI.apiKey),
-                                        URLQueryItem(name: "language", value: "en"),
+                                        URLQueryItem(name: "language", value: String(language)),
                                         URLQueryItem(name: "region", value: "US"),
                                         URLQueryItem(name: "page", value: "1")]
         default:
              urlComponents.queryItems = [URLQueryItem(name: "api_key", value: NetworkAPI.apiKey),
-                                         URLQueryItem(name: "language", value: "en"),
+                                         URLQueryItem(name: "language", value: String(language)),
                                          URLQueryItem(name: "region", value: "US"),
                                          URLQueryItem(name: "page", value: "1")]
         }

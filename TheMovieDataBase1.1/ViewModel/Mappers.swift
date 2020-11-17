@@ -317,13 +317,13 @@ struct Mappers {
         }
         let hours = time / 60
         let minutes = time % 60
-        return "\(String(hours))h \(String(minutes))m "
+        return "\(String(hours)) h \(String(minutes)) m "
     }
     // MARK: Map if originalTitle is same as title not print
     static func originalTitle(_ title: String, vs englishTitle: String) -> String {
         var tempString = ""
         if title != englishTitle {
-            tempString = title + " (original title)"
+            tempString = title
         }
         return tempString
     }
