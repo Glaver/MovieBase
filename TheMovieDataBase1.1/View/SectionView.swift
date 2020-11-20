@@ -59,7 +59,7 @@ struct SectionView: View {
                     if section.voteAverage != 0 {
                     Text(String(section.voteAverage))
                         .font(Font.body.bold())
-
+                        .foregroundColor(.black)
                         .frame(width: 40, height: 25)
                         .background(Color.yellow)
                         .cornerRadius(10)

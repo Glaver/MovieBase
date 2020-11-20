@@ -7,5 +7,5 @@ target 'TheMovieDataBase1.1' do
 
   # Pods for TheMovieDataBase1.1
     pod 'RealmSwift'
-	
+
 end

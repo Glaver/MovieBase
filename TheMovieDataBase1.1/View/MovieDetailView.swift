@@ -65,7 +65,7 @@ struct ContentHeadImagesTitlePoster: View {
             VStack {
                 ZStack {
                     ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.original.path(poster: (backdropPath ?? ""))), imageName: backdropFilemanagerName)
-                        .frame(height: 270, alignment: .center)//width:450,
+                        .frame(height: 250, alignment: .center)//width:450,
                         .shadow(color: Color.blue.opacity(0.3), radius: 20, x: 0, y: 10)
                     TaglineView(tagline: tagline ?? "NO")
                 }

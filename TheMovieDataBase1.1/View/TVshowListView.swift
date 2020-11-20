@@ -29,10 +29,17 @@ struct TvShowListView: View {
                         if self.showFilters {
                             VStack(alignment: .center, spacing: 40) {
                                 Picker("", selection: $tvShowViewModel.filteringMoviesIndex) {
-                                    Text(LocalizedStringKey("Date")).tag(FilterMovies.releaseDate).font(.system(size: 25))
-                                    Text(LocalizedStringKey("Name")).tag(FilterMovies.title).font(.system(size: 25))
-                                    Text(LocalizedStringKey("Rating")).tag(FilterMovies.rating).font(.system(size: 25))
+                                    Text(LocalizedStringKey("Date")).tag(FilterMovies.releaseDate)
+                                        .font(.system(size: 25))
+                                        .foregroundColor(.blue)
+                                    Text(LocalizedStringKey("Name")).tag(FilterMovies.title)
+                                        .font(.system(size: 25))
+                                        .foregroundColor(.blue)
+                                    Text(LocalizedStringKey("Rating")).tag(FilterMovies.rating)
+                                        .font(.system(size: 25))
+                                        .foregroundColor(.blue)
                                     Text(LocalizedStringKey("Popularity")).tag(FilterMovies.popularity).font(.system(size: 25))
+                                        .foregroundColor(.blue)
                                         }
                             }
                             .frame(width: 130, height: 130)

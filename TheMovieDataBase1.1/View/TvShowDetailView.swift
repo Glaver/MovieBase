@@ -19,10 +19,10 @@ struct TvShowDetailView: View {
                                              backdropFilemanagerName: tvShow.backdropFileManagerName,
                                              posterPath: tvShow.posterPath,
                                              posterFilemanagerName: tvShow.posterFileManagerName,
-                                             tagline: nil,
+                                             tagline: tvShowViewModel.tvShowDetail.tagline,
                                              title: tvShow.name,
                                              originalTitle: tvShow.originalName)
-
+                Text(tvShowViewModel.tvShowDetail.originalName)
                 Overview(overviewText: tvShow.overview)
                 VideoView(videoViewModel: MovieVideoViewModel(movieId: tvShow.id, endpoint: Endpoint.videosTV(tvShowID: tvShow.id)))
 //                CastList(castsViewModel: CastViewModel(movieId: tvShow.id, castAndCrew: MovieCreditResponse(cast: [MovieCast](), crew: [MovieCrew]()), endpoint: Endpoint.creditsTV(tvShowID: tvShow.id)))
@@ -36,7 +36,7 @@ struct TvShowDetailView: View {
     }
     init(tvShow: ResultTvModel) {
         self.tvShow = tvShow
-        self.tvShowViewModel = TvShowDetailViewModel(tvShowId: 87739)
+        self.tvShowViewModel = TvShowDetailViewModel(tvShowId: tvShow.id)
     }
 }
 

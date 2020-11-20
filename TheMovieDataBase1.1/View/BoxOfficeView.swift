@@ -32,7 +32,7 @@ struct BoxOfficeView: View {
 
     var budgetView: some View {
         VStack {
-            Text("Budget")
+            Text(LocalizedStringKey("Budget"))
                 .font(.system(size: 22))
                 .bold()
                 .padding(10)
@@ -48,7 +48,7 @@ struct BoxOfficeView: View {
 
     var revenueView: some View {
         VStack {
-            Text("Revenue")
+            Text(LocalizedStringKey("Revenue"))
                 .font(.system(size: 22))
                 .bold()
                 .padding(10)

@@ -1,0 +1,16 @@
+type_body_length:
+  - 300 # warning
+  - 400 # error
+
+identifier_name:
+  excluded: # excluded via string array
+    - id
+    - URL
+function_body_length:
+    - 50 # warning
+    - 70 # error
+cyclomatic_complexity: 20
+
+disabled_rules: # rule identifiers to exclude from running
+ - force_cast
+ - force_try

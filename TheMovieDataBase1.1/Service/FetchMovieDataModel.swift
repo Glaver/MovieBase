@@ -44,13 +44,14 @@ final class FetchData {
             guard let url = endpoint.finalURL else {
                 return promise(.failure(.urlError(URLError(.unsupportedURL))))
             }
+            //debugPrint(url)
             URLSession.shared.dataTaskPublisher(for: url)
                 .tryMap { (data, response) -> Data in //if response between 200...299 use only data or error
                     guard let httpResponse = response as? HTTPURLResponse,
                           200...299 ~= httpResponse.statusCode else {
                         throw Errors.responseError(
-                            ((response as? HTTPURLResponse)?.statusCode ?? 500,
-                             String(data: data, encoding: .utf8) ?? ""))
+                            (response as? HTTPURLResponse)?.statusCode ?? 500,
+                            String(data: data, encoding: .utf8) ?? "")
                     }
                     return data
                 }
@@ -86,11 +87,11 @@ final class FetchData {
                     guard let httpResponse = response as? HTTPURLResponse,
                           200...299 ~= httpResponse.statusCode else {
                         throw Errors.responseError(
-                        ((response as? HTTPURLResponse)?.statusCode ?? 500,
-                         String(data: data, encoding: .utf8) ?? ""))
+                            (response as? HTTPURLResponse)?.statusCode ?? 500,
+                            String(data: data, encoding: .utf8) ?? "")
                     }
                     return data
-                }
+                }//Errors.responseError(((response as? HTTPURLResponse)?.statusCode ?? 500,String(data: data, encoding: .utf8) ?? ""))
                 .decode(type: GenreDTO.self, decoder: NetworkAPI.jsonDecoder)//decode data to type
                 .receive(on: RunLoop.main) //send results to main thread
                 .sink(receiveCompletion: { (completion) in //subscribe on publisher
@@ -123,8 +124,8 @@ final class FetchData {
                     guard let httpResponse = response as? HTTPURLResponse,
                           200...299 ~= httpResponse.statusCode else {
                         throw Errors.responseError(
-                        ((response as? HTTPURLResponse)?.statusCode ?? 500,
-                         String(data: data, encoding: .utf8) ?? ""))
+                            (response as? HTTPURLResponse)?.statusCode ?? 500,
+                            String(data: data, encoding: .utf8) ?? "")
                     }
                     return data
                 }
@@ -161,8 +162,8 @@ final class FetchData {
                     guard let httpResponse = response as? HTTPURLResponse,
                           200...299 ~= httpResponse.statusCode else {
                         throw Errors.responseError(
-                        ((response as? HTTPURLResponse)?.statusCode ?? 500,
-                         String(data: data, encoding: .utf8) ?? ""))
+                            (response as? HTTPURLResponse)?.statusCode ?? 500,
+                            String(data: data, encoding: .utf8) ?? "")
                     }
                     return data
                 }
@@ -198,8 +199,8 @@ final class FetchData {
                     guard let httpResponse = response as? HTTPURLResponse,
                           200...299 ~= httpResponse.statusCode else {
                         throw Errors.responseError(
-                            ((response as? HTTPURLResponse)?.statusCode ?? 500,
-                             String(data: data, encoding: .utf8) ?? ""))
+                            (response as? HTTPURLResponse)?.statusCode ?? 500,
+                            String(data: data, encoding: .utf8) ?? "")
                     }
                     return data
                 }
@@ -235,8 +236,8 @@ final class FetchData {
                     guard let httpResponse = response as? HTTPURLResponse,
                           200...299 ~= httpResponse.statusCode else {
                         throw Errors.responseError(
-                            ((response as? HTTPURLResponse)?.statusCode ?? 500,
-                             String(data: data, encoding: .utf8) ?? ""))
+                            (response as? HTTPURLResponse)?.statusCode ?? 500,
+                            String(data: data, encoding: .utf8) ?? "")
                     }
                     return data
                 }

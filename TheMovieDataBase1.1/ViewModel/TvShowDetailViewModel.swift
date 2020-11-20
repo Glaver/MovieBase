@@ -13,10 +13,10 @@ import SwiftUI
 class TvShowDetailViewModel: ObservableObject {
     @Published var tvShowId: Int
     @Published var tvShowDetailError: Errors?
-    @Published var tvShowDetail: TvShowDetailModel? {
+    @Published var tvShowDetail = TvShowDetailModel() {
         didSet {
-            print(tvShowDetail?.name ?? "no data")
-            print(tvShowDetail?.overview ?? "no data")
+            print(tvShowDetail.name)
+            print(tvShowDetail.overview)
         }
     }
 //    () {

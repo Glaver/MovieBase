@@ -11,7 +11,7 @@ import Foundation
 enum Errors: Error, LocalizedError, Identifiable {
     var id: String { localizedDescription }
     case urlError(URLError)
-    case responseError((Int, String))
+    case responseError(Int, String)
     case decodingError(DecodingError)
     case genericError
 }

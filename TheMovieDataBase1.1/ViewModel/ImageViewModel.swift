@@ -12,7 +12,7 @@ import SwiftUI
 struct ImageViewModel: View {
     @ObservedObject var imageLoader: ImageLoaderViewModel
     @State private var isAnimating = false
-    var imageName: String
+    var imageName: String = ""
 
     var body: some View {
         ZStack {

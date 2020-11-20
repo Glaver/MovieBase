@@ -107,7 +107,6 @@ open class Object: RLMObjectBase, RealmCollectionValue {
         RLMInitializeWithValue(self, value, .partialPrivateShared())
     }
 
-
     // MARK: Properties
 
     /// The Realm which manages the object, or `nil` if the object is unmanaged.
@@ -303,7 +302,6 @@ open class Object: RLMObjectBase, RealmCollectionValue {
         return RLMObjectBaseAreEqual(self, object)
     }
 
-
 }
 
 extension Object: ThreadConfined {
@@ -331,7 +329,6 @@ extension Object: ThreadConfined {
         return realm!.freeze(self)
     }
 }
-
 
 /**
  Information about a specific property which changed in an `Object` change notification.

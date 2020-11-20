@@ -21,13 +21,13 @@ class MovieDetailViewModel: ObservableObject {
             }
         }
 
-        var movieDetailsFromRealm: MovieDetailModel {
-            if realm.isEmpty {
-                return movieDetail
-            } else {
-                return Mappers.toMovieDetailModel(from: Array(FetchModelObject.forMovieDetails(from: realm, for: movieId))[0])
-            }
+    var movieDetailsFromRealm: MovieDetailModel {
+        if realm.isEmpty {
+            return movieDetail
+        } else {
+            return Mappers.toMovieDetailModel(from: Array(FetchModelObject.forMovieDetails(from: realm, for: movieId))[0])
         }
+    }
 
     init(movieId: Int) {
         self.movieId = movieId

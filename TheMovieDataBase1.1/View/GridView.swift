@@ -27,7 +27,7 @@ struct GridView: View {
                                 .shadow(color: Color.blue.opacity(0.5), radius: 20, x: 0, y: 10)
                             Text(content.title)
                                 .font(.system(size: 20))
-                                .foregroundColor(.black)
+                                .foregroundColor(.blue)
                                 .frame(width: 180, height: 70, alignment: .center)
                                 .multilineTextAlignment(.center)
                                 .lineLimit(3)

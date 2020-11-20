@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import RealmSwift
 
 struct MovieListView: View {
     @ObservedObject var viewModel = MovieViewModel(indexOfMoviesList: MoviesList.nowPlaying, filteringMoviesIndex: FilterMovies.releaseDate)
@@ -38,15 +37,22 @@ struct MovieListView: View {
                     if self.showFilters {
                         VStack(alignment: .center, spacing: 40) {
                             Picker("", selection: $viewModel.filteringMoviesIndex) {
-                                Text(LocalizedStringKey("Date")).tag(FilterMovies.releaseDate).font(.system(size: 25))
-                                Text(LocalizedStringKey("Name")).tag(FilterMovies.title).font(.system(size: 25))
-                                Text(LocalizedStringKey("Rating")).tag(FilterMovies.rating).font(.system(size: 25))
+                                Text(LocalizedStringKey("Date")).tag(FilterMovies.releaseDate)
+                                    .font(.system(size: 25))
+                                    .foregroundColor(.blue)
+                                Text(LocalizedStringKey("Name")).tag(FilterMovies.title)
+                                    .font(.system(size: 25))
+                                    .foregroundColor(.blue)
+                                Text(LocalizedStringKey("Rating")).tag(FilterMovies.rating)
+                                    .font(.system(size: 25))
+                                    .foregroundColor(.blue)
                                 Text(LocalizedStringKey("Popularity")).tag(FilterMovies.popularity).font(.system(size: 25))
+                                    .foregroundColor(.blue)
                                     }
                         }
                         .frame(width: 130, height: 130)
                         .padding()
-                        .background(Color.white.opacity(0.9))
+                        .background(Color.white.opacity(0.8))
                         .cornerRadius(15)
                         .shadow(color: Color.blue.opacity(0.3), radius: 20, x: 0, y: 10)
                     }
@@ -97,9 +103,6 @@ func changeButton(_ isList: Bool) -> String {
         return "square.grid.2x2"
     }
 }
-//ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, genresDictionary: genresModel.dictionaryGenresRealm)
-
-//GridView(arrayOfData: viewModel.moviesFromRealm)
 
 struct ScrollViewMovies: View {
     var arrayDataFromAPI: [MovieModel]

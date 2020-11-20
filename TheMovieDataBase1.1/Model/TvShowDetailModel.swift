@@ -34,6 +34,7 @@ struct TvShowDetailModel: Codable {
     let productionCompanies: [ProductionCompaniesModel]
     let seasons: [Seasons]
     let status: String
+    let tagline: String
     let type: String
     let voteAverage: Float
     let voteCount: Int
@@ -44,7 +45,48 @@ struct TvShowDetailModel: Codable {
     var backdropFileManagerName: String {
         return "\(id)backDrop"
     }
+}
 
+struct CreatedBy: Codable {
+    let id: Int
+    let creditId: String
+    let name: String
+    let gender: Int
+    let profilePath: String?
+}
+//82856
+struct Episode: Codable {
+    let airDate: Date
+    let episodeNumber: Int
+    let id: Int
+    let name: String
+    let overview: String
+    let productionCode: String
+    let seasonNumber: Int
+    let showId: Int
+    let stillPath: String
+    let voteAverage: Float
+    let voteCount: Int
+}
+
+struct Networks: Codable {
+    let name: String
+    let id: Int
+    let logoPath: String
+    let originCountry: String
+}
+
+struct Seasons: Codable {
+    let airDate: Date
+    let episodeCount: Int
+    let id: Int
+    let name: String
+    let overview: String
+    let posterPath: String
+    let seasonNumber: Int
+}
+
+extension TvShowDetailModel {
     init() {
         backdropPath = nil
         createdBy = [CreatedBy(id: 0, creditId: "", name: "", gender: 0, profilePath: "")]
@@ -86,103 +128,9 @@ struct TvShowDetailModel: Codable {
                            posterPath: "",
                            seasonNumber: 0)]
         status = ""
+        tagline = ""
         type = ""
         voteAverage = 0
         voteCount = 0
     }
-
-    init(backdropPath: String?,
-         createdBy: [CreatedBy],
-         episodeRunTime: [Int],
-         firstAirDate: Date,
-         genres: [GenresDTO],
-         homepage: String,
-         id: Int,
-         inProduction: Bool,
-         languages: [String],
-         lastAirDate: Date,
-         lastEpisodeToAir: [Episode],
-         name: String,
-         networks: [Networks],
-         numberOfEpisodes: Int,
-         numberOfSeasons: Int,
-         originCountry: [String],
-         originalLanguage: String,
-         originalName: String,
-         overview: String,
-         popularity: Float,
-         posterPath: String?,
-         productionCompanies: [ProductionCompaniesModel],
-         seasons: [Seasons],
-         status: String,
-         type: String,
-         voteAverage: Float,
-         voteCount: Int) {
-            self.backdropPath = backdropPath
-            self.createdBy = createdBy
-            self.episodeRunTime = episodeRunTime
-            self.firstAirDate = firstAirDate
-            self.genres = genres
-            self.homepage = homepage
-            self.id = id
-            self.inProduction = inProduction
-            self.languages = languages
-            self.lastAirDate = lastAirDate
-            self.lastEpisodeToAir = lastEpisodeToAir
-            self.name = name
-            self.networks = networks
-            self.numberOfEpisodes = numberOfEpisodes
-            self.numberOfSeasons = numberOfSeasons
-            self.originCountry = originCountry
-            self.originalLanguage = originalLanguage
-            self.originalName = originalName
-            self.overview = overview
-            self.popularity = popularity
-            self.posterPath = posterPath
-            self.productionCompanies = productionCompanies
-            self.seasons = seasons
-            self.status = status
-            self.type = type
-            self.voteAverage = voteAverage
-            self.voteCount = voteCount
-    }
-}
-
-struct CreatedBy: Codable {
-    let id: Int
-    let creditId: String
-    let name: String
-    let gender: Int
-    let profilePath: String
-}
-//82856
-struct Episode: Codable {
-    let airDate: Date
-    let episodeNumber: Int
-    let id: Int
-    let name: String
-    let overview: String
-    let productionCode: String
-    let seasonNumber: Int
-    let showId: Int
-    let stillPath: String
-    let voteAverage: Float
-    let voteCount: Int
-}
-
-struct Networks: Codable {
-    let name: String
-    let id: Int
-    let logoPath: String
-    let originCountry: String
-}
-
-struct Seasons: Codable {
-    let airDate: Date
-    let episodeCount: Int
-    let id: Int
-    let name: String
-    let overview: String
-    let posterPath: String
-    let seasonNumber: Int
 }
