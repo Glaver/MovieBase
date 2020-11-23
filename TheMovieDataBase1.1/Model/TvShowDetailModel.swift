@@ -10,19 +10,19 @@ import Foundation
 
 struct TvShowDetailModel: Codable, DetailViewHeadImagesTitleProtocol {
     let backdropPath: String?
-    //let createdBy: [CreatedBy]
+    let createdBy: [CreatedBy]
     let episodeRunTime: [Int]
-    //let firstAirDate: Date
+    let firstAirDate: Date
     let genres: [GenresDTO]
     let homepage: String
     let id: Int
     let inProduction: Bool
     let languages: [String]
     let lastAirDate: Date
-    //let lastEpisodeToAir: [Episode]
+//    let lastEpisodeToAir: [Episode]
     let name: String
-    //let nextEpisodeToAir: Date?
-    //let networks: [Networks]
+//    let nextEpisodeToAir: Date?
+    let networks: [Networks]
     let numberOfEpisodes: Int
     let numberOfSeasons: Int
     let originCountry: [String]
@@ -31,8 +31,8 @@ struct TvShowDetailModel: Codable, DetailViewHeadImagesTitleProtocol {
     let overview: String
     let popularity: Float
     let posterPath: String?
-    //let productionCompanies: [ProductionCompaniesModel]
-    //let seasons: [Seasons]
+    let productionCompanies: [ProductionCompaniesModel]
+    let seasons: [Seasons]
     let status: String
     let tagline: String?
     let type: String
@@ -52,17 +52,16 @@ struct CreatedBy: Codable {
     let gender: Int
     let profilePath: String?
 }
-//82856
+
 struct Episode: Codable {
-    let airDate: Date
+    //let airDate: Date
     let episodeNumber: Int
     let id: Int
     let name: String
     let overview: String
     let productionCode: String
     let seasonNumber: Int
-    let showId: Int
-    let stillPath: String
+    let stillPath: String?
     let voteAverage: Float
     let voteCount: Int
 }
@@ -87,29 +86,28 @@ struct Seasons: Codable {
 extension TvShowDetailModel {
     init() {
         backdropPath = nil
-        //createdBy = [CreatedBy(id: 0, creditId: "", name: "", gender: 0, profilePath: "")]
+        createdBy = [CreatedBy(id: 0, creditId: "", name: "", gender: 0, profilePath: "")]
         episodeRunTime = [0]
-        //firstAirDate = Date()
+        firstAirDate = Date()
         genres = [GenresDTO(id: 0, name: "")]
         homepage = ""
         id = 0
         inProduction = false
         languages = [""]
         lastAirDate = Date()
-        //lastEpisodeToAir = [Episode(airDate: Date(),
+//        lastEpisodeToAir = [Episode(airDate: Date(),
 //                                    episodeNumber: 0,
 //                                    id: 0,
 //                                    name: "",
 //                                    overview: "",
 //                                    productionCode: "",
 //                                    seasonNumber: 0,
-//                                    showId: 0,
 //                                    stillPath: "",
-//                                    voteAverage: 0,
+//                                    voteAverage: 0.0,
 //                                    voteCount: 0)]
         name = ""
         //nextEpisodeToAir = Date()
-       // networks = [Networks(name: "", id: 0, logoPath: "", originCountry: "")]
+        networks = [Networks(name: "", id: 0, logoPath: "", originCountry: "")]
         numberOfEpisodes = 0
         numberOfSeasons = 0
         originCountry = [""]
@@ -118,14 +116,14 @@ extension TvShowDetailModel {
         overview = "empty"
         popularity = 0
         posterPath = nil
-       // productionCompanies = [ProductionCompaniesModel(name: "", id: 0, logoPath: "", originCountry: "")]
-//        seasons = [Seasons(airDate: Date(),
-//                           episodeCount: 0,
-//                           id: 0,
-//                           name: "",
-//                           overview: "",
-//                           posterPath: "",
-//                           seasonNumber: 0)]
+        productionCompanies = [ProductionCompaniesModel(name: "", id: 0, logoPath: "", originCountry: "")]
+        seasons = [Seasons(airDate: Date(),
+                           episodeCount: 0,
+                           id: 0,
+                           name: "",
+                           overview: "",
+                           posterPath: "",
+                           seasonNumber: 0)]
         status = ""
         tagline = ""
         type = ""

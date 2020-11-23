@@ -20,14 +20,14 @@ class TvShowDetailObject: Object {
     @objc dynamic var inProduction: Bool = false
     let languages = List<String>()
     @objc dynamic var lastAirDate: Date = Date()
-    let lastEpisodeToAir = List<EpisodeObject>()
+//    let lastEpisodeToAir = List<EpisodeObject>()
     @objc dynamic var name: String = ""
-    @objc dynamic var nextEpisodeToAir: String? = ""
+//    @objc dynamic var nextEpisodeToAir: String? = ""
     let networks = List<NetworksObject>()
     @objc dynamic var numberOfEpisodes: Int = 0
     @objc dynamic var numberOfSeasons: Int = 0
     let originCountry = List<String>()
-    @objc dynamic var riginalLanguage: String = ""
+    @objc dynamic var originalLanguage: String = ""
     @objc dynamic var originalName: String = ""
     @objc dynamic var overview: String = ""
     @objc dynamic var popularity: Float = 0
@@ -35,6 +35,7 @@ class TvShowDetailObject: Object {
     let productionCompanies = List<ProductionCompaniesObject>()
     let seasons = List<SeasonsObject>()
     @objc dynamic var status: String = ""
+    @objc dynamic var tagline: String? = ""
     @objc dynamic var type: String = ""
     @objc dynamic var voteAverage: Float = 0
     @objc dynamic var voteCount: Int = 0
@@ -50,15 +51,16 @@ class TvShowDetailObject: Object {
                      inProduction: Bool,
                      lastAirDate: Date,
                      name: String,
-                     nextEpisodeToAir: String?,
+//                     nextEpisodeToAir: String?,
                      numberOfEpisodes: Int,
                      numberOfSeasons: Int,
-                     riginalLanguage: String,
+                     originalLanguage: String,
                      originalName: String,
                      overview: String,
                      popularity: Float,
                      posterPath: String?,
                      status: String,
+                     tagline: String,
                      type: String,
                      voteAverage: Float,
                      voteCount: Int) {
@@ -70,15 +72,16 @@ class TvShowDetailObject: Object {
         self.inProduction = inProduction
         self.lastAirDate = lastAirDate
         self.name = name
-        self.nextEpisodeToAir = nextEpisodeToAir
+ //       self.nextEpisodeToAir = nextEpisodeToAir
         self.numberOfEpisodes = numberOfEpisodes
         self.numberOfSeasons = numberOfSeasons
-        self.riginalLanguage = riginalLanguage
+        self.originalLanguage = originalLanguage
         self.originalName = originalName
         self.overview = overview
         self.popularity = popularity
         self.posterPath = posterPath
         self.status = status
+        self.tagline = tagline
         self.type = type
         self.voteAverage = voteAverage
         self.voteCount = voteCount
@@ -90,7 +93,7 @@ class CreatedByObject: Object {
     @objc dynamic var creditId: String = ""
     @objc dynamic var name: String = ""
     @objc dynamic var gender: Int = 0
-    @objc dynamic var profilePath: String = ""
+    @objc dynamic var profilePath: String? = ""
 
     override static func primaryKey() -> String? {
         return "id"

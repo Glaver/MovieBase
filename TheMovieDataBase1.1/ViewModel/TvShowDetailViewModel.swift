@@ -15,25 +15,20 @@ class TvShowDetailViewModel: ObservableObject {
     @Published var tvShowDetailError: Errors?
     @Published var tvShowDetail = TvShowDetailModel() {
         didSet {
-            print(tvShowDetail.name)
-            print(tvShowDetail.overview)
+            if tvShowDetail.id != 0 {
+                let tvShowDetailObject = Mappers.toTvShowDetailObject(from: tvShowDetail)
+                SaveModelObject.forTvShowDetails(from: tvShowDetailObject, to: realm)
+            }
         }
     }
-//    () {
-//            didSet {
-//                if tvShowDetail.id != 0 {
-//                    SaveModelObject.forMovieDetails(from: Mappers.toMovieDetailObject(from: tvShowDetail), to: realm)
-//                }
-//            }
-//        }
-
-//        var movieDetailsFromRealm: MovieDetailModel {
-//            if realm.isEmpty {
-//                return movieDetail
-//            } else {
-//                return Mappers.toMovieDetailModel(from: Array(FetchModelObject.forMovieDetails(from: realm, for: movieId))[0])
-//            }
-//        }
+    var tvShowDetailFromRealm: TvShowDetailModel {
+        if realm.isEmpty {
+            return tvShowDetail
+        } else {
+            let showDetail = Array(FetchModelObject.forTvShowDetails(from: realm, for: tvShowId))[0]
+            return Mappers.toTvShowDetail(from: showDetail)
+        }
+    }
 
     init(tvShowId: Int) {
         self.tvShowId = tvShowId
@@ -42,7 +37,6 @@ class TvShowDetailViewModel: ObservableObject {
             .setFailureType(to: Errors.self)
             .flatMap { (tvShowId) -> AnyPublisher<TvShowDetailModel, Errors> in
                 FetchData.shared.fetchInstance(for: TvShowDetailModel(), endpoint: Endpoint.tvShowDetail(tvShowID: tvShowId))
-                //FetchData.shared.fetchTvShowDetailError(from: tvShowId)
                     .eraseToAnyPublisher()
             }
             .sink(receiveCompletion: { [unowned self] (completion) in

@@ -288,7 +288,133 @@ struct Mappers {
         }
         return resultTv
     }
-
+// MARK: Map from TvShowDetailModel to TvShowDetailObject
+    static func toTvShowDetailObject(from tvShowDetailModel: TvShowDetailModel) -> TvShowDetailObject {
+        let showDetailObject = TvShowDetailObject(backdropPath: tvShowDetailModel.backdropPath,
+                                                  firstAirDate: tvShowDetailModel.firstAirDate,
+                                                  homepage: tvShowDetailModel.homepage,
+                                                  id: tvShowDetailModel.id,
+                                                  inProduction: tvShowDetailModel.inProduction,
+                                                  lastAirDate: tvShowDetailModel.lastAirDate,
+                                                  name: tvShowDetailModel.name,
+                                                  numberOfEpisodes: tvShowDetailModel.numberOfEpisodes,
+                                                  numberOfSeasons: tvShowDetailModel.numberOfSeasons,
+                                                  originalLanguage: tvShowDetailModel.originalLanguage,
+                                                  originalName: tvShowDetailModel.originalLanguage,
+                                                  overview: tvShowDetailModel.overview,
+                                                  popularity: tvShowDetailModel.popularity,
+                                                  posterPath: tvShowDetailModel.posterPath,
+                                                  status: tvShowDetailModel.status,
+                                                  tagline: tvShowDetailModel.tagline ?? "",
+                                                  type: tvShowDetailModel.type,
+                                                  voteAverage: tvShowDetailModel.voteAverage,
+                                                  voteCount: tvShowDetailModel.voteCount)
+                                                
+        tvShowDetailModel.createdBy.forEach { created in
+            showDetailObject.createdBy.append(CreatedByObject(id: created.id,
+                                                                    creditId: created.creditId,
+                                                                    name: created.name,
+                                                                    gender: created.gender,
+                                                                    profilePath: created.profilePath ?? ""))
+        }
+        tvShowDetailModel.episodeRunTime.forEach { time in showDetailObject.episodeRunTime.append(time) }
+        tvShowDetailModel.genres.forEach { genre in showDetailObject.genres.append(GenresObject(id: genre.id, name: genre.name))
+        }
+        tvShowDetailModel.languages.forEach { languages in showDetailObject.languages.append(languages) }
+        tvShowDetailModel.networks.forEach { network in showDetailObject.networks.append(NetworksObject(name: network.name,
+                                                            id: network.id,
+                                                            logoPath: network.logoPath,
+                                                            originCountry: network.originCountry))
+        }
+        tvShowDetailModel.originCountry.forEach { country in showDetailObject.originCountry.append(country) }
+        tvShowDetailModel.productionCompanies.forEach { companies in showDetailObject.productionCompanies.append(ProductionCompaniesObject(
+                                                            name: companies.name,
+                                                            id: companies.id,
+                                                            logoPath: companies.logoPath,
+                                                            originCountry: companies.originCountry))
+        }
+        tvShowDetailModel.seasons.forEach { seasons in showDetailObject.seasons.append(SeasonsObject(airDate: seasons.airDate,
+                                                        episodeCount: seasons.episodeCount,
+                                                        id: seasons.id,
+                                                        name: seasons.name,
+                                                        overview: seasons.overview,
+                                                        posterPath: seasons.posterPath,
+                                                        seasonNumber: seasons.seasonNumber))
+        }
+        return showDetailObject
+    }
+// MARK: Map from TvShowDetailModel to TvShowDetailObject
+    static func toTvShowDetail(from tvShowDetailObject: TvShowDetailObject) -> TvShowDetailModel {
+        var createdBy = [CreatedBy]()
+        tvShowDetailObject.createdBy.forEach { created in
+            createdBy.append(CreatedBy(id: created.id,
+                                       creditId: created.creditId,
+                                       name: created.name,
+                                       gender: created.gender,
+                                       profilePath: created.profilePath))
+        }
+        var episodeRunTime = [Int]()
+        tvShowDetailObject.episodeRunTime.forEach { time in episodeRunTime.append(time)}
+        var genresDTO = [GenresDTO]()
+        tvShowDetailObject.genres.forEach { genre in
+            genresDTO.append(GenresDTO(id: genre.id, name: genre.name))}
+        var languages = [String]()
+        tvShowDetailObject.languages.forEach { language in languages.append(language)}
+        var networks = [Networks]()
+        tvShowDetailObject.networks.forEach { network in
+            networks.append(Networks(name: network.name,
+                                     id: network.id,
+                                     logoPath: network.logoPath,
+                                     originCountry: network.originCountry))
+        }
+        var originCountry = [String]()
+            tvShowDetailObject.originCountry.forEach { country in originCountry.append(country) }
+        var productionCompanies = [ProductionCompaniesModel]()
+            tvShowDetailObject.productionCompanies.forEach { companies in
+                productionCompanies.append(ProductionCompaniesModel(name: companies.name,
+                                                                    id: companies.id,
+                                                                    logoPath: companies.logoPath,
+                                                                    originCountry: companies.originCountry))
+        }
+        var seasons = [Seasons]()
+        tvShowDetailObject.seasons.forEach { season in
+            seasons.append(Seasons(airDate: season.airDate,
+                                   episodeCount: season.episodeCount,
+                                   id: season.id,
+                                   name: season.name,
+                                   overview: season.overview,
+                                   posterPath: season.posterPath,
+                                   seasonNumber: season.seasonNumber))
+        }
+        let tvShowDetailModelOutput = TvShowDetailModel(backdropPath: tvShowDetailObject.backdropPath,
+                                                        createdBy: createdBy,
+                                                        episodeRunTime: episodeRunTime,
+                                                        firstAirDate: tvShowDetailObject.firstAirDate,
+                                                        genres: genresDTO,
+                                                        homepage: tvShowDetailObject.homepage,
+                                                        id: tvShowDetailObject.id,
+                                                        inProduction: tvShowDetailObject.inProduction,
+                                                        languages: languages,
+                                                        lastAirDate: tvShowDetailObject.lastAirDate,
+                                                        name: tvShowDetailObject.name,
+                                                        networks: networks,
+                                                        numberOfEpisodes: tvShowDetailObject.numberOfEpisodes,
+                                                        numberOfSeasons: tvShowDetailObject.numberOfSeasons,
+                                                        originCountry: originCountry,
+                                                        originalLanguage: tvShowDetailObject.originalLanguage,
+                                                        originalName: tvShowDetailObject.originalName,
+                                                        overview: tvShowDetailObject.overview,
+                                                        popularity: tvShowDetailObject.popularity,
+                                                        posterPath: tvShowDetailObject.posterPath,
+                                                        productionCompanies: productionCompanies,
+                                                        seasons: seasons,
+                                                        status: tvShowDetailObject.status,
+                                                        tagline: tvShowDetailObject.tagline,
+                                                        type: tvShowDetailObject.type,
+                                                        voteAverage: tvShowDetailObject.voteAverage,
+                                                        voteCount: tvShowDetailObject.voteCount)
+        return tvShowDetailModelOutput
+    }
     // MARK: Map from GenresDictionary to String
     static func convertorGenresToString(genresDict: GenresDictionaryProtocol, genresOfMovie: [Int]) -> [String] {
         var stringGenres = [String]()
