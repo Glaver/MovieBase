@@ -8,21 +8,21 @@
 
 import Foundation
 
-struct TvShowDetailModel: Codable {
+struct TvShowDetailModel: Codable, DetailViewHeadImagesTitleProtocol {
     let backdropPath: String?
-    let createdBy: [CreatedBy]
+    //let createdBy: [CreatedBy]
     let episodeRunTime: [Int]
-    let firstAirDate: Date
+    //let firstAirDate: Date
     let genres: [GenresDTO]
     let homepage: String
     let id: Int
     let inProduction: Bool
     let languages: [String]
     let lastAirDate: Date
-    let lastEpisodeToAir: [Episode]
+    //let lastEpisodeToAir: [Episode]
     let name: String
     //let nextEpisodeToAir: Date?
-    let networks: [Networks]
+    //let networks: [Networks]
     let numberOfEpisodes: Int
     let numberOfSeasons: Int
     let originCountry: [String]
@@ -31,19 +31,17 @@ struct TvShowDetailModel: Codable {
     let overview: String
     let popularity: Float
     let posterPath: String?
-    let productionCompanies: [ProductionCompaniesModel]
-    let seasons: [Seasons]
+    //let productionCompanies: [ProductionCompaniesModel]
+    //let seasons: [Seasons]
     let status: String
-    let tagline: String
+    let tagline: String?
     let type: String
     let voteAverage: Float
     let voteCount: Int
-
-    var posterFileManagerName: String {
-        return "\(id)poster"
-    }
-    var backdropFileManagerName: String {
-        return "\(id)backDrop"
+    var title: String { name }
+    var originalTitle: String { originalName }
+    var posterFilemanagerName: String { "\(id)poster" }
+    var backdropFilemanagerName: String { "\(id)backDrop"
     }
 }
 
@@ -89,28 +87,29 @@ struct Seasons: Codable {
 extension TvShowDetailModel {
     init() {
         backdropPath = nil
-        createdBy = [CreatedBy(id: 0, creditId: "", name: "", gender: 0, profilePath: "")]
+        //createdBy = [CreatedBy(id: 0, creditId: "", name: "", gender: 0, profilePath: "")]
         episodeRunTime = [0]
-        firstAirDate = Date()
+        //firstAirDate = Date()
         genres = [GenresDTO(id: 0, name: "")]
         homepage = ""
         id = 0
         inProduction = false
         languages = [""]
         lastAirDate = Date()
-        lastEpisodeToAir = [Episode(airDate: Date(),
-                                    episodeNumber: 0,
-                                    id: 0,
-                                    name: "",
-                                    overview: "",
-                                    productionCode: "",
-                                    seasonNumber: 0,
-                                    showId: 0,
-                                    stillPath: "",
-                                    voteAverage: 0,
-                                    voteCount: 0)]
+        //lastEpisodeToAir = [Episode(airDate: Date(),
+//                                    episodeNumber: 0,
+//                                    id: 0,
+//                                    name: "",
+//                                    overview: "",
+//                                    productionCode: "",
+//                                    seasonNumber: 0,
+//                                    showId: 0,
+//                                    stillPath: "",
+//                                    voteAverage: 0,
+//                                    voteCount: 0)]
         name = ""
-        networks = [Networks(name: "", id: 0, logoPath: "", originCountry: "")]
+        //nextEpisodeToAir = Date()
+       // networks = [Networks(name: "", id: 0, logoPath: "", originCountry: "")]
         numberOfEpisodes = 0
         numberOfSeasons = 0
         originCountry = [""]
@@ -119,14 +118,14 @@ extension TvShowDetailModel {
         overview = "empty"
         popularity = 0
         posterPath = nil
-        productionCompanies = [ProductionCompaniesModel(name: "", id: 0, logoPath: "", originCountry: "")]
-        seasons = [Seasons(airDate: Date(),
-                           episodeCount: 0,
-                           id: 0,
-                           name: "",
-                           overview: "",
-                           posterPath: "",
-                           seasonNumber: 0)]
+       // productionCompanies = [ProductionCompaniesModel(name: "", id: 0, logoPath: "", originCountry: "")]
+//        seasons = [Seasons(airDate: Date(),
+//                           episodeCount: 0,
+//                           id: 0,
+//                           name: "",
+//                           overview: "",
+//                           posterPath: "",
+//                           seasonNumber: 0)]
         status = ""
         tagline = ""
         type = ""

@@ -105,13 +105,13 @@ func changeButton(_ isList: Bool) -> String {
 }
 
 struct ScrollViewMovies: View {
-    var arrayDataFromAPI: [MovieModel]
-    var genresDictionary: GenresDictionary
+    var arrayDataFromAPI: [MovieShowViewProtocol]
+    var genresDictionary: GenresDictionaryProtocol
 
     var body: some View {
         VStack {
             List(self.arrayDataFromAPI, id: \.id) { item in
-                NavigationLink(destination: MovieDetailView(movie: item)) {
+                NavigationLink(destination: MovieDetailView(movie: item as! MovieModel)) {
                     SectionView(section: item, inputURLforImage: ImageAPI.Size.medium.path(poster: (item.posterPath ?? "")), genresDictionary: self.genresDictionary)
                 }
             }

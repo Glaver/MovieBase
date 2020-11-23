@@ -91,13 +91,13 @@ struct TvShowListView: View {
 }
 
 struct ScrollViewMoviesShow: View {
-    var arrayDataFromAPI: [ResultTvModel]
-    var genresDictionary: GenresDictionary
+    var arrayDataFromAPI: [MovieShowViewProtocol]
+    var genresDictionary: GenresDictionaryProtocol
 
     var body: some View {
         VStack {
             List(self.arrayDataFromAPI, id: \.id) { show in
-                NavigationLink(destination: TvShowDetailView(tvShow: show)) {
+                NavigationLink(destination: TvShowDetailView(tvShow: show as! ResultTvModel)) {
                     SectionView(section: show, inputURLforImage: ImageAPI.Size.medium.path(poster: (show.posterPath ?? "")), genresDictionary: self.genresDictionary)
                 }
             }

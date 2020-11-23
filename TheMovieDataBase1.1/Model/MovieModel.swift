@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct MovieModel: MovieAndShowProperty, Hashable {
+struct MovieModel: MovieShowViewProtocol, Hashable {
     let popularity: Float
     let id: Int
     let title: String
@@ -27,7 +27,7 @@ struct MovieModel: MovieAndShowProperty, Hashable {
     }
 }
 
-protocol MovieAndShowProperty {
+protocol MovieShowViewProtocol {
     var popularity: Float { get }
     var id: Int { get }
     var title: String { get }

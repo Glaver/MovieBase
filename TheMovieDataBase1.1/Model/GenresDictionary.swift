@@ -8,6 +8,10 @@
 
 import Foundation
 
-struct GenresDictionary {
+struct GenresDictionary: GenresDictionaryProtocol {
     let genres: [Int: String]
+}
+
+protocol GenresDictionaryProtocol {
+    var genres: [Int: String] { get }
 }

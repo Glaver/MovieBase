@@ -15,13 +15,7 @@ struct MovieDetailView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack {
-                ContentHeadImagesTitlePoster(backdropPath: viewModel.movieDetailsFromRealm.backdropPath,
-                                             backdropFilemanagerName: viewModel.movieDetailsFromRealm.backdropFilemanagerName,
-                                             posterPath: viewModel.movieDetailsFromRealm.posterPath,
-                                             posterFilemanagerName: viewModel.movieDetailsFromRealm.posterFilemanagerName,
-                                             tagline: viewModel.movieDetailsFromRealm.tagline,
-                                             title: viewModel.movieDetailsFromRealm.title,
-                                             originalTitle: viewModel.movieDetailsFromRealm.originalTitle)
+                ContentHeadImagesTitlePoster(section: viewModel.movieDetailsFromRealm)
 
                 GenresBlock(genres: viewModel.movieDetailsFromRealm.genres)
 
@@ -52,22 +46,24 @@ struct MovieDetailView: View {
 
 // MARK: ContentHead Backdrop Poster Title
 struct ContentHeadImagesTitlePoster: View {
-    var backdropPath: String?
-    var backdropFilemanagerName: String
-    var posterPath: String?
-    var posterFilemanagerName: String
-    var tagline: String?
-    var title: String
-    var originalTitle: String
+    let section: DetailViewHeadImagesTitleProtocol
+    
+//    var backdropPath: String?
+//    var backdropFilemanagerName: String
+//    var posterPath: String?
+//    var posterFilemanagerName: String
+//    var tagline: String?
+//    var title: String
+//    var originalTitle: String
 
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             VStack {
                 ZStack {
-                    ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.original.path(poster: (backdropPath ?? ""))), imageName: backdropFilemanagerName)
+                    ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.original.path(poster: (section.backdropPath ?? ""))), imageName: section.backdropFilemanagerName)
                         .frame(height: 250, alignment: .center)//width:450,
                         .shadow(color: Color.blue.opacity(0.3), radius: 20, x: 0, y: 10)
-                    TaglineView(tagline: tagline ?? "NO")
+                    TaglineView(tagline: section.tagline ?? "NO")
                 }
                 Rectangle()
                     .fill(Color.clear)
@@ -75,7 +71,7 @@ struct ContentHeadImagesTitlePoster: View {
                     .frame(height: 110)
             }
             HStack {
-                ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.medium.path(poster: (posterPath ?? ""))), imageName: posterFilemanagerName)
+                ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.medium.path(poster: (section.posterPath ?? ""))), imageName: section.posterFilemanagerName)
                     .frame(width: 130, height: 190, alignment: .leading)
                     .aspectRatio(contentMode: .fill)
                     .cornerRadius(10)
@@ -83,12 +79,12 @@ struct ContentHeadImagesTitlePoster: View {
                     .padding(.leading, 5)
 
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(title)
+                    Text(section.title)
                         .font(.system(size: 22))
                         .bold()
                         .lineLimit(3)
                         .frame(width: 230, alignment: .leading)
-                    Text(Mappers.originalTitle(originalTitle, vs: title))
+                    Text(Mappers.originalTitle(section.originalTitle, vs: section.title))
                         .font(.system(size: 20))
                         .bold()
                         .lineLimit(2)

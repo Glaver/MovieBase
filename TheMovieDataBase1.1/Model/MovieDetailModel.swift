@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct MovieDetailModel: Codable {
+struct MovieDetailModel: Codable, DetailViewHeadImagesTitleProtocol {
     let adult: Bool
     let backdropPath: String?
     //let belongsToCollection: [String?]
@@ -138,4 +138,14 @@ struct ProductionCountries: Codable {
 struct SpokenLanguages: Codable {
     let iso6391: String
     let name: String
+}
+
+protocol DetailViewHeadImagesTitleProtocol {
+    var backdropPath: String? { get }
+    var backdropFilemanagerName: String { get }
+    var posterPath: String? { get }
+    var posterFilemanagerName: String { get }
+    var tagline: String? { get }
+    var title: String { get }
+    var originalTitle: String { get }
 }

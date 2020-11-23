@@ -290,7 +290,7 @@ struct Mappers {
     }
 
     // MARK: Map from GenresDictionary to String
-    static func convertorGenresToString(genresDict: GenresDictionary, genresOfMovie: [Int]) -> [String] {
+    static func convertorGenresToString(genresDict: GenresDictionaryProtocol, genresOfMovie: [Int]) -> [String] {
         var stringGenres = [String]()
         for (id, genre) in genresDict.genres {
             for idMovie in genresOfMovie where id == idMovie {

@@ -9,9 +9,9 @@
 import SwiftUI
 
 struct SectionView: View {
-    var section: MovieAndShowProperty
+    var section: MovieShowViewProtocol
     let inputURLforImage: URL?
-    let genresDictionary: GenresDictionary
+    let genresDictionary: GenresDictionaryProtocol
     var body: some View {
         HStack {
             ImageViewModel(imageLoader: ImageLoaderViewModel(url: inputURLforImage), imageName: section.posterFileManagerName)

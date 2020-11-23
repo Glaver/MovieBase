@@ -15,7 +15,7 @@ struct TvShowsModel: Codable {
     let totalPages: Int
 }
 
-struct ResultTvModel: Codable, MovieAndShowProperty {
+struct ResultTvModel: Codable, MovieShowViewProtocol {
     let posterPath: String?
     let popularity: Float
     let id: Int
