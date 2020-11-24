@@ -178,7 +178,7 @@ class NetworksObject: Object {
 }
 
 class SeasonsObject: Object {
-    @objc dynamic var airDate: Date = Date()
+    @objc dynamic var airDate: Date? = Date()
     @objc dynamic var episodeCount: Int = 0
     @objc dynamic var id: Int = 0
     @objc dynamic var name: String = ""

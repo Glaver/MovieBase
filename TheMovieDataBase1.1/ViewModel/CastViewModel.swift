@@ -10,6 +10,7 @@ import Foundation
 import Combine
 
 final class CastViewModel: ObservableObject {
+    var trueForMoviesAndFalseForShow = true
     @Published var movieId: Int = 0
     @Published var castCrewError: Errors?
     @Published var castAndCrew: MovieCreditResponse? {
@@ -34,14 +35,21 @@ final class CastViewModel: ObservableObject {
             return Mappers.toMovieCreditResponse(from: (Array(FetchModelObject.forCredits(from: realm, for: movieId)))[0])
         }
     }
-
-    init(movieId: Int, castAndCrew: MovieCreditResponse) {
+    func chooseEndpoint(trueForMovieFalseForShow: Bool, id: Int) -> Endpoint {
+        if trueForMovieFalseForShow {
+            return Endpoint.credits(movieID: id)
+        } else {
+            return Endpoint.creditsTV(tvShowID: id)
+        }
+    }
+    init(movieId: Int, trueForMoviesAndFalseForShow: Bool) {
         self.movieId = movieId
-        self.castAndCrew = castAndCrew
+        self.castAndCrew = MovieCreditResponse(cast: [MovieCast](), crew: [MovieCrew]())
+        self.trueForMoviesAndFalseForShow = trueForMoviesAndFalseForShow
         $movieId
             .setFailureType(to: Errors.self)
             .flatMap { (movieId) -> AnyPublisher<MovieCreditResponse, Errors> in
-                FetchData.shared.fetchInstance(for: MovieCreditResponse(), endpoint: Endpoint.credits(movieID: movieId))
+                FetchData.shared.fetchInstance(for: MovieCreditResponse(), endpoint: self.chooseEndpoint(trueForMovieFalseForShow: trueForMoviesAndFalseForShow, id: movieId))
                 //FetchData.shared.fetchCastAndCrew(endpoint: Endpoint.credits(movieID: movieId))
                     .eraseToAnyPublisher()
             }

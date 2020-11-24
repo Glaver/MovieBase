@@ -292,7 +292,7 @@ struct Mappers {
     static func toTvShowDetailObject(from tvShowDetailModel: TvShowDetailModel) -> TvShowDetailObject {
         let showDetailObject = TvShowDetailObject(backdropPath: tvShowDetailModel.backdropPath,
                                                   firstAirDate: tvShowDetailModel.firstAirDate,
-                                                  homepage: tvShowDetailModel.homepage,
+                                                  homepage: tvShowDetailModel.homepage ?? "",
                                                   id: tvShowDetailModel.id,
                                                   inProduction: tvShowDetailModel.inProduction,
                                                   lastAirDate: tvShowDetailModel.lastAirDate,
@@ -309,7 +309,6 @@ struct Mappers {
                                                   type: tvShowDetailModel.type,
                                                   voteAverage: tvShowDetailModel.voteAverage,
                                                   voteCount: tvShowDetailModel.voteCount)
-                                                
         tvShowDetailModel.createdBy.forEach { created in
             showDetailObject.createdBy.append(CreatedByObject(id: created.id,
                                                                     creditId: created.creditId,
@@ -333,7 +332,7 @@ struct Mappers {
                                                             logoPath: companies.logoPath,
                                                             originCountry: companies.originCountry))
         }
-        tvShowDetailModel.seasons.forEach { seasons in showDetailObject.seasons.append(SeasonsObject(airDate: seasons.airDate,
+        tvShowDetailModel.seasons.forEach { seasons in showDetailObject.seasons.append(SeasonsObject(airDate: seasons.airDate ?? Date(),
                                                         episodeCount: seasons.episodeCount,
                                                         id: seasons.id,
                                                         name: seasons.name,
@@ -429,7 +428,7 @@ struct Mappers {
     }
 
     // MARK: Map GenresDTO to array string
-    static func convertsToArrayString(from genres: [GenresDTO]) -> [String] {
+    static func convertsToArrayString(from genres: [GenresProtocol]) -> [String] {
         var outputArrayString = [String]()
         genres.forEach { genres in
             outputArrayString.append(genres.name)

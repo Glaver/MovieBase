@@ -87,6 +87,14 @@ extension String {
         self = self.capitalizingFirstLetter()
     }
 }
+
+extension Collection {
+
+    // Returns the element at the specified index if it is within bounds, otherwise nil.
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
 /*
  static func saveImage(image: UIImage, imageName: String) -> Bool {
  guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else { return false }

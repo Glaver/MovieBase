@@ -12,7 +12,12 @@ public struct GenreDTO: Codable {
     let genres: [GenresDTO]
 }
 
-struct GenresDTO: Codable {
+struct GenresDTO: Codable, GenresProtocol {
     let id: Int
     let name: String
+}
+
+protocol GenresProtocol {
+    var id: Int { get }
+    var name: String { get }
 }

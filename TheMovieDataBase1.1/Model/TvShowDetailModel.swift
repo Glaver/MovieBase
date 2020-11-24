@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct TvShowDetailModel: Codable, DetailViewHeadImagesTitleProtocol {
+struct TvShowDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetailContentViewProtocol {
     let backdropPath: String?
     let createdBy: [CreatedBy]
     let episodeRunTime: [Int]
     let firstAirDate: Date
     let genres: [GenresDTO]
-    let homepage: String
+    let homepage: String?
     let id: Int
     let inProduction: Bool
     let languages: [String]
@@ -41,8 +41,9 @@ struct TvShowDetailModel: Codable, DetailViewHeadImagesTitleProtocol {
     var title: String { name }
     var originalTitle: String { originalName }
     var posterFilemanagerName: String { "\(id)poster" }
-    var backdropFilemanagerName: String { "\(id)backDrop"
-    }
+    var backdropFilemanagerName: String { "\(id)backDrop" }
+    var releaseDate: Date { return lastAirDate }
+    var runtime: Int? { return nil }
 }
 
 struct CreatedBy: Codable {
@@ -74,7 +75,7 @@ struct Networks: Codable {
 }
 
 struct Seasons: Codable {
-    let airDate: Date
+    let airDate: Date? // change to optional
     let episodeCount: Int
     let id: Int
     let name: String

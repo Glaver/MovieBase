@@ -9,7 +9,7 @@
 import Foundation
 import SwiftUI
 
-struct MovieDetailModel: Codable, DetailViewHeadImagesTitleProtocol {
+struct MovieDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetailContentViewProtocol {
     let adult: Bool
     let backdropPath: String?
     //let belongsToCollection: [String?]
@@ -148,4 +148,11 @@ protocol DetailViewHeadImagesTitleProtocol {
     var tagline: String? { get }
     var title: String { get }
     var originalTitle: String { get }
+}
+
+protocol InfoDetailContentViewProtocol {
+    var releaseDate: Date { get }
+    var voteAverage: Float { get }
+    var runtime: Int? { get }
+    var homepage: String? { get }
 }

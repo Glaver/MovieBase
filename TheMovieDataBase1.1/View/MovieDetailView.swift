@@ -16,21 +16,12 @@ struct MovieDetailView: View {
         ScrollView(.vertical) {
             VStack {
                 ContentHeadImagesTitlePoster(section: viewModel.movieDetailsFromRealm)
-
                 GenresBlock(genres: viewModel.movieDetailsFromRealm.genres)
-
-                InfoDetailContentView(releaseDate: viewModel.movieDetailsFromRealm.releaseDate,
-                                      voteAverage: viewModel.movieDetailsFromRealm.voteAverage,
-                                      runtime: viewModel.movieDetailsFromRealm.runtime,
-                                      homepage: viewModel.movieDetailsFromRealm.homepage)
+                InfoDetailContentView(section: viewModel.movieDetailsFromRealm)
                 Overview(overviewText: viewModel.movieDetailsFromRealm.overview ?? movie.overview)
-                //VStack{
-                VideoView(videoViewModel: MovieVideoViewModel(movieId: movie.id, endpoint: Endpoint.videos(movieID: movie.id)))//(fromEndpoint: Endpoint.videos(movieID: movie.id) ))
-                    BoxOfficeView(budget: viewModel.movieDetailsFromRealm.budget, revenue: viewModel.movieDetailsFromRealm.revenue)
-                CastList(castsViewModel: CastViewModel(movieId: movie.id, castAndCrew: MovieCreditResponse(cast: [MovieCast](), crew: [MovieCrew]())))
-
-                //}
-
+                VideoView(videoViewModel: MovieVideoViewModel(movieId: movie.id, endpoint: Endpoint.videos(movieID: movie.id)))
+                BoxOfficeView(budget: viewModel.movieDetailsFromRealm.budget, revenue: viewModel.movieDetailsFromRealm.revenue)
+                CastList(castsViewModel: CastViewModel(movieId: movie.id, trueForMoviesAndFalseForShow: true))
             }
         }.alert(item: self.$viewModel.movieDetailError) { error in
             Alert(title: Text("Network error"),
@@ -47,15 +38,6 @@ struct MovieDetailView: View {
 // MARK: ContentHead Backdrop Poster Title
 struct ContentHeadImagesTitlePoster: View {
     let section: DetailViewHeadImagesTitleProtocol
-    
-//    var backdropPath: String?
-//    var backdropFilemanagerName: String
-//    var posterPath: String?
-//    var posterFilemanagerName: String
-//    var tagline: String?
-//    var title: String
-//    var originalTitle: String
-
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             VStack {
@@ -97,7 +79,7 @@ struct ContentHeadImagesTitlePoster: View {
 }
 // MARK: GenresBlock
 struct GenresBlock: View {
-    let genres: [GenresDTO]
+    let genres: [GenresProtocol]
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
         HStack {
@@ -118,11 +100,7 @@ struct GenresBlock: View {
 }
 // MARK: InfoDetailContentView
 struct InfoDetailContentView: View {
-    let releaseDate: Date
-    let voteAverage: Float
-    let runtime: Int?
-    let homepage: String?
-
+    var section: InfoDetailContentViewProtocol
     var body: some View {
         Divider()
         Spacer()
@@ -132,18 +110,18 @@ struct InfoDetailContentView: View {
                     .resizable()
                     .frame(width: 30, height: 30, alignment: .center)
                     .foregroundColor(.red)
-                Text(DateFormattingHelper.shared.printFormattedDate(releaseDate, printFormat: "MMM dd,yyyy")) //DDMonYY
+                Text(DateFormattingHelper.shared.printFormattedDate(section.releaseDate, printFormat: "MMM dd,yyyy")) //DDMonYY
                     //.foregroundColor(Color.blue)
                     .font(Font.body.bold())
                     .foregroundColor(Color.blue)
             }
             VStack {
-                if voteAverage != 0 {
+                if section.voteAverage != 0 {
                     Image(systemName: "star")
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
                         .foregroundColor(.yellow)
-                    Text(String(voteAverage))
+                    Text(String(section.voteAverage))
                         .font(Font.body.bold())
 
                         .frame(width: 40, height: 25)
@@ -157,20 +135,20 @@ struct InfoDetailContentView: View {
                 }
             }
             VStack {
-                if runtime != nil {
+                if section.runtime != nil {
                     Image(systemName: "clock")
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
                         .foregroundColor(Color.purple)
                     HStack {
-                    Text(String(runtime!))
+                        Text(String(section.runtime!))
                     Text(LocalizedStringKey("min"))
                     //Text(Mappers.convertsIntToHoursAndMin(timeInMin: runtime))
                     }.font(Font.body.bold())
                 }
             }
             VStack {
-                if let url = URL(string: homepage!) {
+                if let url = URL(string: section.homepage!) {
                     if #available(iOS 14.0, *) {
                         Link(destination: url) {
                             VStack {

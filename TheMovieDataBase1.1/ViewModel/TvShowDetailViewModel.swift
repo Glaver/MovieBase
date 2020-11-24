@@ -16,6 +16,7 @@ class TvShowDetailViewModel: ObservableObject {
     @Published var tvShowDetail = TvShowDetailModel() {
         didSet {
             if tvShowDetail.id != 0 {
+                print(tvShowDetail.name)
                 let tvShowDetailObject = Mappers.toTvShowDetailObject(from: tvShowDetail)
                 SaveModelObject.forTvShowDetails(from: tvShowDetailObject, to: realm)
             }
@@ -25,8 +26,12 @@ class TvShowDetailViewModel: ObservableObject {
         if realm.isEmpty {
             return tvShowDetail
         } else {
-            let showDetail = Array(FetchModelObject.forTvShowDetails(from: realm, for: tvShowId))[0]
-            return Mappers.toTvShowDetail(from: showDetail)
+            var output = TvShowDetailModel()
+            let showDetail = Array(FetchModelObject.forTvShowDetails(from: realm, for: tvShowId))
+            if let section = showDetail[safe: 0] {
+                output = Mappers.toTvShowDetail(from: section)
+            }
+            return output
         }
     }
 

@@ -15,18 +15,12 @@ struct TvShowDetailView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack {
-//                ContentHeadImagesTitlePoster(backdropPath: tvShow.backdropPath,
-//                                             backdropFilemanagerName: tvShow.backdropFileManagerName,
-//                                             posterPath: tvShow.posterPath,
-//                                             posterFilemanagerName: tvShow.posterFileManagerName,
-//                                             tagline: tvShowViewModel.tvShowDetail.tagline,
-//                                             title: tvShow.name,
-//                                             originalTitle: tvShow.originalName)
-                Text(tvShowViewModel.tvShowDetail.originalName)
-                //Text(tvShowViewModel.tvShowDetail.)
-                Overview(overviewText: tvShowViewModel.tvShowDetail.overview)
-                //VideoView(videoViewModel: MovieVideoViewModel(movieId: tvShow.id, endpoint: Endpoint.videosTV(tvShowID: tvShow.id)))
-//                CastList(castsViewModel: CastViewModel(movieId: tvShow.id, castAndCrew: MovieCreditResponse(cast: [MovieCast](), crew: [MovieCrew]()), endpoint: Endpoint.creditsTV(tvShowID: tvShow.id)))
+                ContentHeadImagesTitlePoster(section: tvShowViewModel.tvShowDetailFromRealm)
+                GenresBlock(genres: tvShowViewModel.tvShowDetailFromRealm.genres)
+                InfoDetailContentView(section: tvShowViewModel.tvShowDetailFromRealm)
+                Overview(overviewText: tvShowViewModel.tvShowDetailFromRealm.overview)
+                VideoView(videoViewModel: MovieVideoViewModel(movieId: tvShow.id, endpoint: Endpoint.videosTV(tvShowID: tvShow.id)))
+                CastList(castsViewModel: CastViewModel(movieId: tvShow.id, trueForMoviesAndFalseForShow: false))
             }
         }
         .alert(item: self.$tvShowViewModel.tvShowDetailError) { error in
