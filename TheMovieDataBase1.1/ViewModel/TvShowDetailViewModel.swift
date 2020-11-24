@@ -9,14 +9,13 @@
 import Foundation
 import Combine
 import SwiftUI
-//, nextEpisodeToAir: nil
+
 class TvShowDetailViewModel: ObservableObject {
     @Published var tvShowId: Int
     @Published var tvShowDetailError: Errors?
     @Published var tvShowDetail = TvShowDetailModel() {
         didSet {
             if tvShowDetail.id != 0 {
-                print(tvShowDetail.name)
                 let tvShowDetailObject = Mappers.toTvShowDetailObject(from: tvShowDetail)
                 SaveModelObject.forTvShowDetails(from: tvShowDetailObject, to: realm)
             }

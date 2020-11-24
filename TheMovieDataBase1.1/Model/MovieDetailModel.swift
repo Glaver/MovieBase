@@ -35,13 +35,8 @@ struct MovieDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetailC
     let video: Bool
     let voteAverage: Float
     let voteCount: Int
-
-    var posterFilemanagerName: String {
-        return "\(id)poster"
-    }
-    var backdropFilemanagerName: String {
-        return "\(id)backDrop"
-    }
+    var posterFilemanagerName: String { "\(id)poster" }
+    var backdropFilemanagerName: String { "\(id)backDrop" }
 
     init() {
         self.adult = false

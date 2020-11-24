@@ -66,7 +66,7 @@ struct ContentHeadImagesTitlePoster: View {
                         .bold()
                         .lineLimit(3)
                         .frame(width: 230, alignment: .leading)
-                    Text(Mappers.originalTitle(section.originalTitle, vs: section.title))
+                    Text(MappersForView.originalTitle(section.originalTitle, vs: section.title))
                         .font(.system(size: 20))
                         .bold()
                         .lineLimit(2)
@@ -83,7 +83,7 @@ struct GenresBlock: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
         HStack {
-            ForEach(Mappers.convertsToArrayString(from: genres), id: \.self) { genre in
+            ForEach(MappersForView.convertsToArrayString(from: genres), id: \.self) { genre in
                 Text(genre.capitalizingFirstLetter())
                     .font(.system(size: 15))
                     .lineLimit(1)

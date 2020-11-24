@@ -39,11 +39,11 @@ struct TvShowDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetail
     let voteAverage: Float
     let voteCount: Int
     var title: String { name }
-    var originalTitle: String { originalName }
+    var originalTitle: String { name }
     var posterFilemanagerName: String { "\(id)poster" }
     var backdropFilemanagerName: String { "\(id)backDrop" }
-    var releaseDate: Date { return lastAirDate }
-    var runtime: Int? { return nil }
+    var releaseDate: Date { lastAirDate }
+    var runtime: Int? { nil }
 }
 
 struct CreatedBy: Codable {
