@@ -56,12 +56,12 @@ struct SearchBarView: View {
 
 struct SearchView: View {
     @ObservedObject var searchMovieModel = SearchMovieViewModel()
-    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres, realmService: GenresRealm())
+    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres, realmService: GenresRealm(), mappers: GenresMappers())
     var body: some View {
         NavigationView {
             VStack {
                 SearchBarView(searchText: $searchMovieModel.name)
-                ScrollViewMovies(arrayDataFromAPI: searchMovieModel.movies, genresDictionary: genresModel.dictionaryGenres)
+                ScrollViewMovies(arrayDataFromAPI: searchMovieModel.moviesDTO, genresDictionary: genresModel.dictionaryGenres)
             }
                 .navigationBarTitle(LocalizedStringKey("Search"))//, displayMode: .inline)
         }

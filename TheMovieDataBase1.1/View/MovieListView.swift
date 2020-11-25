@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct MovieListView: View {
-    @ObservedObject var viewModel = MovieViewModel(indexOfMoviesList: MoviesList.nowPlaying, filteringMoviesIndex: FilterMovies.releaseDate, realmService: MovieListRealm())
-    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres, realmService: GenresRealm())
+    @ObservedObject var viewModel = MovieViewModel(indexOfMoviesList: MoviesList.nowPlaying, filteringMoviesIndex: FilterContent.FilteredParameters.releaseDate, realmService: MovieListRealm(), mappers: MovieMappers(), filter: FilterContent())
+    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres, realmService: GenresRealm(), mappers: GenresMappers())
     @State var showFilters = false
     @State var isGrid = false
     var body: some View {
@@ -28,24 +28,25 @@ struct MovieListView: View {
                         if #available(iOS 14.0, *) {
                             GridView(arrayOfData: viewModel.moviesFromRealm)
                         } else {
-                            ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, genresDictionary: genresModel.dictionaryGenresRealm)
+                            ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, genresDictionary: genresModel.dictionaryGenresFromRealm)
                         }
                     } else {
-                        ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, genresDictionary: genresModel.dictionaryGenresRealm)
+                        ScrollViewMovies(arrayDataFromAPI: viewModel.moviesFromRealm, genresDictionary: genresModel.dictionaryGenresFromRealm)
                     }
                     if self.showFilters {
                         VStack(alignment: .center, spacing: 40) {
                             Picker("", selection: $viewModel.filteringMoviesIndex) {
-                                Text(LocalizedStringKey("Date")).tag(FilterMovies.releaseDate)
+                                Text(LocalizedStringKey("Date")).tag(FilterContent.FilteredParameters.releaseDate)
                                     .font(.system(size: 25))
                                     .foregroundColor(.blue)
-                                Text(LocalizedStringKey("Name")).tag(FilterMovies.title)
+                                Text(LocalizedStringKey("Name")).tag(FilterContent.FilteredParameters.title)
                                     .font(.system(size: 25))
                                     .foregroundColor(.blue)
-                                Text(LocalizedStringKey("Rating")).tag(FilterMovies.rating)
+                                Text(LocalizedStringKey("Rating")).tag(FilterContent.FilteredParameters.rating)
                                     .font(.system(size: 25))
                                     .foregroundColor(.blue)
-                                Text(LocalizedStringKey("Popularity")).tag(FilterMovies.popularity).font(.system(size: 25))
+                                Text(LocalizedStringKey("Popularity")).tag(FilterContent.FilteredParameters.popularity)
+                                    .font(.system(size: 25))
                                     .foregroundColor(.blue)
                                     }
                         }

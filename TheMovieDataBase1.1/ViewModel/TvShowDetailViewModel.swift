@@ -16,29 +16,30 @@ class TvShowDetailViewModel: ObservableObject {
     @Published var tvShowDetail = TvShowDetailModel() {
         didSet {
             if tvShowDetail.id != 0 {
-                let tvShowDetailObject = Mappers.toTvShowDetailObject(from: tvShowDetail)
-                realmService.forTvShowDetails(from: tvShowDetailObject, to: realm)
+                let tvShowDetailObject = mappers.toTvShowDetailObject(from: tvShowDetail)
+                realmService.save(from: tvShowDetailObject, to: realm)
             }
         }
     }
     let realmService: TvShowDetailsRealmProtocol
+    let mappers: TvShowDetailsMappersProtocol
     var tvShowDetailFromRealm: TvShowDetailModel {
         if realm.isEmpty {
             return tvShowDetail
         } else {
-            var output = TvShowDetailModel()
-            let showDetail = Array(realmService.forTvShowDetails(from: realm, for: tvShowId))
+            var tvShowDetailModel = TvShowDetailModel()
+            let showDetail = Array(realmService.load(from: realm, for: tvShowId))
             if let section = showDetail[safe: 0] {
-                output = Mappers.toTvShowDetail(from: section)
+                tvShowDetailModel = mappers.toTvShowDetail(from: section)
             }
-            return output
+            return tvShowDetailModel
         }
     }
 
-    init(tvShowId: Int, realmService: TvShowDetailsRealmProtocol) {
+    init(tvShowId: Int, realmService: TvShowDetailsRealmProtocol, mappers: TvShowDetailsMappersProtocol) {
         self.tvShowId = tvShowId
         self.realmService = realmService
-
+        self.mappers = mappers
         $tvShowId
             .setFailureType(to: Errors.self)
             .flatMap { (tvShowId) -> AnyPublisher<TvShowDetailModel, Errors> in

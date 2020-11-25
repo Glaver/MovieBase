@@ -9,6 +9,23 @@
 import Foundation
 import SwiftUI
 
+protocol DetailViewHeadImagesTitleProtocol {
+    var backdropPath: String? { get }
+    var backdropFilemanagerName: String { get }
+    var posterPath: String? { get }
+    var posterFilemanagerName: String { get }
+    var tagline: String? { get }
+    var title: String { get }
+    var originalTitle: String { get }
+}
+
+protocol InfoDetailContentViewProtocol {
+    var releaseDate: Date { get }
+    var voteAverage: Float { get }
+    var runtime: Int? { get }
+    var homepage: String? { get }
+}
+
 struct MovieDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetailContentViewProtocol {
     let adult: Bool
     let backdropPath: String?
@@ -37,7 +54,26 @@ struct MovieDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetailC
     let voteCount: Int
     var posterFilemanagerName: String { "\(id)poster" }
     var backdropFilemanagerName: String { "\(id)backDrop" }
+}
 
+struct ProductionCompaniesModel: Codable {
+    let name: String
+    let id: Int
+    let logoPath: String?
+    let originCountry: String
+}
+
+struct ProductionCountries: Codable {
+    let iso31661: String
+    let name: String
+}
+
+struct SpokenLanguages: Codable {
+    let iso6391: String
+    let name: String
+}
+
+extension MovieDetailModel {
     init() {
         self.adult = false
         self.backdropPath = nil
@@ -65,89 +101,4 @@ struct MovieDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetailC
         self.voteAverage = 0
         self.voteCount = 0
     }
-
-    init(adult: Bool,
-         backdropPath: String?,
-         budget: Int,
-         genres: [GenresDTO],
-         homepage: String?,
-         id: Int,
-         imdbId: String?,
-         originalLanguage: String,
-         originalTitle: String,
-         overview: String?,
-         popularity: Float,
-         posterPath: String?,
-         productionCompanies: [ProductionCompaniesModel],
-         productionCountries: [ProductionCountries],
-         releaseDate: Date,
-         revenue: Int,
-         runtime: Int?,
-         spokenLanguages: [SpokenLanguages],
-         status: String,
-         tagline: String?,
-         title: String,
-         video: Bool,
-         voteAverage: Float,
-         voteCount: Int) {
-        self.adult = adult
-        self.backdropPath = backdropPath
-        //let belongsToCollection: [String?]
-        self.budget = budget
-        self.genres = genres
-        self.homepage = homepage
-        self.id = id
-        self.imdbId = imdbId // minLength: 9 maxLength: 9 pattern: ^tt[0-9]{7}
-        self.originalLanguage = originalLanguage
-        self.originalTitle = originalTitle
-        self.overview = overview
-        self.popularity = popularity
-        self.posterPath = posterPath
-        self.productionCompanies = productionCompanies
-        self.productionCountries = productionCountries
-        self.releaseDate = releaseDate //format: date
-        self.revenue = revenue
-        self.runtime = runtime
-        self.spokenLanguages = spokenLanguages
-        self.status = status //Allowed Values: Rumored, Planned, In Production, Post Production, Released, Canceled
-        self.tagline = tagline
-        self.title = title
-        self.video = video
-        self.voteAverage = voteAverage
-        self.voteCount = voteCount
-    }
-}
-
-struct ProductionCompaniesModel: Codable {
-    let name: String
-    let id: Int
-    let logoPath: String?
-    let originCountry: String
-}
-
-struct ProductionCountries: Codable {
-    let iso31661: String
-    let name: String
-}
-
-struct SpokenLanguages: Codable {
-    let iso6391: String
-    let name: String
-}
-
-protocol DetailViewHeadImagesTitleProtocol {
-    var backdropPath: String? { get }
-    var backdropFilemanagerName: String { get }
-    var posterPath: String? { get }
-    var posterFilemanagerName: String { get }
-    var tagline: String? { get }
-    var title: String { get }
-    var originalTitle: String { get }
-}
-
-protocol InfoDetailContentViewProtocol {
-    var releaseDate: Date { get }
-    var voteAverage: Float { get }
-    var runtime: Int? { get }
-    var homepage: String? { get }
 }

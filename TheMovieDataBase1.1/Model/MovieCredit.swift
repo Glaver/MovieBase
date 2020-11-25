@@ -9,6 +9,7 @@
 import Foundation
 
 struct MovieCreditResponse: Codable {
+    let id: Int
     let cast: [MovieCast]
     let crew: [MovieCrew]
 }
@@ -18,6 +19,7 @@ struct MovieCast: Identifiable, Codable {
     let character: String
     let name: String
     let profilePath: String?
+    let creditId: String
 }
 
 struct MovieCrew: Identifiable, Codable {
@@ -25,11 +27,13 @@ struct MovieCrew: Identifiable, Codable {
     let department: String
     let job: String
     let name: String
+    let creditId: String
 }
 
 extension MovieCreditResponse {
     init() {
-        self.cast = [MovieCast(id: 0, character: "", name: "", profilePath: nil)]
-        self.crew = [MovieCrew(id: 0, department: "", job: "", name: "")]
+        self.id = 0
+        self.cast = [MovieCast(id: 0, character: "", name: "", profilePath: nil, creditId: "")]
+        self.crew = [MovieCrew(id: 0, department: "", job: "", name: "", creditId: "")]
     }
 }

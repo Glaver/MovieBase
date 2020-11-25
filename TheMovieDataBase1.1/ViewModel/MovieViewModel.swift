@@ -9,37 +9,48 @@ import Foundation
 import Combine
 import RealmSwift
 
+enum MoviesList {
+    case nowPlaying
+    case popular
+    case upcoming
+    case topRated
+}
+
 final class MovieViewModel: ObservableObject {
+    let realmService: MovieListRealmProtocol
+    let mappers: MovieMappersProtocol
+    let filter: FilterContentProtocol
     @Published var indexOfMoviesList: MoviesList = .nowPlaying
-    @Published var filteringMoviesIndex: FilterMovies = .releaseDate
+    @Published var filteringMoviesIndex: FilterContent.FilteredParameters = .releaseDate
     @Published var moviesError: Errors?
-    @Published var moviesDTO = [ResultDTO]() {
+    @Published var moviesDTO = [MovieModel]() {
         didSet {
             if !moviesDTO.isEmpty {
-                realmService.forMovies(from: Mappers.toMovieModelObjectList(from: moviesDTO), to: realm, with: indexOfMoviesList)
-//                SaveModelObject.forMovies(from: Mappers.toMovieModelObjectList(from: moviesDTO), to: realm, with: indexOfMoviesList)
+                realmService.save(from: mappers.toMovieModelObjectList(from: moviesDTO), to: realm, with: indexOfMoviesList)
             }
-            //debugPrint("Path to realm file and images: \(realm.configuration.fileURL!)")
+            debugPrint("Path to realm file and images: \(realm.configuration.fileURL!)")
         }
     }
-    let realmService: MovieListRealmProtocol
     var moviesFromRealm: [MovieModel] {
         if realm.isEmpty {
-            return Filtering.movies(movieModelArray, by: filteringMoviesIndex)
+            return filter.listOfContent(moviesDTO, by: filteringMoviesIndex) as! [MovieModel]
         } else {
-            return Filtering.movies(Mappers.toMovieModel(from: Array(realmService.forMovies(from: realm, with: indexOfMoviesList) ?? Mappers.toMovieModelObjectList(from: moviesDTO))), by: filteringMoviesIndex)
+            var movieModel = [MovieModel]()
+            if let movieModelObject = realmService.load(from: realm, with: indexOfMoviesList) {
+                movieModel = mappers.toMovieModel(from: Array(movieModelObject))
+            }
+            return filter.listOfContent(movieModel, by: filteringMoviesIndex) as! [MovieModel]
         }
     }
-
-    var movieModelArray: [MovieModel] { return Mappers.toMovieModel(from: moviesDTO) }
-
-    init(indexOfMoviesList: MoviesList, filteringMoviesIndex: FilterMovies, realmService: MovieListRealmProtocol) {
+    init(indexOfMoviesList: MoviesList, filteringMoviesIndex: FilterContent.FilteredParameters, realmService: MovieListRealmProtocol, mappers: MovieMappersProtocol, filter: FilterContentProtocol) {
         self.indexOfMoviesList = indexOfMoviesList
         self.filteringMoviesIndex = filteringMoviesIndex
         self.realmService = realmService
+        self.mappers = mappers
+        self.filter = filter
         $indexOfMoviesList
             .setFailureType(to: Errors.self)
-            .flatMap { (indexOfMoviesList) -> AnyPublisher<[ResultDTO], Errors> in
+            .flatMap { (indexOfMoviesList) -> AnyPublisher<[MovieModel], Errors> in
                 FetchData.shared.fetchMoviesError(from: Endpoint(index: indexOfMoviesList))
                     //.eraseToAnyPublisher()
             }
@@ -60,13 +71,6 @@ final class MovieViewModel: ObservableObject {
             cancell.cancel()
         }
     }
-}
-
-enum MoviesList {
-    case nowPlaying
-    case popular
-    case upcoming
-    case topRated
 }
 
 //protocol MovieListRealm {

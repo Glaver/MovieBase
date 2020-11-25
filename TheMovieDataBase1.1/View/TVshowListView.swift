@@ -10,8 +10,8 @@ import Foundation
 import SwiftUI
 
 struct TvShowListView: View {
-    @ObservedObject var tvShowViewModel = TvShowViewModel(indexOfTvShowList: TvShowList.airingToday, filteringMoviesIndex: FilterMovies.releaseDate, realmService: TvShowListRealm())
-    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.tvGenres, realmService: GenresRealm())
+    @ObservedObject var tvShowViewModel = TvShowViewModel(indexOfTvShowList: TvShowList.airingToday, filteringMoviesIndex: FilterContent.FilteredParameters.releaseDate, realmService: TvShowListRealm(), mappers: TvShowMappers(), filter: FilterContent())
+    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.tvGenres, realmService: GenresRealm(), mappers: GenresMappers())
     @State var showFilters = false
 
     var body: some View {
@@ -25,20 +25,20 @@ struct TvShowListView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     ZStack(alignment: .topTrailing, content: {
-                        ScrollViewMoviesShow(arrayDataFromAPI: tvShowViewModel.tvShowFromRealm, genresDictionary: genresModel.dictionaryGenresRealm)
+                        ScrollViewMoviesShow(arrayDataFromAPI: tvShowViewModel.tvShowFromRealm, genresDictionary: genresModel.dictionaryGenresFromRealm)
                         if self.showFilters {
                             VStack(alignment: .center, spacing: 40) {
                                 Picker("", selection: $tvShowViewModel.filteringMoviesIndex) {
-                                    Text(LocalizedStringKey("Date")).tag(FilterMovies.releaseDate)
+                                    Text(LocalizedStringKey("Date")).tag(FilterContent.FilteredParameters.releaseDate)
                                         .font(.system(size: 25))
                                         .foregroundColor(.blue)
-                                    Text(LocalizedStringKey("Name")).tag(FilterMovies.title)
+                                    Text(LocalizedStringKey("Name")).tag(FilterContent.FilteredParameters.title)
                                         .font(.system(size: 25))
                                         .foregroundColor(.blue)
-                                    Text(LocalizedStringKey("Rating")).tag(FilterMovies.rating)
+                                    Text(LocalizedStringKey("Rating")).tag(FilterContent.FilteredParameters.rating)
                                         .font(.system(size: 25))
                                         .foregroundColor(.blue)
-                                    Text(LocalizedStringKey("Popularity")).tag(FilterMovies.popularity).font(.system(size: 25))
+                                    Text(LocalizedStringKey("Popularity")).tag(FilterContent.FilteredParameters.popularity).font(.system(size: 25))
                                         .foregroundColor(.blue)
                                         }
                             }

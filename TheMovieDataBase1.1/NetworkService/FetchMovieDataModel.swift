@@ -27,14 +27,14 @@ final class FetchData {
             .eraseToAnyPublisher()
     }
 // MARK: Fetch MoviesModel
-    func fetchMovies(from endpoint: Endpoint) -> AnyPublisher<[ResultDTO], Never> {
+    func fetchMovies(from endpoint: Endpoint) -> AnyPublisher<[MovieModel], Never> {
         guard let url = endpoint.finalURL else {
-                    return Just([ResultDTO]()).eraseToAnyPublisher()
+                    return Just([MovieModel]()).eraseToAnyPublisher()
                 }
         return fetch(url)
-            .map { (response: MovieDataDTO) -> [ResultDTO] in
+            .map { (response: MovieDataDTO) -> [MovieModel] in
                 response.results }
-            .replaceError(with: [ResultDTO]())
+            .replaceError(with: [MovieModel]())
 
             .eraseToAnyPublisher()
     }
@@ -151,8 +151,8 @@ final class FetchData {
     }
 
 // MARK: Fetch MoviesModel with Errors
-    func fetchMoviesError(from endpoint: Endpoint) -> AnyPublisher<[ResultDTO], Errors> {
-        Future<[ResultDTO], Errors> { [unowned self] promise in
+    func fetchMoviesError(from endpoint: Endpoint) -> AnyPublisher<[MovieModel], Errors> {
+        Future<[MovieModel], Errors> { [unowned self] promise in
             guard let url = endpoint.finalURL else {
                 return promise(.failure(.urlError(URLError(.unsupportedURL))))
             }

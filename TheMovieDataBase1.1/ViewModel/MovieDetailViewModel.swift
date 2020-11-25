@@ -11,27 +11,33 @@ import Combine
 import SwiftUI
 
 class MovieDetailViewModel: ObservableObject {
+    let realmService: MovieDetailsRealm
+    let mappers: MovieDetailsMappersProtocol
     @Published var movieId: Int
     @Published var movieDetailError: Errors?
     @Published var movieDetail = MovieDetailModel() {
             didSet {
                 if movieDetail.id != 0 {
-                    realmService.forMovieDetails(from: Mappers.toMovieDetailObject(from: movieDetail), to: realm)
+                    realmService.save(from: mappers.toMovieDetailObject(from: movieDetail), to: realm)
                 }
             }
         }
-    let realmService: MoviesDetailsRealm
     var movieDetailsFromRealm: MovieDetailModel {
         if realm.isEmpty {
             return movieDetail
         } else {
-            return Mappers.toMovieDetailModel(from: Array(realmService.forMovieDetails(from: realm, for: movieId))[0])
+            var movieDetails = MovieDetailModel()
+            let movieDetailsArray = Array(realmService.load(from: realm, for: movieId))
+            if let details = movieDetailsArray[safe: 0] {
+                movieDetails = mappers.toMovieDetailModel(from: details)
+            }
+            return movieDetails
         }
     }
-
-    init(movieId: Int, realmService: MoviesDetailsRealm) {
+    init(movieId: Int, realmService: MovieDetailsRealm, mappers: MovieDetailsMappersProtocol) {
         self.movieId = movieId
         self.realmService = realmService
+        self.mappers = mappers
         $movieId
 
             .setFailureType(to: Errors.self)

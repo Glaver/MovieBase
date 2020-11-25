@@ -8,17 +8,28 @@
 
 import Foundation
 
-struct MovieModel: MovieShowViewProtocol, Hashable {
+public struct MovieDataDTO: Codable {
+    let page: Int
+    let totalResults: Int
+    let totalPages: Int
+    let results: [MovieModel]
+}
+
+struct MovieModel: Hashable, Codable, MovieShowViewProtocol, FilterTvShowAndMovies {
     let popularity: Float
     let id: Int
     let title: String
-    let backdropPosterPath: String?
+    let backdropPath: String?
     let posterPath: String?
-    let genres: [Int]
     let overview: String
     let releaseDate: Date
     let voteAverage: Float
-
+    let voteCount: Int
+    let video: Bool
+    let adult: Bool
+    let originalLanguage: String
+    let originalTitle: String
+    let genreIds: [Int]
     var posterFileManagerName: String {
         return "\(id)poster"
     }
@@ -31,9 +42,9 @@ protocol MovieShowViewProtocol {
     var popularity: Float { get }
     var id: Int { get }
     var title: String { get }
-    var backdropPosterPath: String? { get }
+    var backdropPath: String? { get }
     var posterPath: String? { get }
-    var genres: [Int] { get }
+    var genreIds: [Int] { get }
     var overview: String { get }
     var releaseDate: Date { get }
     var voteAverage: Float { get }

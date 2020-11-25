@@ -20,7 +20,7 @@ struct TvShowDetailView: View {
                 InfoDetailContentView(section: tvShowViewModel.tvShowDetailFromRealm)
                 Overview(overviewText: tvShowViewModel.tvShowDetailFromRealm.overview)
                 VideoView(videoViewModel: MovieVideoViewModel(movieId: tvShow.id, endpoint: Endpoint.videosTV(tvShowID: tvShow.id)))
-                CastList(castsViewModel: CastViewModel(movieId: tvShow.id, trueForMoviesAndFalseForShow: false, realmService: CreditsRealm()))
+                CastList(castsViewModel: CastViewModel(movieId: tvShow.id, chooseEndpoint: CastViewModel.EndpointTvOrMovie.tvShow, realmService: CreditsRealm(), mappers: CreditsMappers()))
             }
         }
         .alert(item: self.$tvShowViewModel.tvShowDetailError) { error in
@@ -31,7 +31,7 @@ struct TvShowDetailView: View {
     }
     init(tvShow: ResultTvModel) {
         self.tvShow = tvShow
-        self.tvShowViewModel = TvShowDetailViewModel(tvShowId: tvShow.id, realmService: TvShowDetailsRealm())
+        self.tvShowViewModel = TvShowDetailViewModel(tvShowId: tvShow.id, realmService: TvShowDetailsRealm(), mappers: TvShowDetailsMappers())
     }
 }
 

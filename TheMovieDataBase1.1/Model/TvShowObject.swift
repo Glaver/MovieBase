@@ -1,60 +1,13 @@
 //
-//  TvShowDataModel.swift
+//  TvShowObject.swift
 //  TheMovieDataBase1.1
 //
-//  Created by Vladyslav on 5/10/20.
+//  Created by Vladyslav on 25/11/20.
 //  Copyright © 2020 Vladyslav Gubanov. All rights reserved.
 //
-import RealmSwift
+
 import Foundation
-
-struct TvShowsModel: Codable {
-    let page: Int
-    let results: [ResultTvModel]
-    let totalResults: Int
-    let totalPages: Int
-}
-
-struct ResultTvModel: Codable, MovieShowViewProtocol {
-    let posterPath: String?
-    let popularity: Float
-    let id: Int
-    let backdropPath: String?
-    let voteAverage: Float
-    let overview: String
-    let firstAirDate: Date
-    let originCountry: [String]
-    let genreIds: [Int]
-    let originalLanguage: String
-    let voteCount: Int
-    let name: String
-    let originalName: String
-
-    var posterFileManagerName: String {
-        return "\(id)poster"
-    }
-    var backdropFileManagerName: String {
-        return "\(id)backDrop"
-    }
-
-    var title: String { return name }
-    var backdropPosterPath: String? { return backdropPath }
-    var releaseDate: Date { return firstAirDate }
-    var genres: [Int] { return genreIds }
-}
-
-class TvShowBase: Object {
-    @objc dynamic var id: Int = 0
-
-    let airingToday = List<TvShowObject>()
-    let onTheAir    = List<TvShowObject>()
-    let popularTV   = List<TvShowObject>()
-    let topRatedTV  = List<TvShowObject>()
-
-    override static func primaryKey() -> String? {
-            return "id"
-        }
-}
+import RealmSwift
 
 class TvShowObject: Object {
     @objc dynamic var posterPath: String?

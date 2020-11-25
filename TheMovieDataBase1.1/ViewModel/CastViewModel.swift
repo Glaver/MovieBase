@@ -10,47 +10,48 @@ import Foundation
 import Combine
 
 final class CastViewModel: ObservableObject {
-    var trueForMoviesAndFalseForShow = true
+    enum EndpointTvOrMovie { case tvShow, movie }
+    let realmService: CreditsRealmProtocol
+    let mappers: CreditsMappersProtocol
+    var chooseEndpoint: EndpointTvOrMovie = .movie
     @Published var movieId: Int = 0
     @Published var castCrewError: Errors?
-    @Published var castAndCrew: MovieCreditResponse? {
+    @Published var castAndCrew = MovieCreditResponse() {
         didSet {
-            if let casts = castAndCrew {
-                realmService.forCredits(from: Mappers.toMovieCreditLists(from: casts, for: movieId), to: realm, with: movieId)
+            if castAndCrew.id != 0 {
+                let castObject = mappers.toMovieCreditLists(from: castAndCrew, for: castAndCrew.id)
+                realmService.save(from: castObject, to: realm, with: castAndCrew.id)
             }
         }
     }
-    let realmService: CreditsRealmProtocol
     var castAndCrewFromRealm: MovieCreditResponse {
         if realm.isEmpty {
-            let castOutput: MovieCreditResponse
-            if let casts = castAndCrew {
-                castOutput = casts
-            } else {
-                castOutput = MovieCreditResponse()
-                debugPrint("can't recive MovieCreditResponse from network and realm")
+            return castAndCrew
+        } else {
+            var movieCreditResponse = MovieCreditResponse()
+            let movieCreditObject = Array(realmService.load(from: realm, for: movieId))
+            if let section = movieCreditObject[safe: 0] {
+                movieCreditResponse = mappers.toMovieCreditResponse(from: section)
             }
-            return castOutput
-        } else {
-            return Mappers.toMovieCreditResponse(from: (Array(realmService.forCredits(from: realm, for: movieId)))[0])
+            return movieCreditResponse
         }
     }
-    private func chooseEndpoint(trueForMovieFalseForShow: Bool, id: Int) -> Endpoint {
-        if trueForMovieFalseForShow {
-            return Endpoint.credits(movieID: id)
-        } else {
-            return Endpoint.creditsTV(tvShowID: id)
+    private func chooseEndpoint(endpoint: EndpointTvOrMovie, id: Int) -> Endpoint {
+        switch endpoint {
+        case .movie: return Endpoint.credits(movieID: id)
+        case .tvShow: return Endpoint.creditsTV(tvShowID: id)
         }
     }
-    init(movieId: Int, trueForMoviesAndFalseForShow: Bool, realmService: CreditsRealmProtocol) {
+    init(movieId: Int, chooseEndpoint: EndpointTvOrMovie, realmService: CreditsRealmProtocol, mappers: CreditsMappersProtocol) {
         self.movieId = movieId
-        self.castAndCrew = MovieCreditResponse(cast: [MovieCast](), crew: [MovieCrew]())
-        self.trueForMoviesAndFalseForShow = trueForMoviesAndFalseForShow
+        self.castAndCrew = MovieCreditResponse(id: 0, cast: [MovieCast](), crew: [MovieCrew]())
+        self.chooseEndpoint = chooseEndpoint
         self.realmService = realmService
+        self.mappers = mappers
         $movieId
             .setFailureType(to: Errors.self)
             .flatMap { (movieId) -> AnyPublisher<MovieCreditResponse, Errors> in
-                FetchData.shared.fetchInstance(for: MovieCreditResponse(), endpoint: self.chooseEndpoint(trueForMovieFalseForShow: trueForMoviesAndFalseForShow, id: movieId))
+                FetchData.shared.fetchInstance(for: MovieCreditResponse(), endpoint: self.chooseEndpoint(endpoint: chooseEndpoint, id: movieId))
                 //FetchData.shared.fetchCastAndCrew(endpoint: Endpoint.credits(movieID: movieId))
                     .eraseToAnyPublisher()
             }
@@ -72,9 +73,3 @@ final class CastViewModel: ObservableObject {
         }
     }
 }
-/*            .flatMap { (movieId) -> AnyPublisher<[MovieCast], Never> in
- FetchData.shared.fetchCredits(for: Endpoint.credits(movieID: movieId).finalURL)
-}
-.assign(to: \.casts, on: self)
-.store(in: &self.cancellableSet)
-}*/

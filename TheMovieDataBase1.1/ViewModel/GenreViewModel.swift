@@ -11,23 +11,27 @@ import Combine
 import RealmSwift
 
 final class GenreViewModel: ObservableObject {
+    let realmService: GenresRealmProtocol
+    let mappers: GenresMappersProtocol
     @Published var genresEndpoint = Endpoint.tvGenres
     @Published var errorGenres: Errors?
     @Published var genres = [GenresDTO]() {
         didSet {
             if !genres.isEmpty {
-                realmService.forGenres(from: genres, to: realm)
+                realmService.save(from: genres, to: realm)
             }
         }
     }
-    let realmService: GenresRealmProtocol
-    var dictionaryGenresRealm: GenresDictionary { return realmService.forGenres(from: realm) }
+    var dictionaryGenresFromRealm: GenresDictionary {
+        let dictionaryOfGenres = mappers.toGenresDictionary(from: realmService.load(from: realm))
+        return dictionaryOfGenres }
 
-    var dictionaryGenres: GenresDictionary { return Mappers.toGenresDictionary(from: genres) }
+    var dictionaryGenres: GenresDictionary { return mappers.toGenresDictionary(from: genres) }
 
-    init(genresEndpoint: Endpoint, realmService: GenresRealmProtocol) {
+    init(genresEndpoint: Endpoint, realmService: GenresRealmProtocol, mappers: GenresMappersProtocol) {
         self.genresEndpoint = genresEndpoint
         self.realmService = realmService
+        self.mappers = mappers
         $genresEndpoint
 
             .setFailureType(to: Errors.self)

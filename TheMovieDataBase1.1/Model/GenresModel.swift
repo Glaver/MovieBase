@@ -8,6 +8,15 @@
 
 import Foundation
 
+protocol GenresProtocol {
+    var id: Int { get }
+    var name: String { get }
+}
+
+protocol GenresDictionaryProtocol {
+    var genres: [Int: String] { get }
+}
+
 public struct GenreDTO: Codable {
     let genres: [GenresDTO]
 }
@@ -17,7 +26,6 @@ struct GenresDTO: Codable, GenresProtocol {
     let name: String
 }
 
-protocol GenresProtocol {
-    var id: Int { get }
-    var name: String { get }
+struct GenresDictionary: GenresDictionaryProtocol {
+    let genres: [Int: String]
 }
