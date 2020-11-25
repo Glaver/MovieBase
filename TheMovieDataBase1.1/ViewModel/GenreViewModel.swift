@@ -16,18 +16,18 @@ final class GenreViewModel: ObservableObject {
     @Published var genres = [GenresDTO]() {
         didSet {
             if !genres.isEmpty {
-                SaveModelObject.forGenres(from: genres, to: realm)
+                realmService.forGenres(from: genres, to: realm)
             }
         }
     }
-
-    var dictionaryGenresRealm: GenresDictionary { return FetchModelObject.forGenres(from: realm) }
+    let realmService: GenresRealmProtocol
+    var dictionaryGenresRealm: GenresDictionary { return realmService.forGenres(from: realm) }
 
     var dictionaryGenres: GenresDictionary { return Mappers.toGenresDictionary(from: genres) }
 
-    init(genresEndpoint: Endpoint) {
+    init(genresEndpoint: Endpoint, realmService: GenresRealmProtocol) {
         self.genresEndpoint = genresEndpoint
-
+        self.realmService = realmService
         $genresEndpoint
 
             .setFailureType(to: Errors.self)

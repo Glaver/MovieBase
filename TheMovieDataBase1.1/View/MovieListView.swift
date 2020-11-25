@@ -9,11 +9,10 @@
 import SwiftUI
 
 struct MovieListView: View {
-    @ObservedObject var viewModel = MovieViewModel(indexOfMoviesList: MoviesList.nowPlaying, filteringMoviesIndex: FilterMovies.releaseDate)
-    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres)
+    @ObservedObject var viewModel = MovieViewModel(indexOfMoviesList: MoviesList.nowPlaying, filteringMoviesIndex: FilterMovies.releaseDate, realmService: MovieListRealm())
+    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres, realmService: GenresRealm())
     @State var showFilters = false
     @State var isGrid = false
-
     var body: some View {
         NavigationView {
             VStack {

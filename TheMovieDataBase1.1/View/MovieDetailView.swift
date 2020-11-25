@@ -21,7 +21,7 @@ struct MovieDetailView: View {
                 Overview(overviewText: viewModel.movieDetailsFromRealm.overview ?? movie.overview)
                 VideoView(videoViewModel: MovieVideoViewModel(movieId: movie.id, endpoint: Endpoint.videos(movieID: movie.id)))
                 BoxOfficeView(budget: viewModel.movieDetailsFromRealm.budget, revenue: viewModel.movieDetailsFromRealm.revenue)
-                CastList(castsViewModel: CastViewModel(movieId: movie.id, trueForMoviesAndFalseForShow: true))
+                CastList(castsViewModel: CastViewModel(movieId: movie.id, trueForMoviesAndFalseForShow: true, realmService: CreditsRealm()))
             }
         }.alert(item: self.$viewModel.movieDetailError) { error in
             Alert(title: Text("Network error"),
@@ -31,7 +31,7 @@ struct MovieDetailView: View {
     }
     init(movie: MovieModel) {
         self.movie = movie
-        self.viewModel = MovieDetailViewModel(movieId: movie.id)
+        self.viewModel = MovieDetailViewModel(movieId: movie.id, realmService: MoviesDetailsRealm())
     }
 }
 

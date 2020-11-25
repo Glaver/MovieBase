@@ -10,9 +10,9 @@ import RealmSwift
 
 let realm = try! Realm()
 
-struct SaveModelObject {
-// MARK: Save Movie Model to Realm
-    static func forMovies(from listMovieModel: List<MovieModelObject>, to realm: Realm, with indexOfMoviesList: MoviesList) {
+class MovieListRealm: MovieListRealmProtocol {
+    // MARK: Save Movie Model to Realm
+    func forMovies(from listMovieModel: List<MovieModelObject>, to realm: Realm, with indexOfMoviesList: MoviesList) {
         try! realm.write {
             switch indexOfMoviesList {
             case .nowPlaying: realm.create(MoviesDataBase.self, value: ["id": 0, "nowPlying": listMovieModel], update: .modified)
@@ -22,8 +22,27 @@ struct SaveModelObject {
             }
         }
     }
-// MARK: Save TV show Model to Realm
-    static func forTvShow(from listTvShowModel: List<TvShowObject>, to realm: Realm, with indexOfTvShowList: TvShowList) {
+    // MARK: Load Movie Model from Realm
+    func forMovies(from realm: Realm, with indexOfMoviesList: MoviesList) -> List<MovieModelObject>? {
+        let movies = realm.object(ofType: MoviesDataBase.self, forPrimaryKey: 0)
+        var arrayOfMovies: List<MovieModelObject>?
+        switch indexOfMoviesList {
+        case .nowPlaying: arrayOfMovies = movies?.nowPlying
+        case .popular: arrayOfMovies = movies?.popular
+        case .upcoming: arrayOfMovies = movies?.upcoming
+        case .topRated: arrayOfMovies = movies?.topRated
+        }
+        return arrayOfMovies
+    }
+}
+protocol MovieListRealmProtocol {
+    func forMovies(from listMovieModel: List<MovieModelObject>, to realm: Realm, with indexOfMoviesList: MoviesList)
+    func forMovies(from realm: Realm, with indexOfMoviesList: MoviesList) -> List<MovieModelObject>?
+}
+    
+class TvShowListRealm: TvShowListRealmProtocol {
+    // MARK: Save TV show Model to Realm
+    func forTvShow(from listTvShowModel: List<TvShowObject>, to realm: Realm, with indexOfTvShowList: TvShowList) {
         try! realm.write {
             switch indexOfTvShowList {
             case .airingToday: realm.create(TvShowBase.self, value: ["id": 0, "airingToday": listTvShowModel], update: .modified)
@@ -33,67 +52,10 @@ struct SaveModelObject {
             }
         }
     }
-// MARK: Save Movie Details to Realm
-    static func forMovieDetails(from movieDetailObject: MovieDetailObject, to realm: Realm) {
-        try! realm.write {
-            realm.add(movieDetailObject, update: .modified)
-        }
-    }
-// MARK: Save Movie Details to Realm
-    static func forTvShowDetails(from tvShowDetail: TvShowDetailObject, to realm: Realm) {
-        try! realm.write {
-            realm.add(tvShowDetail, update: .modified)
-        }
-    }
-// MARK: Save Movie Cast to Realm
-    static func forCast(from movieCast: [MovieCastObject], to realm: Realm) {
-        movieCast.forEach {cast in
-            try! realm.write {
-                realm.add(cast, update: .modified)
-            }
-        }
-    }
-
-// MARK: Save Movie Credits to Realm
-    static func forCredits(from listCredits: (List<MovieCastObject>, List<MovieCrewObject>), to realm: Realm, with movieID: Int) {
-        try! realm.write {
-            realm.create(MovieCreditObject.self, value: ["id": movieID, "cast": listCredits.0, "crew": listCredits.1], update: .modified)
-        }
-    }
-// MARK: Save Movie Genres to Realm
-    static func forGenres(from genresDTO: [GenresDTO], to realm: Realm) {
-        genresDTO.forEach { genre in
-            let genres = GenresObject()
-
-            genres.id = genre.id
-            genres.name = genre.name
-
-            try! realm.write {
-                realm.add(genres, update: .modified)
-            }
-        }
-    }
-}
-
-struct FetchModelObject {
-// MARK: Load Movie Model from Realm
-    static func forMovies(from realm: Realm, with indexOfMoviesList: MoviesList) -> List<MovieModelObject>? {
-        let movies = realm.object(ofType: MoviesDataBase.self, forPrimaryKey: 0)
-        var arrayOfMovies: List<MovieModelObject>?
-
-        switch indexOfMoviesList {
-        case .nowPlaying: arrayOfMovies = movies?.nowPlying
-        case .popular: arrayOfMovies = movies?.popular
-        case .upcoming: arrayOfMovies = movies?.upcoming
-        case .topRated: arrayOfMovies = movies?.topRated
-        }
-        return arrayOfMovies
-    }
-// MARK: Load TV show Model from Realm
-    static func forTvShow(from realm: Realm, with indexOfTvShowList: TvShowList) -> List<TvShowObject>? {
+    // MARK: Load TV show Model from Realm
+    func forTvShow(from realm: Realm, with indexOfTvShowList: TvShowList) -> List<TvShowObject>? {
         let movies = realm.object(ofType: TvShowBase.self, forPrimaryKey: 0)
         var arrayOfOfTvShow: List<TvShowObject>?
-
         switch indexOfTvShowList {
         case .airingToday: arrayOfOfTvShow = movies?.airingToday
         case .onTheAir: arrayOfOfTvShow = movies?.onTheAir
@@ -102,29 +64,99 @@ struct FetchModelObject {
         }
         return arrayOfOfTvShow
     }
-// MARK: Load Movie Details from Realm
-    static func forMovieDetails(from realm: Realm, for movieId: Int) -> Results<MovieDetailObject> {
+}
+protocol TvShowListRealmProtocol {
+    func forTvShow(from listTvShowModel: List<TvShowObject>, to realm: Realm, with indexOfTvShowList: TvShowList)
+    func forTvShow(from realm: Realm, with indexOfTvShowList: TvShowList) -> List<TvShowObject>?
+}
+class MoviesDetailsRealm: MoviesDetailsRealmProtocol {
+    // MARK: Save Movie Details to Realm
+    func forMovieDetails(from movieDetailObject: MovieDetailObject, to realm: Realm) {
+        try! realm.write {
+            realm.add(movieDetailObject, update: .modified)
+        }
+    }
+    // MARK: Load Movie Details from Realm
+    func forMovieDetails(from realm: Realm, for movieId: Int) -> Results<MovieDetailObject> {
         let movieDetail: Results<MovieDetailObject> = realm.objects(MovieDetailObject.self).filter("id == \(movieId)")
         return movieDetail
     }
-// MARK: Load Movie Details from Realm
-    static func forTvShowDetails(from realm: Realm, for tvShowId: Int) -> Results<TvShowDetailObject> {
+}
+protocol MoviesDetailsRealmProtocol {
+    func forMovieDetails(from movieDetailObject: MovieDetailObject, to realm: Realm)
+    func forMovieDetails(from realm: Realm, for movieId: Int) -> Results<MovieDetailObject>
+}
+
+class TvShowDetailsRealm: TvShowDetailsRealmProtocol {
+    // MARK: Save Movie Details to Realm
+    func forTvShowDetails(from tvShowDetail: TvShowDetailObject, to realm: Realm) {
+        try! realm.write {
+            realm.add(tvShowDetail, update: .modified)
+        }
+    }
+    // MARK: Load Movie Details from Realm
+    func forTvShowDetails(from realm: Realm, for tvShowId: Int) -> Results<TvShowDetailObject> {
         let tvShowDetail: Results<TvShowDetailObject> = realm.objects(TvShowDetailObject.self).filter("id == \(tvShowId)")
         return tvShowDetail
     }
-// MARK: Load Movie Cast from Realm
-    static func forCast(from realm: Realm, for movieId: Int) -> Results<MovieCastObject> {
+}
+protocol TvShowDetailsRealmProtocol {
+    func forTvShowDetails(from tvShowDetail: TvShowDetailObject, to realm: Realm)
+    func forTvShowDetails(from realm: Realm, for tvShowId: Int) -> Results<TvShowDetailObject>
+}
+class CreditsRealm: CreditsRealmProtocol {
+    // MARK: Save Movie Cast to Realm
+    func forCast(from movieCast: [MovieCastObject], to realm: Realm) {
+        movieCast.forEach {cast in
+            try! realm.write {
+                realm.add(cast, update: .modified)
+            }
+        }
+    }
+    // MARK: Save Movie Credits to Realm
+    func forCredits(from listCredits: (List<MovieCastObject>, List<MovieCrewObject>), to realm: Realm, with movieID: Int) {
+        try! realm.write {
+            realm.create(MovieCreditObject.self, value: ["id": movieID, "cast": listCredits.0, "crew": listCredits.1], update: .modified)
+        }
+    }
+    // MARK: Load Movie Cast from Realm
+    func forCast(from realm: Realm, for movieId: Int) -> Results<MovieCastObject> {
         let cast: Results<MovieCastObject> = realm.objects(MovieCastObject.self).filter("movieId == \(movieId)")
         return cast
     }
-// MARK: Load MovieCreditResponse from Realm
-    static func forCredits(from realm: Realm, for movieId: Int) -> Results<MovieCreditObject> {
+    // MARK: Load MovieCreditResponse from Realm
+    func forCredits(from realm: Realm, for movieId: Int) -> Results<MovieCreditObject> {
         let credits: Results<MovieCreditObject> = realm.objects(MovieCreditObject.self).filter("id == \(movieId)")
         return credits
     }
-// MARK: Load Movie Genres from Realm
-    static func forGenres(from realm: Realm) -> GenresDictionary {
+}
+protocol CreditsRealmProtocol {
+    func forCast(from movieCast: [MovieCastObject], to realm: Realm)
+    func forCredits(from listCredits: (List<MovieCastObject>, List<MovieCrewObject>), to realm: Realm, with movieID: Int)
+    func forCast(from realm: Realm, for movieId: Int) -> Results<MovieCastObject>
+    func forCredits(from realm: Realm, for movieId: Int) -> Results<MovieCreditObject>
+}
+class GenresRealm: GenresRealmProtocol {
+    // MARK: Save Movie Genres to Realm
+    func forGenres(from genresDTO: [GenresDTO], to realm: Realm) {
+        genresDTO.forEach { genre in
+            let genres = GenresObject()
+            genres.id = genre.id
+            genres.name = genre.name
+            try! realm.write {
+                realm.add(genres, update: .modified)
+            }
+        }
+    }
+    // MARK: Load Movie Genres from Realm
+    func forGenres(from realm: Realm) -> GenresDictionary {
         let genres: Results<GenresObject> = realm.objects(GenresObject.self)
         return Mappers.toGenresDictionary(from: genres)
     }
 }
+protocol GenresRealmProtocol {
+    func forGenres(from genresDTO: [GenresDTO], to realm: Realm)
+    func forGenres(from realm: Realm) -> GenresDictionary
+}
+
+

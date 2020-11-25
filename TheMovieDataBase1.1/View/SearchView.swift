@@ -56,7 +56,7 @@ struct SearchBarView: View {
 
 struct SearchView: View {
     @ObservedObject var searchMovieModel = SearchMovieViewModel()
-    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres)
+    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres, realmService: GenresRealm())
     var body: some View {
         NavigationView {
             VStack {

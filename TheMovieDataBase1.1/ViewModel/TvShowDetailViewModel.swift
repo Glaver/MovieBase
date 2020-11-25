@@ -17,16 +17,17 @@ class TvShowDetailViewModel: ObservableObject {
         didSet {
             if tvShowDetail.id != 0 {
                 let tvShowDetailObject = Mappers.toTvShowDetailObject(from: tvShowDetail)
-                SaveModelObject.forTvShowDetails(from: tvShowDetailObject, to: realm)
+                realmService.forTvShowDetails(from: tvShowDetailObject, to: realm)
             }
         }
     }
+    let realmService: TvShowDetailsRealmProtocol
     var tvShowDetailFromRealm: TvShowDetailModel {
         if realm.isEmpty {
             return tvShowDetail
         } else {
             var output = TvShowDetailModel()
-            let showDetail = Array(FetchModelObject.forTvShowDetails(from: realm, for: tvShowId))
+            let showDetail = Array(realmService.forTvShowDetails(from: realm, for: tvShowId))
             if let section = showDetail[safe: 0] {
                 output = Mappers.toTvShowDetail(from: section)
             }
@@ -34,8 +35,9 @@ class TvShowDetailViewModel: ObservableObject {
         }
     }
 
-    init(tvShowId: Int) {
+    init(tvShowId: Int, realmService: TvShowDetailsRealmProtocol) {
         self.tvShowId = tvShowId
+        self.realmService = realmService
 
         $tvShowId
             .setFailureType(to: Errors.self)

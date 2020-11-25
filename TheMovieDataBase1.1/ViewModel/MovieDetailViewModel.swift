@@ -16,21 +16,22 @@ class MovieDetailViewModel: ObservableObject {
     @Published var movieDetail = MovieDetailModel() {
             didSet {
                 if movieDetail.id != 0 {
-                    SaveModelObject.forMovieDetails(from: Mappers.toMovieDetailObject(from: movieDetail), to: realm)
+                    realmService.forMovieDetails(from: Mappers.toMovieDetailObject(from: movieDetail), to: realm)
                 }
             }
         }
-
+    let realmService: MoviesDetailsRealm
     var movieDetailsFromRealm: MovieDetailModel {
         if realm.isEmpty {
             return movieDetail
         } else {
-            return Mappers.toMovieDetailModel(from: Array(FetchModelObject.forMovieDetails(from: realm, for: movieId))[0])
+            return Mappers.toMovieDetailModel(from: Array(realmService.forMovieDetails(from: realm, for: movieId))[0])
         }
     }
 
-    init(movieId: Int) {
+    init(movieId: Int, realmService: MoviesDetailsRealm) {
         self.movieId = movieId
+        self.realmService = realmService
         $movieId
 
             .setFailureType(to: Errors.self)

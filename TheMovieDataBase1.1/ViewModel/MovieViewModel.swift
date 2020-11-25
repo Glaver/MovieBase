@@ -16,26 +16,27 @@ final class MovieViewModel: ObservableObject {
     @Published var moviesDTO = [ResultDTO]() {
         didSet {
             if !moviesDTO.isEmpty {
-                SaveModelObject.forMovies(from: Mappers.toMovieModelObjectList(from: moviesDTO), to: realm, with: indexOfMoviesList)
+                realmService.forMovies(from: Mappers.toMovieModelObjectList(from: moviesDTO), to: realm, with: indexOfMoviesList)
+//                SaveModelObject.forMovies(from: Mappers.toMovieModelObjectList(from: moviesDTO), to: realm, with: indexOfMoviesList)
             }
-            debugPrint("Path to realm file and images: \(realm.configuration.fileURL!)")
+            //debugPrint("Path to realm file and images: \(realm.configuration.fileURL!)")
         }
     }
-
+    let realmService: MovieListRealmProtocol
     var moviesFromRealm: [MovieModel] {
         if realm.isEmpty {
             return Filtering.movies(movieModelArray, by: filteringMoviesIndex)
         } else {
-            return Filtering.movies(Mappers.toMovieModel(from: Array(FetchModelObject.forMovies(from: realm, with: indexOfMoviesList) ?? Mappers.toMovieModelObjectList(from: moviesDTO))), by: filteringMoviesIndex)
+            return Filtering.movies(Mappers.toMovieModel(from: Array(realmService.forMovies(from: realm, with: indexOfMoviesList) ?? Mappers.toMovieModelObjectList(from: moviesDTO))), by: filteringMoviesIndex)
         }
     }
 
     var movieModelArray: [MovieModel] { return Mappers.toMovieModel(from: moviesDTO) }
 
-    init(indexOfMoviesList: MoviesList, filteringMoviesIndex: FilterMovies) {
+    init(indexOfMoviesList: MoviesList, filteringMoviesIndex: FilterMovies, realmService: MovieListRealmProtocol) {
         self.indexOfMoviesList = indexOfMoviesList
         self.filteringMoviesIndex = filteringMoviesIndex
-
+        self.realmService = realmService
         $indexOfMoviesList
             .setFailureType(to: Errors.self)
             .flatMap { (indexOfMoviesList) -> AnyPublisher<[ResultDTO], Errors> in
@@ -67,3 +68,8 @@ enum MoviesList {
     case upcoming
     case topRated
 }
+
+//protocol MovieListRealm {
+//    func fetchDataFromRealm(index: MoviesList) -> MovieShowViewProtocol
+//    func saveDataToRealm(model: MovieShowViewProtocol, index: MoviesList)
+//}

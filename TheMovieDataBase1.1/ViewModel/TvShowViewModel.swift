@@ -16,23 +16,24 @@ final class TvShowViewModel: ObservableObject {
     @Published var tvShow = [ResultTvModel]() {
         didSet {
             if !tvShow.isEmpty {
-                SaveModelObject.forTvShow(from: Mappers.toTvShowObjectList(from: tvShow), to: realm, with: indexOfTvShowList)
+                realmService.forTvShow(from: Mappers.toTvShowObjectList(from: tvShow), to: realm, with: indexOfTvShowList)
             }
         }
     }
-
+    let realmService: TvShowListRealmProtocol
     var tvShowFromRealm: [ResultTvModel] {
         if realm.isEmpty {
             return Filtering.tvShow(tvShow, by: filteringMoviesIndex)
         } else {
-            guard let tvShowFromRealm = FetchModelObject.forTvShow(from: realm, with: indexOfTvShowList) else { return Filtering.tvShow(tvShow, by: filteringMoviesIndex) }
+            guard let tvShowFromRealm = realmService.forTvShow(from: realm, with: indexOfTvShowList) else { return Filtering.tvShow(tvShow, by: filteringMoviesIndex) }
             return Filtering.tvShow(Mappers.toResultTvModel(from: tvShowFromRealm), by: filteringMoviesIndex)
         }
     }
 
-    init(indexOfTvShowList: TvShowList, filteringMoviesIndex: FilterMovies) {
+    init(indexOfTvShowList: TvShowList, filteringMoviesIndex: FilterMovies, realmService: TvShowListRealmProtocol) {
         self.indexOfTvShowList = indexOfTvShowList
         self.filteringMoviesIndex = filteringMoviesIndex
+        self.realmService = realmService
 
         $indexOfTvShowList
             .setFailureType(to: Errors.self)
