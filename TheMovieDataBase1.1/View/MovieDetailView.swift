@@ -136,7 +136,7 @@ struct InfoDetailContentView: View {
                         .shadow(color: Color.yellow.opacity(0.4), radius: 10, x: 0, y: 10)
                 }.frame(width: 80, height: 70, alignment: .center)
             }
-            if section.runtime != nil || section.runtime != 0 {
+            if section.runtime != nil && section.runtime != 0 {
                 VStack {
                     Image(systemName: "clock")
                         .resizable()
