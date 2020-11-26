@@ -10,10 +10,10 @@ import Foundation
 import Combine
 
 final class CastViewModel: ObservableObject {
-    enum EndpointTvOrMovie { case tvShow, movie }
+    enum CategoryCast { case tvShow, movie }
     let realmService: CreditsRealmProtocol
     let mappers: CreditsMappersProtocol
-    var chooseEndpoint: EndpointTvOrMovie = .movie
+    var castListFor: CategoryCast = .movie
     @Published var movieId: Int = 0
     @Published var castCrewError: Errors?
     @Published var castAndCrew = MovieCreditResponse() {
@@ -36,22 +36,22 @@ final class CastViewModel: ObservableObject {
             return movieCreditResponse
         }
     }
-    private func chooseEndpoint(endpoint: EndpointTvOrMovie, id: Int) -> Endpoint {
+    private func chooseEndpoint(endpoint: CategoryCast, id: Int) -> Endpoint {
         switch endpoint {
         case .movie: return Endpoint.credits(movieID: id)
         case .tvShow: return Endpoint.creditsTV(tvShowID: id)
         }
     }
-    init(movieId: Int, chooseEndpoint: EndpointTvOrMovie, realmService: CreditsRealmProtocol, mappers: CreditsMappersProtocol) {
+    init(movieId: Int, castListFor: CategoryCast, realmService: CreditsRealmProtocol, mappers: CreditsMappersProtocol) {
         self.movieId = movieId
         self.castAndCrew = MovieCreditResponse(id: 0, cast: [MovieCast](), crew: [MovieCrew]())
-        self.chooseEndpoint = chooseEndpoint
+        self.castListFor = castListFor
         self.realmService = realmService
         self.mappers = mappers
         $movieId
             .setFailureType(to: Errors.self)
             .flatMap { (movieId) -> AnyPublisher<MovieCreditResponse, Errors> in
-                FetchData.shared.fetchInstance(for: MovieCreditResponse(), endpoint: self.chooseEndpoint(endpoint: chooseEndpoint, id: movieId))
+                FetchData.shared.fetchInstance(for: MovieCreditResponse(), endpoint: self.chooseEndpoint(endpoint: castListFor, id: movieId))
                 //FetchData.shared.fetchCastAndCrew(endpoint: Endpoint.credits(movieID: movieId))
                     .eraseToAnyPublisher()
             }

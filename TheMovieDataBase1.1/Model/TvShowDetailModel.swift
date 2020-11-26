@@ -4,7 +4,7 @@
 //
 //  Created by Vladyslav on 6/11/20.
 //  Copyright © 2020 Vladyslav Gubanov. All rights reserved.
-//
+//https://developers.themoviedb.org/3/tv/get-tv-details
 
 import Foundation
 
@@ -18,7 +18,7 @@ struct TvShowDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetail
     let id: Int
     let inProduction: Bool
     let languages: [String]
-    let lastAirDate: Date
+    let lastAirDate: Date?
 //    let lastEpisodeToAir: [Episode]
     let name: String
 //    let nextEpisodeToAir: Date?
@@ -42,7 +42,7 @@ struct TvShowDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetail
     var originalTitle: String { name }
     var posterFilemanagerName: String { "\(id)poster" }
     var backdropFilemanagerName: String { "\(id)backDrop" }
-    var releaseDate: Date { lastAirDate }
+    var releaseDate: Date { lastAirDate ?? Date() }
     var runtime: Int? { nil }
 }
 
@@ -75,12 +75,12 @@ struct Networks: Codable {
 }
 
 struct Seasons: Codable {
-    let airDate: Date? // change to optional
+    let airDate: Date?
     let episodeCount: Int
     let id: Int
     let name: String
     let overview: String
-    let posterPath: String
+    let posterPath: String?
     let seasonNumber: Int
 }
 

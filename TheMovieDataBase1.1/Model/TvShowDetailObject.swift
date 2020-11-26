@@ -19,7 +19,7 @@ class TvShowDetailObject: Object {
     @objc dynamic var id: Int = 0
     @objc dynamic var inProduction: Bool = false
     let languages = List<String>()
-    @objc dynamic var lastAirDate: Date = Date()
+    @objc dynamic var lastAirDate: Date? = Date()
 //    let lastEpisodeToAir = List<EpisodeObject>()
     @objc dynamic var name: String = ""
 //    @objc dynamic var nextEpisodeToAir: String? = ""
@@ -183,7 +183,7 @@ class SeasonsObject: Object {
     @objc dynamic var id: Int = 0
     @objc dynamic var name: String = ""
     @objc dynamic var overview: String = ""
-    @objc dynamic var posterPath: String = ""
+    @objc dynamic var posterPath: String? = ""
     @objc dynamic var seasonNumber: Int = 0
 
     override static func primaryKey() -> String? {

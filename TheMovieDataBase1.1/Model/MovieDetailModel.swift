@@ -4,7 +4,7 @@
 //
 //  Created by Vladyslav on 9/10/20.
 //  Copyright © 2020 Vladyslav Gubanov. All rights reserved.
-//
+//https://developers.themoviedb.org/3/movies/get-movie-details
 
 import Foundation
 import SwiftUI

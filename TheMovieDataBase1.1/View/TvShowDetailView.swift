@@ -19,8 +19,8 @@ struct TvShowDetailView: View {
                 GenresBlock(genres: tvShowViewModel.tvShowDetailFromRealm.genres, mappersForView: MappersForView())
                 InfoDetailContentView(section: tvShowViewModel.tvShowDetailFromRealm)
                 Overview(overviewText: tvShowViewModel.tvShowDetailFromRealm.overview)
-                VideoView(videoViewModel: MovieVideoViewModel(movieId: tvShow.id, endpoint: Endpoint.videosTV(tvShowID: tvShow.id)))
-                CastList(castsViewModel: CastViewModel(movieId: tvShow.id, chooseEndpoint: CastViewModel.EndpointTvOrMovie.tvShow, realmService: CreditsRealm(), mappers: CreditsMappers()))
+                VideoView(videoViewModel: MovieVideoViewModel(movieId: tvShow.id, videoContentFor: MovieVideoViewModel.CategoryVideo.tvShow))
+                CastList(castsViewModel: CastViewModel(movieId: tvShow.id, castListFor: CastViewModel.CategoryCast.tvShow, realmService: CreditsRealm(), mappers: CreditsMappers()))
             }
         }
         .alert(item: self.$tvShowViewModel.tvShowDetailError) { error in

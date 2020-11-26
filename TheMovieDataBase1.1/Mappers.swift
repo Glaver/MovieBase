@@ -200,7 +200,7 @@ class TvShowDetailsMappers: TvShowDetailsMappersProtocol {
                                                   homepage: tvShowDetailModel.homepage ?? "",
                                                   id: tvShowDetailModel.id,
                                                   inProduction: tvShowDetailModel.inProduction,
-                                                  lastAirDate: tvShowDetailModel.lastAirDate,
+                                                  lastAirDate: tvShowDetailModel.lastAirDate ?? Date(),
                                                   name: tvShowDetailModel.name,
                                                   numberOfEpisodes: tvShowDetailModel.numberOfEpisodes,
                                                   numberOfSeasons: tvShowDetailModel.numberOfSeasons,
@@ -242,7 +242,7 @@ class TvShowDetailsMappers: TvShowDetailsMappersProtocol {
                                                                                                      id: seasons.id,
                                                                                                      name: seasons.name,
                                                                                                      overview: seasons.overview,
-                                                                                                     posterPath: seasons.posterPath,
+                                                                                                     posterPath: seasons.posterPath ?? "",
                                                                                                      seasonNumber: seasons.seasonNumber))
         }
         return showDetailObject

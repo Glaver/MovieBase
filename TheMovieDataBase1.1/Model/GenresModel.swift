@@ -4,7 +4,7 @@
 //
 //  Created by Vladyslav on 20/8/20.
 //  Copyright © 2020 Vladyslav Gubanov. All rights reserved.
-//
+//https://developers.themoviedb.org/3/genres/get-movie-list
 
 import Foundation
 

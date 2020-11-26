@@ -25,7 +25,7 @@ class MovieDetailObject: Object {
     @objc dynamic var posterPath: String?
     let productionCompanies = List<ProductionCompaniesObject>()
     let productionCountries = List<ProductionCountriesObject>()
-    @objc dynamic var releaseDate: Date = Date() //format: date
+    @objc dynamic var releaseDate: Date = Date()
     @objc dynamic var revenue: Int = 0
     let runtime = RealmOptional<Int>()
     let spokenLanguages = List<SpokenLanguagesObject>()

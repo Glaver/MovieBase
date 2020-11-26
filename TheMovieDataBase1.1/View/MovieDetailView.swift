@@ -19,9 +19,9 @@ struct MovieDetailView: View {
                 GenresBlock(genres: viewModel.movieDetailsFromRealm.genres, mappersForView: MappersForView())
                 InfoDetailContentView(section: viewModel.movieDetailsFromRealm)
                 Overview(overviewText: viewModel.movieDetailsFromRealm.overview ?? movie.overview)
-                VideoView(videoViewModel: MovieVideoViewModel(movieId: movie.id, endpoint: Endpoint.videos(movieID: movie.id)))
+                VideoView(videoViewModel: MovieVideoViewModel(movieId: movie.id, videoContentFor: MovieVideoViewModel.CategoryVideo.movie))
                 BoxOfficeView(budget: viewModel.movieDetailsFromRealm.budget, revenue: viewModel.movieDetailsFromRealm.revenue)
-                CastList(castsViewModel: CastViewModel(movieId: movie.id, chooseEndpoint: CastViewModel.EndpointTvOrMovie.movie, realmService: CreditsRealm(), mappers: CreditsMappers()))
+                CastList(castsViewModel: CastViewModel(movieId: movie.id, castListFor: CastViewModel.CategoryCast.movie, realmService: CreditsRealm(), mappers: CreditsMappers()))
             }
         }.alert(item: self.$viewModel.movieDetailError) { error in
             Alert(title: Text("Network error"),
