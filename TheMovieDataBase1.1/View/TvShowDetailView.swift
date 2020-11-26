@@ -15,8 +15,8 @@ struct TvShowDetailView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack {
-                ContentHeadImagesTitlePoster(section: tvShowViewModel.tvShowDetailFromRealm)
-                GenresBlock(genres: tvShowViewModel.tvShowDetailFromRealm.genres)
+                ContentHeadImagesTitlePoster(section: tvShowViewModel.tvShowDetailFromRealm, mappersForView: MappersForView())
+                GenresBlock(genres: tvShowViewModel.tvShowDetailFromRealm.genres, mappersForView: MappersForView())
                 InfoDetailContentView(section: tvShowViewModel.tvShowDetailFromRealm)
                 Overview(overviewText: tvShowViewModel.tvShowDetailFromRealm.overview)
                 VideoView(videoViewModel: MovieVideoViewModel(movieId: tvShow.id, endpoint: Endpoint.videosTV(tvShowID: tvShow.id)))

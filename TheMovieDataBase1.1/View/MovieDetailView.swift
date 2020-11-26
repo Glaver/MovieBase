@@ -15,8 +15,8 @@ struct MovieDetailView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack {
-                ContentHeadImagesTitlePoster(section: viewModel.movieDetailsFromRealm)
-                GenresBlock(genres: viewModel.movieDetailsFromRealm.genres)
+                ContentHeadImagesTitlePoster(section: viewModel.movieDetailsFromRealm, mappersForView: MappersForView())
+                GenresBlock(genres: viewModel.movieDetailsFromRealm.genres, mappersForView: MappersForView())
                 InfoDetailContentView(section: viewModel.movieDetailsFromRealm)
                 Overview(overviewText: viewModel.movieDetailsFromRealm.overview ?? movie.overview)
                 VideoView(videoViewModel: MovieVideoViewModel(movieId: movie.id, endpoint: Endpoint.videos(movieID: movie.id)))
@@ -38,6 +38,7 @@ struct MovieDetailView: View {
 // MARK: ContentHead Backdrop Poster Title
 struct ContentHeadImagesTitlePoster: View {
     let section: DetailViewHeadImagesTitleProtocol
+    let mappersForView: MappersForViewProtocol
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             VStack {
@@ -66,7 +67,7 @@ struct ContentHeadImagesTitlePoster: View {
                         .bold()
                         .lineLimit(3)
                         .frame(width: 230, alignment: .leading)
-                    Text(MappersForView.originalTitle(section.originalTitle, vs: section.title))
+                    Text(mappersForView.originalTitle(section.originalTitle, vs: section.title))
                         .font(.system(size: 20))
                         .bold()
                         .lineLimit(2)
@@ -80,10 +81,11 @@ struct ContentHeadImagesTitlePoster: View {
 // MARK: GenresBlock
 struct GenresBlock: View {
     let genres: [GenresProtocol]
+    let mappersForView: MappersForViewProtocol
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
         HStack {
-            ForEach(MappersForView.convertsToArrayString(from: genres), id: \.self) { genre in
+            ForEach(mappersForView.convertsToArrayString(from: genres), id: \.self) { genre in
                 Text(genre.capitalizingFirstLetter())
                     .font(.system(size: 15))
                     .lineLimit(1)
@@ -104,26 +106,26 @@ struct InfoDetailContentView: View {
     var body: some View {
         Divider()
         Spacer()
-        HStack(alignment: .center, spacing: 30) {
-            VStack {
-                Image(systemName: "calendar")
-                    .resizable()
-                    .frame(width: 30, height: 30, alignment: .center)
-                    .foregroundColor(.red)
-                Text(DateFormattingHelper.shared.printFormattedDate(section.releaseDate, printFormat: "MMM dd,yyyy")) //DDMonYY
-                    //.foregroundColor(Color.blue)
-                    .font(Font.body.bold())
-                    .foregroundColor(Color.blue)
+        HStack(alignment: .center, spacing: 10) {
+            if section.releaseDate != Date() {
+                VStack {
+                    Image(systemName: "calendar")
+                        .resizable()
+                        .frame(width: 30, height: 30, alignment: .center)
+                        .foregroundColor(.red)
+                    Text(DateFormattingHelper.shared.printFormattedDate(section.releaseDate, printFormat: "MMM dd,yyyy"))
+                        .font(Font.body.bold())
+                        .foregroundColor(Color.blue)
+                }.frame(width: 110, height: 70, alignment: .center)
             }
-            VStack {
-                if section.voteAverage != 0 {
+            if section.voteAverage != 0 {
+                VStack {
                     Image(systemName: "star")
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
                         .foregroundColor(.yellow)
                     Text(String(section.voteAverage))
                         .font(Font.body.bold())
-
                         .frame(width: 40, height: 25)
                         .background(Color.yellow)
                         .cornerRadius(10)
@@ -132,44 +134,45 @@ struct InfoDetailContentView: View {
                                 .stroke(Color.black.opacity(0.2), lineWidth: 1)
                         )
                         .shadow(color: Color.yellow.opacity(0.4), radius: 10, x: 0, y: 10)
-                }
+                }.frame(width: 80, height: 70, alignment: .center)
             }
-            VStack {
-                if section.runtime != nil {
+            if section.runtime != nil || section.runtime != 0 {
+                VStack {
                     Image(systemName: "clock")
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
                         .foregroundColor(Color.purple)
                     HStack {
                         Text(String(section.runtime!))
-                    Text(LocalizedStringKey("min"))
-                    //Text(Mappers.convertsIntToHoursAndMin(timeInMin: runtime))
+                        Text(LocalizedStringKey("min"))
                     }.font(Font.body.bold())
-                }
+                }.frame(width: 80, height: 70, alignment: .center)
             }
-            VStack {
-                if let url = URL(string: section.homepage!) {
-                    if #available(iOS 14.0, *) {
-                        Link(destination: url) {
-                            VStack {
+            if section.homepage != nil {
+                VStack {
+                    if let url = URL(string: section.homepage!) {
+                        if #available(iOS 14.0, *) {
+                            Link(destination: url) {
+                                VStack {
+                                    Image(systemName: "network")
+                                        .resizable()
+                                        .frame(width: 30, height: 30, alignment: .center)
+                                        .foregroundColor(Color.blue)
+                                    Text("Homepage")
+                                        .font(Font.body.bold())
+                                }.frame(width: 100, height: 70, alignment: .center)
+                            }
+                        } else {
+                            Button(action: {
+                                UIApplication.shared.open(url)
+                            }) {
                                 Image(systemName: "network")
                                     .resizable()
                                     .frame(width: 30, height: 30, alignment: .center)
                                     .foregroundColor(Color.blue)
-                                Text("Homepage")
+                                Text(LocalizedStringKey("Homepage"))
                                     .font(Font.body.bold())
-                            }
-                        }
-                    } else {
-                        Button(action: {
-                            UIApplication.shared.open(url)
-                        }) {
-                            Image(systemName: "network")
-                                .resizable()
-                                .frame(width: 30, height: 30, alignment: .center)
-                                .foregroundColor(Color.blue)
-                            Text(LocalizedStringKey("Homepage"))
-                                .font(Font.body.bold())
+                            }.frame(width: 100, height: 70, alignment: .center)
                         }
                     }
                 }
@@ -182,7 +185,6 @@ struct InfoDetailContentView: View {
 // MARK: Overview
 struct Overview: View {
     var overviewText: String
-
     var body: some View {
         VStack(alignment: .leading) {
             Text(LocalizedStringKey("Overview"))

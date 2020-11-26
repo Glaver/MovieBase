@@ -98,7 +98,7 @@ struct ScrollViewMoviesShow: View {
         VStack {
             List(self.arrayDataFromAPI, id: \.id) { show in
                 NavigationLink(destination: TvShowDetailView(tvShow: show as! ResultTvModel)) {
-                    SectionView(section: show, inputURLforImage: ImageAPI.Size.medium.path(poster: (show.posterPath ?? "")), genresDictionary: self.genresDictionary)
+                    SectionView(section: show, inputURLforImage: ImageAPI.Size.medium.path(poster: (show.posterPath ?? "")), genresDictionary: self.genresDictionary, mappersForView: MappersForView())
                 }
             }
         }

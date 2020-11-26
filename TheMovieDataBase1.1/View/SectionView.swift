@@ -12,6 +12,7 @@ struct SectionView: View {
     var section: MovieShowViewProtocol
     let inputURLforImage: URL?
     let genresDictionary: GenresDictionaryProtocol
+    let mappersForView: MappersForViewProtocol
     var body: some View {
         HStack {
             ImageViewModel(imageLoader: ImageLoaderViewModel(url: inputURLforImage), imageName: section.posterFileManagerName)
@@ -30,7 +31,7 @@ struct SectionView: View {
 
                 VStack(alignment: .leading) {
                     HStack {
-                        ForEach(MappersForView.convertorGenresToString(genresDict: genresDictionary, genresOfMovie: section.genreIds).prefix(2), id: \.self) { genre in
+                        ForEach(mappersForView.convertorGenresToString(genresDict: genresDictionary, genresOfMovie: section.genreIds).prefix(2), id: \.self) { genre in
                             Text(genre.capitalizingFirstLetter())
                                 .lineLimit(1)
                                 .font(.system(size: 13))
@@ -40,7 +41,7 @@ struct SectionView: View {
                         }
                     }
                     HStack {
-                        ForEach(MappersForView.convertorGenresToString(genresDict: genresDictionary, genresOfMovie: section.genreIds).dropFirst(2), id: \.self) { genre in
+                        ForEach(mappersForView.convertorGenresToString(genresDict: genresDictionary, genresOfMovie: section.genreIds).dropFirst(2), id: \.self) { genre in
                             Text(genre.capitalizingFirstLetter())
                                 .lineLimit(1)
                                 .font(.system(size: 13))
