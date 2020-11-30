@@ -56,6 +56,7 @@ enum Endpoint {
     case onTheAir
     case popularTV
     case topRatedTV
+    case person (personId: Int)
 
     var baseURLv3: URL { URL(string: "https://api.themoviedb.org/3")! }
 
@@ -95,6 +96,8 @@ enum Endpoint {
             return "/tv/popular"
         case .topRatedTV:
             return "/tv/top_rated"
+        case let .person(personId):
+            return "/person/\(String(personId))"
         }
     }
 

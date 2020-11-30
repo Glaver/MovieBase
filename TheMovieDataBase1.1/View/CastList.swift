@@ -17,7 +17,8 @@ struct CastList: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
                 ForEach(castsViewModel.castAndCrewFromRealm.cast) { cast in
-                    GeometryReader { _ in
+                    //GeometryReader { _ in
+                        NavigationLink(destination: PeopleDetailsView(viewModel: PeopleDetailsViewModel(personId: cast.id))) {
                         VStack {
                             ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.cast.path(poster: cast.profilePath)), imageName: cast.name)
                                 .frame(width: 130, height: 195, alignment: .top)
@@ -30,14 +31,14 @@ struct CastList: View {
                                 .frame(width: 130, height: 80, alignment: .top)
                                 .lineLimit(3)
                                 .font(.footnote)
-
                         }
                         //                    .rotation3DEffect(Angle(degrees: Double(geometry.frame(in: .global).minX - 30) / -20), axis: (x: 0, y: 40, z: 0))
 
                     }.frame(width: 130, height: 280, alignment: .top)
+                //}
                 }
             }
         }
-        .frame(width: 360, height: 310)
+        .frame(height: 310) //width: 360,
     }
 }
