@@ -43,7 +43,7 @@ struct ContentHeadImagesTitlePoster: View {
         ZStack(alignment: .bottomLeading) {
             VStack {
                 ZStack {
-                    ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.original.path(poster: (section.backdropPath ?? ""))), imageName: section.backdropFilemanagerName)
+                    ImageView(imageLoader: ImageLoaderService(url: section.backdropPath, imageSize: .medium), imagePath: section.backdropPath, imageCache: ImageLoaderCache.shared)
                         .frame(height: 250, alignment: .center)//width:450,
                         .shadow(color: Color.blue.opacity(0.3), radius: 20, x: 0, y: 10)
                     TaglineView(tagline: section.tagline ?? "NO")
@@ -54,7 +54,7 @@ struct ContentHeadImagesTitlePoster: View {
                     .frame(height: 110)
             }
             HStack {
-                ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.medium.path(poster: (section.posterPath ?? ""))), imageName: section.posterFilemanagerName)
+                ImageView(imageLoader: ImageLoaderService(url: section.posterPath, imageSize: .cast), imagePath: section.posterPath, imageCache: ImageLoaderCache.shared)
                     .frame(width: 130, height: 190, alignment: .leading)
                     .aspectRatio(contentMode: .fill)
                     .cornerRadius(10)

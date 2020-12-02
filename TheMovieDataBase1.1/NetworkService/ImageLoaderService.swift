@@ -10,14 +10,23 @@ import Foundation
 import Combine
 import SwiftUI
 
-class ImageLoaderViewModel: ObservableObject {
-    @Published var image: UIImage?
-    @Published var url: URL?
+protocol ImageLoaderServiceProtocol {
+    var image: UIImage? { get }
+    var url: URL? { get }
+}
 
-    init(url: URL?) {
+class ImageLoaderService: ObservableObject {
+    @Published var image: UIImage?
+    @Published var url: String?
+    var imageSize: ImageAPI.Size
+    func assemblyURL(url: String?, size: ImageAPI.Size) -> URL? {
+        return size.path(poster: url)
+    }
+    init(url: String?, imageSize: ImageAPI.Size) {
         self.url = url
+        self.imageSize = imageSize
         $url
-            .flatMap { (_) -> AnyPublisher<UIImage?, Never> in self.fetchImage(for: url) }
+            .flatMap { (_) -> AnyPublisher<UIImage?, Never> in self.fetchImage(for: self.assemblyURL(url: url, size: imageSize)) }
             .assign(to: \.image, on: self)
             .store(in: &self.cancellationSet)
     }

@@ -10,12 +10,11 @@ import SwiftUI
 
 struct SectionView: View {
     var section: MovieShowViewProtocol
-    let inputURLforImage: URL?
     let genresDictionary: GenresDictionaryProtocol
     let mappersForView: MappersForViewProtocol
     var body: some View {
         HStack {
-            ImageViewModel(imageLoader: ImageLoaderViewModel(url: inputURLforImage), imageName: section.posterFileManagerName)
+            ImageView(imageLoader: ImageLoaderService(url: section.posterPath, imageSize: .cast), imagePath: section.posterPath, imageCache: ImageLoaderCache.shared)
                 .frame(width: 130, height: 195, alignment: .top)
                 .aspectRatio(contentMode: .fill)
                 .cornerRadius(5)

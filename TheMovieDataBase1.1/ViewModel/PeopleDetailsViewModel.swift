@@ -13,7 +13,6 @@ class PeopleDetailsViewModel: ObservableObject {
     @Published var personId: Int = 0
     @Published var errorPerson: Errors?
     @Published var peopleDetail = PeopleDetailsModel()
-    
     init(personId: Int) {//, realmService: MovieDetailsRealm, mappers: MovieDetailsMappersProtocol) {
         self.personId = personId
         //self.realmService = realmService

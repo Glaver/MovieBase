@@ -10,12 +10,11 @@ import SwiftUI
 
 struct PeopleDetailsView: View {
     @ObservedObject var viewModel: PeopleDetailsViewModel
-    
     var body: some View {
         ScrollView(.vertical) {
             VStack {
                 HStack(alignment: .center, spacing: 15) {
-                    ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.medium.path(poster: (viewModel.peopleDetail.profilePath ?? ""))), imageName: viewModel.peopleDetail.name)
+                    ImageView(imageLoader: ImageLoaderService(url: viewModel.peopleDetail.profilePath, imageSize: ImageAPI.Size.small), imagePath: viewModel.peopleDetail.profilePath, imageCache: ImageLoaderCache.shared)
                         .frame(width: 150, height: 240)
                         .aspectRatio(contentMode: .fill)
                         .cornerRadius(10)

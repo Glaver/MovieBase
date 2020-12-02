@@ -20,7 +20,7 @@ struct GridView: View {
                 ForEach(arrayOfData, id: \.self) { content in
                     NavigationLink(destination: MovieDetailView(movie: content)) {
                         VStack {
-                            ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.medium.path(poster: (content.posterPath ?? ""))), imageName: content.posterFileManagerName)
+                            ImageView(imageLoader: ImageLoaderService(url: content.posterPath, imageSize: ImageAPI.Size.medium), imagePath: content.posterPath, imageCache: ImageLoaderCache.shared)
                                 .frame(width: 180, height: 270, alignment: .top)
                                 .aspectRatio(contentMode: .fill)
                                 .cornerRadius(10)

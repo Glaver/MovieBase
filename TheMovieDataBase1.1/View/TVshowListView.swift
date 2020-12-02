@@ -13,6 +13,7 @@ struct TvShowListView: View {
     @ObservedObject var tvShowViewModel = TvShowViewModel(indexOfTvShowList: TvShowList.airingToday, filteringMoviesIndex: FilterContent.FilteredParameters.releaseDate, realmService: TvShowListRealm(), mappers: TvShowMappers(), filter: FilterContent())
     @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.tvGenres, realmService: GenresRealm(), mappers: GenresMappers())
     @State var showFilters = false
+    @State var isGrid = false
 
     var body: some View {
             NavigationView {
@@ -61,19 +62,20 @@ struct TvShowListView: View {
                           dismissButton: .default(Text("OK")))
                     }
                 .navigationBarTitle(LocalizedStringKey("TV Show"), displayMode: .inline)
-                .navigationBarItems(leading:
-                                        HStack {
-                                            Button(action: {
-                                                FileManager.clearAllFile()
-                                                //delete all files from file manager and realm database file
-                                                //print("FileManager clear")
-                                            }) {
-                                                Image(systemName: "trash")
-                                                    .resizable()
-                                                    .frame(width: 23, height: 23)
-                                                    .padding()
-                                            }
-                                 }, trailing:
+                .navigationBarItems(
+//                    leading:
+//                                        HStack {
+//                                            Button(action: {
+//                                                FileManager.clearAllFile()
+//                                                //delete all files from file manager and realm database file
+//                                                //print("FileManager clear")
+//                                            }) {
+//                                                Image(systemName: "trash")
+//                                                    .resizable()
+//                                                    .frame(width: 23, height: 23)
+//                                                    .padding()
+//                                            }},
+                                    trailing:
                                         HStack {
                                             Button(action: {
                                                 withAnimation(.spring()) {
@@ -98,7 +100,7 @@ struct ScrollViewMoviesShow: View {
         VStack {
             List(self.arrayDataFromAPI, id: \.id) { show in
                 NavigationLink(destination: TvShowDetailView(tvShow: show as! ResultTvModel)) {
-                    SectionView(section: show, inputURLforImage: ImageAPI.Size.medium.path(poster: (show.posterPath ?? "")), genresDictionary: self.genresDictionary, mappersForView: MappersForView())
+                    SectionView(section: show, genresDictionary: self.genresDictionary, mappersForView: MappersForView())
                 }
             }
         }

@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 struct PeopleDetailsModel: Codable {
     enum Gender: Int, Codable { case other = 0, male, female }
     let birthday: Date

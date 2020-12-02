@@ -20,7 +20,7 @@ struct CastList: View {
                     //GeometryReader { _ in
                         NavigationLink(destination: PeopleDetailsView(viewModel: PeopleDetailsViewModel(personId: cast.id))) {
                         VStack {
-                            ImageViewModel(imageLoader: ImageLoaderViewModel(url: ImageAPI.Size.cast.path(poster: cast.profilePath)), imageName: cast.name)
+                            ImageView(imageLoader: ImageLoaderService(url: cast.profilePath, imageSize: .cast), imagePath: cast.profilePath, imageCache: ImageLoaderCache.shared)
                                 .frame(width: 130, height: 195, alignment: .top)
                                 .aspectRatio(contentMode: .fill)
                                 .cornerRadius(10)
