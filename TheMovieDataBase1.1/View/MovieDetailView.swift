@@ -11,12 +11,13 @@ import SwiftUI
 struct MovieDetailView: View {
     @ObservedObject var viewModel: MovieDetailViewModel
     var movie: MovieModel
+    var mappersForView = MappersForView()
 
     var body: some View {
         ScrollView(.vertical) {
             VStack {
                 ContentHeadImagesTitlePoster(section: viewModel.movieDetailsFromRealm, mappersForView: MappersForView())
-                GenresBlock(genres: viewModel.movieDetailsFromRealm.genres, mappersForView: MappersForView())
+                GenresBlock(arrayOfContent: mappersForView.convertsToArrayString(from: viewModel.movieDetailsFromRealm.genres))//genres: viewModel.movieDetailsFromRealm.genres, mappersForView: MappersForView())
                 InfoDetailContentView(section: viewModel.movieDetailsFromRealm)
                 Overview(overviewText: viewModel.movieDetailsFromRealm.overview ?? movie.overview)
                 VideoView(videoViewModel: MovieVideoViewModel(movieId: movie.id, videoContentFor: MovieVideoViewModel.CategoryVideo.movie))
@@ -80,24 +81,23 @@ struct ContentHeadImagesTitlePoster: View {
 }
 // MARK: GenresBlock
 struct GenresBlock: View {
-    let genres: [GenresProtocol]
-    let mappersForView: MappersForViewProtocol
+    let arrayOfContent: [String]
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-        HStack {
-            ForEach(mappersForView.convertsToArrayString(from: genres), id: \.self) { genre in
-                Text(genre.capitalizingFirstLetter())
-                    .font(.system(size: 15))
-                    .lineLimit(1)
-                    .padding(5)
-                    .background(Color.gray.opacity(0.3))
-                    .cornerRadius(5)
+            HStack {
+                ForEach(arrayOfContent, id: \.self) { genre in
+                    Text(genre.capitalizingFirstLetter())
+                        .font(.system(size: 16))
+                        .lineLimit(1)
+                        .padding(5)
+                        .background(Color.gray.opacity(0.3))
+                        .cornerRadius(5)
+                }
+                Spacer()
             }
+            .padding(15)
             Spacer()
         }
-        .padding(15)
-        Spacer()
-    }
     }
 }
 // MARK: InfoDetailContentView
@@ -124,7 +124,7 @@ struct InfoDetailContentView: View {
                         .resizable()
                         .frame(width: 30, height: 30, alignment: .center)
                         .foregroundColor(.yellow)
-                    Text(String(section.voteAverage))
+                    Text(String(round(10 * section.voteAverage)/10))
                         .font(Font.body.bold())
                         .frame(width: 40, height: 25)
                         .background(Color.yellow)

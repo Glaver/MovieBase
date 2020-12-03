@@ -11,12 +11,13 @@ import SwiftUI
 struct TvShowDetailView: View {
     @ObservedObject var tvShowViewModel: TvShowDetailViewModel
     var tvShow: ResultTvModel
+    let mappersForView = MappersForView()
 
     var body: some View {
         ScrollView(.vertical) {
             VStack {
                 ContentHeadImagesTitlePoster(section: tvShowViewModel.tvShowDetailFromRealm, mappersForView: MappersForView())
-                GenresBlock(genres: tvShowViewModel.tvShowDetailFromRealm.genres, mappersForView: MappersForView())
+                GenresBlock(arrayOfContent: mappersForView.convertsToArrayString(from: tvShowViewModel.tvShowDetailFromRealm.genres))
                 InfoDetailContentView(section: tvShowViewModel.tvShowDetailFromRealm)
                 Overview(overviewText: tvShowViewModel.tvShowDetailFromRealm.overview)
                 VideoView(videoViewModel: MovieVideoViewModel(movieId: tvShow.id, videoContentFor: MovieVideoViewModel.CategoryVideo.tvShow))

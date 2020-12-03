@@ -8,8 +8,12 @@
 
 import Foundation
 
-struct PeopleDetailsModel: Codable {
+struct PeopleDetailsModel: Codable, InfoDetailContentViewProtocol {
     enum Gender: Int, Codable { case other = 0, male, female }
+    var releaseDate: Date { return birthday }
+    var voteAverage: Float { return popularity }
+    var runtime: Int? { return nil }
+
     let birthday: Date
     let knownForDepartment: String
     let deathday: String?
