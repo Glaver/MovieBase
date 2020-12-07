@@ -37,7 +37,7 @@ line 13 `let apiKey: String = <your api key>`
 ## Requirements:
 - Xcode version 12.2 or later
 - iOS 14
-- [TMdB](https://developers.themoviedb.org/3/getting-started/introduction) API key
+- [TMDb](https://developers.themoviedb.org/3/getting-started/introduction) API key
 
 ## Contributing
 This project is being developed by Vladyslav Gubanov for its use as education project app, for training and improve new technologies in real app. I not expecting to have community contributions here but I’m open to any suggestions and advices for improving the code or new effective solutions.

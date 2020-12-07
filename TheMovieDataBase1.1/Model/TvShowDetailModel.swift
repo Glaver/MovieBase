@@ -40,8 +40,6 @@ struct TvShowDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetail
     let voteCount: Int
     var title: String { name }
     var originalTitle: String { name }
-    var posterFilemanagerName: String { "\(id)poster" }
-    var backdropFilemanagerName: String { "\(id)backDrop" }
     var releaseDate: Date { lastAirDate ?? Date() }
     var runtime: Int? { nil }
 }

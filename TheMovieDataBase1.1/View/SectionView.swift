@@ -24,7 +24,7 @@ struct SectionView: View {
                 Text(section.title)
                     .font(.system(size: 15))
                     .bold()
-                    .frame(width: 190, height: 70, alignment: .center)
+                    .frame(width: 190, height: 70, alignment: .leading)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
 

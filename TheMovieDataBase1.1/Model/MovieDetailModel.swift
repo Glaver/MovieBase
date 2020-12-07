@@ -11,9 +11,7 @@ import SwiftUI
 
 protocol DetailViewHeadImagesTitleProtocol {
     var backdropPath: String? { get }
-    var backdropFilemanagerName: String { get }
     var posterPath: String? { get }
-    var posterFilemanagerName: String { get }
     var tagline: String? { get }
     var title: String { get }
     var originalTitle: String { get }
@@ -52,8 +50,6 @@ struct MovieDetailModel: Codable, DetailViewHeadImagesTitleProtocol, InfoDetailC
     let video: Bool
     let voteAverage: Float
     let voteCount: Int
-    var posterFilemanagerName: String { "\(id)poster" }
-    var backdropFilemanagerName: String { "\(id)backDrop" }
 }
 
 struct ProductionCompaniesModel: Codable {
