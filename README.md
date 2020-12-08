@@ -17,13 +17,14 @@ Movies app written in Swift 5.3 using the TMDb API.
 - Dependency Injection
 
 ## Screenshots
-![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/shot2.png?raw=true "Movie list")
-![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/shot1.png?raw=true "Detail shot Joker")
+![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/list.png?raw=true "Movie list")
+![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/details.png?raw=true "Detail shot Parasite")
+![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/filter.png?raw=true "Filter")
+![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/grid.png?raw=true "Grid")
 
 ## Demo
-![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/dark1.gif?raw=true "Dark Mode, Movies and Details")
-![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/gridAndFilters.gif?raw=true "Grid vs Filtering")
-![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/search.gif?raw=true "TV Show vs Search")
+![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/searchDemo.gif?raw=true "Search demo")
+![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/detailsDemo.gif?raw=true "List demo")
 
 ## Setup
 You'll need a few things before we get started. Make sure you have Xcode installed from the App Store or wherever. You can download all code what you need by Clone or download ZIP archive. 
