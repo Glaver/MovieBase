@@ -23,8 +23,8 @@ Movies app written in Swift 5.3 using the TMDb API.
 ![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/grid.png?raw=true "Grid")
 
 ## Demo
-![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/searchDemo.gif?raw=true "Search demo")
-![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/detailsDemo.gif?raw=true "List demo")
+![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/searchAndFilter.gif?raw=true "Search demo")
+![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/parasite.gif?raw=true "List demo")
 
 ## Setup
 You'll need a few things before we get started. Make sure you have Xcode installed from the App Store or wherever. You can download all code what you need by Clone or download ZIP archive. 
