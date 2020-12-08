@@ -22,9 +22,9 @@ struct SectionView: View {
 
             VStack(alignment: .leading) {
                 Text(section.title)
-                    .font(.system(size: 15))
+                    .font(.system(size: 18))
                     .bold()
-                    .frame(width: 190, height: 70, alignment: .leading)
+                    //.frame(width: 190, height: 70, alignment: .topLeading)
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
 
@@ -35,7 +35,7 @@ struct SectionView: View {
                                 .lineLimit(1)
                                 .font(.system(size: 13))
                                 .padding(4)
-                                .background(Color.gray.opacity(0.3))
+                                .background(Color.gray.opacity(0.2))
                                 .cornerRadius(5)
                         }
                     }

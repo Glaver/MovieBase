@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 
 struct TvShowListView: View {
-    @ObservedObject var tvShowViewModel = TvShowViewModel(indexOfTvShowList: TvShowList.airingToday, filteringMoviesIndex: FilterContent.FilteredParameters.releaseDate, realmService: TvShowListRealm(), mappers: TvShowMappers(), filter: FilterContent())
+    @ObservedObject var tvShowViewModel = TvShowViewModel(indexOfTvShowList: TvShowList.popularTV, filteringMoviesIndex: FilterContent.FilteredParameters.releaseDate, realmService: TvShowListRealm(), mappers: TvShowMappers(), filter: FilterContent())
     @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.tvGenres, realmService: GenresRealm(), mappers: GenresMappers())
     @State var showFilters = false
     @State var isGrid = false

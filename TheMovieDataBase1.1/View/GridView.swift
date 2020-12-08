@@ -21,17 +21,18 @@ struct GridView: View {
                     NavigationLink(destination: MovieDetailView(movie: content)) {
                         VStack {
                             ImageView(imageLoader: ImageLoaderService(url: content.posterPath, imageSize: ImageAPI.Size.medium), imagePath: content.posterPath, imageCache: ImageLoaderCache.shared)
-                                .frame(width: 180, height: 270, alignment: .top)
+                                .frame(width: 180, height: 270, alignment: .center)
                                 .aspectRatio(contentMode: .fill)
                                 .cornerRadius(10)
                                 .shadow(color: Color.blue.opacity(0.5), radius: 20, x: 0, y: 10)
                             Text(content.title)
-                                .font(.system(size: 20))
+                                .font(.system(size: 17))
                                 .foregroundColor(.blue)
-                                .frame(width: 180, height: 70, alignment: .center)
+                                .frame(width: 180, height: 45, alignment: .top)//
                                 .multilineTextAlignment(.center)
                                 .lineLimit(3)
                         }
+                        //.padding()
                     }
                 }
             }

@@ -90,7 +90,7 @@ struct GenresBlock: View {
                         .font(.system(size: 16))
                         .lineLimit(1)
                         .padding(5)
-                        .background(Color.gray.opacity(0.3))
+                        .background(Color.gray.opacity(0.2))
                         .cornerRadius(5)
                 }
                 Spacer()
@@ -154,7 +154,7 @@ struct InfoDetailContentView: View {
                         if #available(iOS 14.0, *) {
                             Link(destination: url) {
                                 VStack {
-                                    Image(systemName: "network")
+                                    Image(systemName: "link")
                                         .resizable()
                                         .frame(width: 30, height: 30, alignment: .center)
                                         .foregroundColor(Color.blue)
@@ -186,9 +186,9 @@ struct InfoDetailContentView: View {
 struct Overview: View {
     var overviewText: String
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .center) {
             Text(LocalizedStringKey("Overview"))
-                .font(.system(size: 25))
+                .font(.system(size: 22))
                 .bold()
                 .padding(.bottom)
             Text(overviewText)

@@ -9,24 +9,25 @@
 import SwiftUI
 
 struct BoxOfficeView: View {
-
     var budget: Int
     var revenue: Int
-
     var lengtBudget: Int = 0
     var lenghtRevenue: Int = 0
 
     var body: some View {
-        if budget != 0 && revenue != 0 {
-            VStack(alignment: .leading, spacing: 15) {
-                budgetView
-                revenueView
+        VStack {
+            if budget != 0 && revenue != 0 {
+                VStack(alignment: .center, spacing: 15) {
+                    budgetView
+                    revenueView
+                }
+                //.padding(15)
+            } else if budget != 0 && revenue == 0 {
+                VStack(alignment: .center, spacing: 15) { budgetView }
+            } else {
+                //Text(" ")
             }
-            .padding(15)
-        } else if budget != 0 && revenue == 0 {
-            VStack(alignment: .leading, spacing: 15) { budgetView }
-        } else {
-            //Text(" ")
+            Divider()
         }
     }
 
@@ -35,9 +36,10 @@ struct BoxOfficeView: View {
             Text(LocalizedStringKey("Budget"))
                 .font(.system(size: 22))
                 .bold()
-                .padding(10)
+                //.padding(10)
             Text(" $" + String(budget.formattedWithSeparator))
                 .bold()
+                .foregroundColor(Color.white)
                 .frame(width: 200, height: 30)
                 .background(Color.blue.opacity(0.9))
                 .cornerRadius(10)
@@ -51,7 +53,7 @@ struct BoxOfficeView: View {
             Text(LocalizedStringKey("Revenue"))
                 .font(.system(size: 22))
                 .bold()
-                .padding(10)
+                //.padding(10)
             Text(" $" + String(revenue.formattedWithSeparator))
                 .bold()
                 .frame(width: 350, height: 30)
