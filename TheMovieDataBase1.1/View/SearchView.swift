@@ -53,21 +53,36 @@ struct SearchBarView: View {
         .navigationBarHidden(showCancelButton)
     }
 }
-
+//SearchTvShowViewModel
 struct SearchView: View {
+    @ObservedObject var searchTvShowModel = SearchTvShowViewModel()
     @ObservedObject var searchMovieModel = SearchMovieViewModel()
     @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres, realmService: GenresRealm(), mappers: GenresMappers())
+    enum ContentSearch { case movie, tvShow }
+    @State var contentType: ContentSearch = .movie
     var body: some View {
         NavigationView {
             VStack {
-                SearchBarView(searchText: $searchMovieModel.name)
-                ScrollViewMovies(arrayDataFromAPI: searchMovieModel.moviesDTO, genresDictionary: genresModel.dictionaryGenres)
+                if contentType == .movie {
+                    SearchBarView(searchText: $searchMovieModel.name)
+                } else if contentType == .tvShow {
+                    SearchBarView(searchText: $searchTvShowModel.name)
+                }
+                Picker("", selection: $contentType) {
+                    Text(LocalizedStringKey("Movies")).tag(ContentSearch.movie)
+                    Text(LocalizedStringKey("TV Show")).tag(ContentSearch.tvShow)
+                }.pickerStyle(SegmentedPickerStyle())
+                if contentType == .movie {
+                    ScrollViewMovies(arrayDataFromAPI: searchMovieModel.moviesDTO, genresDictionary: genresModel.dictionaryGenresFromRealm)
+                } else if contentType == .tvShow {
+                    ScrollViewMoviesShow(arrayDataFromAPI: searchTvShowModel.tvShow, genresDictionary: genresModel.dictionaryGenresFromRealm)
+                }
             }
-                .navigationBarTitle(LocalizedStringKey("Search"))//, displayMode: .inline)
+            .navigationBarTitle(LocalizedStringKey("Search"))//, displayMode: .inline)
         }
     }
 }
-
+//ScrollViewMoviesShow
 struct ResignKeyboardOnDragGesture: ViewModifier {
     var gesture = DragGesture().onChanged {_ in
         UIApplication.shared.endEditing(true)

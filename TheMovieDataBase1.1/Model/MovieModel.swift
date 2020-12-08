@@ -31,12 +31,12 @@ struct MovieModel: Hashable, Codable, MovieShowViewProtocol, FilterTvShowAndMovi
     let originalLanguage: String
     let originalTitle: String
     let genreIds: [Int]
-    var posterFileManagerName: String {
-        return "\(id)poster"
-    }
-    var backdropFileManagerName: String {
-        return "\(id)backDrop"
-    }
+//    var posterFileManagerName: String {
+//        return "\(id)poster"
+//    }
+//    var backdropFileManagerName: String {
+//        return "\(id)backDrop"
+//    }
 }
 
 protocol MovieShowViewProtocol {
@@ -49,6 +49,6 @@ protocol MovieShowViewProtocol {
     var overview: String { get }
     var releaseDate: Date { get }
     var voteAverage: Float { get }
-    var posterFileManagerName: String { get }
-    var backdropFileManagerName: String { get }
+//    var posterFileManagerName: String { get }
+//    var backdropFileManagerName: String { get }
 }

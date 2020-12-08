@@ -29,13 +29,23 @@ final class FetchData {
 // MARK: Fetch MoviesModel
     func fetchMovies(from endpoint: Endpoint) -> AnyPublisher<[MovieModel], Never> {
         guard let url = endpoint.finalURL else {
-                    return Just([MovieModel]()).eraseToAnyPublisher()
-                }
+            return Just([MovieModel]()).eraseToAnyPublisher()
+        }
         return fetch(url)
             .map { (response: MovieDataDTO) -> [MovieModel] in
                 response.results }
             .replaceError(with: [MovieModel]())
-
+            .eraseToAnyPublisher()
+    }
+ //TvShowsModel //ResultTvModel
+    func fetchTVshow(from endpoint: Endpoint) -> AnyPublisher<[ResultTvModel], Never> {
+        guard let url = endpoint.finalURL else {
+            return Just([ResultTvModel]()).eraseToAnyPublisher()
+        }
+        return fetch(url)
+            .map { (response: TvShowsModel) -> [ResultTvModel] in
+                response.results }
+            .replaceError(with: [ResultTvModel]())
             .eraseToAnyPublisher()
     }
 // MARK: Recive generic data

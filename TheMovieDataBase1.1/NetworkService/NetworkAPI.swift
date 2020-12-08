@@ -46,6 +46,8 @@ enum Endpoint {
     case movieGenres
     case tvGenres
     case search (searchString: String)
+    case searchTV (searchString: String)
+    //search/tv
     case credits (movieID: Int)
     case creditsTV (tvShowID: Int)
     case videos (movieID: Int)
@@ -76,6 +78,8 @@ enum Endpoint {
             return "/genre/tv/list"
         case .search:
             return "/search/movie"
+        case .searchTV:
+            return "/search/tv"
         case let .credits(movieID):
             return "movie/\(String(movieID))/credits"
         case let .videos(movieID):
@@ -108,6 +112,12 @@ enum Endpoint {
         guard var urlComponents = components else { return nil }
         switch self {
         case .search (let name):
+            urlComponents.queryItems = [URLQueryItem(name: "query", value: name),
+                                        URLQueryItem(name: "api_key", value: NetworkAPI.apiKey),
+                                        URLQueryItem(name: "language", value: String(language)),
+                                        URLQueryItem(name: "region", value: "US"),
+                                        URLQueryItem(name: "page", value: "1")]
+        case .searchTV (let name):
             urlComponents.queryItems = [URLQueryItem(name: "query", value: name),
                                         URLQueryItem(name: "api_key", value: NetworkAPI.apiKey),
                                         URLQueryItem(name: "language", value: String(language)),

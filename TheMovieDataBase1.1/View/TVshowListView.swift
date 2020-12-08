@@ -85,7 +85,6 @@ struct TvShowListView: View {
 struct ScrollViewMoviesShow: View {
     var arrayDataFromAPI: [MovieShowViewProtocol]
     var genresDictionary: GenresDictionaryProtocol
-    
     var body: some View {
         VStack {
             List(self.arrayDataFromAPI, id: \.id) { show in
