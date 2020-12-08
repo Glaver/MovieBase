@@ -19,7 +19,7 @@ enum MoviesList {
 final class MovieViewModel: ObservableObject {
     let realmService: MovieListRealmProtocol
     let mappers: MovieMappersProtocol
-    let filter: FilterContentProtocol
+    var filter: FilterContentProtocol
     @Published var indexOfMoviesList: MoviesList = .nowPlaying
     @Published var filteringMoviesIndex: FilterContent.FilteredParameters = .releaseDate
     @Published var moviesError: Errors?

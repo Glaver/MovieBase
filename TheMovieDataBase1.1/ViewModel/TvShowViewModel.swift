@@ -19,7 +19,7 @@ enum TvShowList {
 final class TvShowViewModel: ObservableObject {
     let realmService: TvShowListRealmProtocol
     let mappers: TvShowMappersProtocol
-    let filter: FilterContentProtocol
+    var filter: FilterContentProtocol
     @Published var indexOfTvShowList: TvShowList = .airingToday
     @Published var filteringMoviesIndex: FilterContent.FilteredParameters = .releaseDate
     @Published var tvShowError: Errors?

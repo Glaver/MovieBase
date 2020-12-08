@@ -14,88 +14,72 @@ struct TvShowListView: View {
     @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.tvGenres, realmService: GenresRealm(), mappers: GenresMappers())
     @State var showFilters = false
     @State var isGrid = false
-
     var body: some View {
-            NavigationView {
-                VStack {
-                    Picker("", selection: $tvShowViewModel.indexOfTvShowList) {
-                        Text(LocalizedStringKey("Airing today")).tag(TvShowList.airingToday)
-                        Text(LocalizedStringKey("On The Air")).tag(TvShowList.onTheAir)
-                        Text("Popular").tag(TvShowList.popularTV)
-                        Text("Top Rated").tag(TvShowList.topRatedTV)
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    ZStack(alignment: .topTrailing, content: {
-                        ScrollViewMoviesShow(arrayDataFromAPI: tvShowViewModel.tvShowFromRealm, genresDictionary: genresModel.dictionaryGenresFromRealm)
-                        if self.showFilters {
-                            VStack(alignment: .center, spacing: 40) {
-                                Picker("", selection: $tvShowViewModel.filteringMoviesIndex) {
-                                    Text(LocalizedStringKey("Date")).tag(FilterContent.FilteredParameters.releaseDate)
-                                        .font(.system(size: 25))
-                                        .foregroundColor(.blue)
-                                    Text(LocalizedStringKey("Name")).tag(FilterContent.FilteredParameters.title)
-                                        .font(.system(size: 25))
-                                        .foregroundColor(.blue)
-                                    Text(LocalizedStringKey("Rating")).tag(FilterContent.FilteredParameters.rating)
-                                        .font(.system(size: 25))
-                                        .foregroundColor(.blue)
-                                    Text(LocalizedStringKey("Popularity")).tag(FilterContent.FilteredParameters.popularity).font(.system(size: 25))
-                                        .foregroundColor(.blue)
-                                        }
-                            }
-                            .frame(width: 130, height: 130)
-                            .padding()
-                            .background(Color.white.opacity(0.9))
-                            .cornerRadius(15)
-                            .shadow(color: Color.blue.opacity(0.3), radius: 20, x: 0, y: 10)
-                        }
-
-                    })
-                }.alert(item: self.$tvShowViewModel.tvShowError) { error in
-                    Alert(title: Text("Network error"),
-                          message: Text(error.localizedDescription),
-                          dismissButton: .default(Text("OK")))
-                    }
-                .alert(item: self.$genresModel.errorGenres) { error in
-                    Alert(title: Text("Network error"),
-                          message: Text(error.localizedDescription),
-                          dismissButton: .default(Text("OK")))
-                    }
-                .navigationBarTitle(LocalizedStringKey("TV Show"), displayMode: .inline)
-                .navigationBarItems(
-//                    leading:
-//                                        HStack {
-//                                            Button(action: {
-//                                                FileManager.clearAllFile()
-//                                                //delete all files from file manager and realm database file
-//                                                //print("FileManager clear")
-//                                            }) {
-//                                                Image(systemName: "trash")
-//                                                    .resizable()
-//                                                    .frame(width: 23, height: 23)
-//                                                    .padding()
-//                                            }},
-                                    trailing:
-                                        HStack {
-                                            Button(action: {
-                                                withAnimation(.spring()) {
-                                                    self.showFilters.toggle()
-                                                }
-                                            }) {
-                                                Image(systemName: "slider.horizontal.3")
-                                                    .resizable()
-                                                    .frame(width: 23, height: 23)
-                                                    .padding()
-                                                }
-                                    })
+        NavigationView {
+            VStack {
+                Picker("", selection: $tvShowViewModel.indexOfTvShowList) {
+                    Text(LocalizedStringKey("Airing today")).tag(TvShowList.airingToday)
+                    Text(LocalizedStringKey("On The Air")).tag(TvShowList.onTheAir)
+                    Text("Popular").tag(TvShowList.popularTV)
+                    Text("Top Rated").tag(TvShowList.topRatedTV)
+                }.pickerStyle(SegmentedPickerStyle())
+                ScrollViewMoviesShow(arrayDataFromAPI: tvShowViewModel.tvShowFromRealm, genresDictionary: genresModel.dictionaryGenresFromRealm)
+            }.alert(item: self.$tvShowViewModel.tvShowError) { error in
+                Alert(title: Text("Network error TV shows"),
+                      message: Text(error.localizedDescription),
+                      dismissButton: .default(Text("OK")))
             }
+            .alert(item: self.$genresModel.errorGenres) { error in
+                Alert(title: Text("Network error TV show genres"),
+                      message: Text(error.localizedDescription),
+                      dismissButton: .default(Text("OK")))
+            }
+            .navigationBarTitle(LocalizedStringKey("TV Show"), displayMode: .inline)
+            .navigationBarItems(
+                //              leading:
+                //                        HStack {
+                //                             Button(action: {
+                //                              FileManager.clearAllFile()
+                //                            //delete all files from file manager and realm database file
+                //                            //print("FileManager clear")
+                //                              }) {
+                //                              Image(systemName: "trash")
+                //                               .resizable()
+                //                               .frame(width: 23, height: 23)
+                //                               .padding()
+                //                   }},
+                trailing:
+                    HStack {
+                        Button(action: {
+                            self.showFilters.toggle()
+                        }) {
+                            Image(systemName: "slider.horizontal.3")
+                                .resizable()
+                                .frame(width: 23, height: 23)
+                                .padding()
+                        }
+                    })
+            .actionSheet(isPresented: $showFilters) {
+                ActionSheet(title: Text("Choose filters"), message: Text("Filter by:"), buttons: [
+                    .default(Text(LocalizedStringKey("Date"))) {
+                        tvShowViewModel.filteringMoviesIndex = FilterContent.FilteredParameters.releaseDate },
+                    .default(Text(LocalizedStringKey("Name"))) {
+                        tvShowViewModel.filteringMoviesIndex = FilterContent.FilteredParameters.title },
+                    .default(Text(LocalizedStringKey("Rating"))) {
+                        tvShowViewModel.filteringMoviesIndex = FilterContent.FilteredParameters.rating },
+                    .default(Text(LocalizedStringKey("Popularity"))) {
+                        tvShowViewModel.filteringMoviesIndex = FilterContent.FilteredParameters.popularity },
+                    .cancel()
+                ])
+            }
+        }
     }
 }
 
 struct ScrollViewMoviesShow: View {
     var arrayDataFromAPI: [MovieShowViewProtocol]
     var genresDictionary: GenresDictionaryProtocol
-
+    
     var body: some View {
         VStack {
             List(self.arrayDataFromAPI, id: \.id) { show in
