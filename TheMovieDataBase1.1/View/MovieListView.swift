@@ -114,20 +114,3 @@ struct ScrollViewMovies: View {
 //        MovieListView()
 //    }
 //}
-/*            .actionSheet(isPresented: $showFilters) {
- ActionSheet(title: Text("Change background"), message: Text("Select a new color"), buttons: [
- .default(Text(LocalizedStringKey("Date"))) { self.$viewModel.filteringMoviesIndex = FilterContent.FilteredParameters.releaseDate },
- .default(Text(LocalizedStringKey("Name"))) { self.$viewModel.filteringMoviesIndex = FilterContent.FilteredParameters.name },
- .default(Text(LocalizedStringKey("Rating"))) { self.$viewModel.filteringMoviesIndex = FilterContent.FilteredParameters.rating },
- .default(LocalizedStringKey("Popularity")) { self.$viewModel.filteringMoviesIndex = FilterContent.FilteredParameters.popularity },
- .cancel()
- ])
- }*/
-
-/*trailing: Image(systemName: "slider.horizontal.3")
- .resizable()
- .frame(width: 23, height: 23)
- .padding()
- .onTapGesture {
- self.showFilters = true
- }*/

@@ -33,7 +33,7 @@ struct SectionView: View {
                         ForEach(mappersForView.convertorGenresToString(genresDict: genresDictionary, genresOfMovie: section.genreIds).prefix(2), id: \.self) { genre in
                             Text(genre.capitalizingFirstLetter())
                                 .lineLimit(1)
-                                .font(.system(size: 13))
+                                .font(.system(size: 11))
                                 .padding(4)
                                 .background(Color.gray.opacity(0.2))
                                 .cornerRadius(5)
@@ -43,12 +43,11 @@ struct SectionView: View {
                         ForEach(mappersForView.convertorGenresToString(genresDict: genresDictionary, genresOfMovie: section.genreIds).dropFirst(2), id: \.self) { genre in
                             Text(genre.capitalizingFirstLetter())
                                 .lineLimit(1)
-                                .font(.system(size: 13))
+                                .font(.system(size: 11))
                                 .padding(4)
-                                .background(Color.gray.opacity(0.3))
+                                .background(Color.gray.opacity(0.2))
                                 .cornerRadius(5)
                         }
-
                     }
                 }.padding(5)
                 Spacer()

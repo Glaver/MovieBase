@@ -10,8 +10,14 @@ import Foundation
 import SwiftUI
 
 struct TvShowListView: View {
-    @ObservedObject var tvShowViewModel = TvShowViewModel(indexOfTvShowList: TvShowList.popularTV, filteringMoviesIndex: FilterContent.FilteredParameters.releaseDate, realmService: TvShowListRealm(), mappers: TvShowMappers(), filter: FilterContent())
-    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.tvGenres, realmService: GenresRealm(), mappers: GenresMappers())
+    @ObservedObject var tvShowViewModel = TvShowViewModel(indexOfTvShowList: TvShowList.popularTV,
+                                                          filteringMoviesIndex: FilterContent.FilteredParameters.releaseDate,
+                                                          realmService: TvShowListRealm(),
+                                                          mappers: TvShowMappers(),
+                                                          filter: FilterContent())
+    @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.tvGenres,
+                                                     realmService: GenresRealm(),
+                                                     mappers: GenresMappers())
     @State var showFilters = false
     @State var isGrid = false
     var body: some View {
@@ -20,8 +26,8 @@ struct TvShowListView: View {
                 Picker("", selection: $tvShowViewModel.indexOfTvShowList) {
                     Text(LocalizedStringKey("Airing today")).tag(TvShowList.airingToday)
                     Text(LocalizedStringKey("On The Air")).tag(TvShowList.onTheAir)
-                    Text("Popular").tag(TvShowList.popularTV)
-                    Text("Top Rated").tag(TvShowList.topRatedTV)
+                    Text(LocalizedStringKey("Popular")).tag(TvShowList.popularTV)
+                    Text(LocalizedStringKey("Top Rated")).tag(TvShowList.topRatedTV)
                 }.pickerStyle(SegmentedPickerStyle())
                 ScrollViewMoviesShow(arrayDataFromAPI: tvShowViewModel.tvShowFromRealm, genresDictionary: genresModel.dictionaryGenresFromRealm)
             }.alert(item: self.$tvShowViewModel.tvShowError) { error in
@@ -86,6 +92,8 @@ struct ScrollViewMoviesShow: View {
                 NavigationLink(destination: TvShowDetailView(tvShow: show as! ResultTvModel)) {
                     SectionView(section: show, genresDictionary: self.genresDictionary, mappersForView: MappersForView())
                 }
+                //.opacity(0.0)
+                //.buttonStyle(PlainButtonStyle())
             }
         }
     }
