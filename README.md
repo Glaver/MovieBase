@@ -14,7 +14,7 @@ Movies app written in Swift 5.3 using the TMDb API.
 - Combine
 - Realm database
 - SwiftLint
-- Dependency Injection
+- Localization: English, Russian, Ukranian
 
 ## Screenshots
 ![alt text](https://github.com/Glaver/MovieBase/blob/master/PreviewPresentation/list.png?raw=true "Movie list")
