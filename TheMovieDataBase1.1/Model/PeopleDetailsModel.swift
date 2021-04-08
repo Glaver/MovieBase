@@ -9,7 +9,11 @@
 import Foundation
 
 struct PeopleDetailsModel: Codable, InfoDetailContentViewProtocol {
-    enum Gender: Int, Codable { case other = 0, male, female }
+    enum Gender: Int, Codable {
+        case other = 0
+        case male = 1
+        case female = 2
+    }
     var releaseDate: Date { return birthday }
     var voteAverage: Float { return popularity }
     var runtime: Int? { return nil }

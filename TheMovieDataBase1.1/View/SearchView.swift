@@ -58,7 +58,10 @@ struct SearchView: View {
     @ObservedObject var searchTvShowModel = SearchTvShowViewModel()
     @ObservedObject var searchMovieModel = SearchMovieViewModel()
     @ObservedObject var genresModel = GenreViewModel(genresEndpoint: Endpoint.movieGenres, realmService: GenresRealm(), mappers: GenresMappers())
-    enum ContentSearch { case movie, tvShow }
+    enum ContentSearch {
+        case movie
+        case tvShow
+    }
     @State var contentType: ContentSearch = .movie
     var body: some View {
         NavigationView {

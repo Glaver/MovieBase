@@ -32,26 +32,6 @@ final class SearchMovieViewModel: ObservableObject {
                 }
                 .assign(to: \.moviesDTO, on: self)
                 .store(in: &self.cancellableSet)
-//        } else if contentType == .tvShow {
-//            $name
-//                .debounce(for: 0.5, scheduler: RunLoop.main)
-//                .removeDuplicates()
-//                .flatMap { name -> AnyPublisher<[ResultTvModel], Never> in
-//                    Future<[ResultTvModel], Never> { (promise) in
-//                        if 2...30 ~= name.count {
-//                            FetchData.shared.fetchTVshow(from: Endpoint.searchTV(searchString: name))
-//                                .sink(receiveValue: {value in promise(.success(value)) })
-//                                .store(in: &self.cancellableSet)
-//                        } else {
-//                            promise(.success([ResultTvModel]()))
-//                        }
-//                    }
-//                    .eraseToAnyPublisher()
-//                }
-//                .assign(to: \.tvShow, on: self)
-//                .store(in: &self.cancellableSet)
-//        }
-//
     }
     private var cancellableSet: Set<AnyCancellable> = []
     deinit {
@@ -60,11 +40,6 @@ final class SearchMovieViewModel: ObservableObject {
         }
     }
 }
-
-
-
-
-
 
 final class SearchTvShowViewModel: ObservableObject {
     @Published var name: String = ""

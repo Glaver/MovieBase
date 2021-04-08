@@ -10,10 +10,6 @@ import Foundation
 import Combine
 import SwiftUI
 
-protocol ResultsProperty: AnyObject {
-    var results: [AnyObject] { get set }
-}
-
 final class FetchData {
     public static let shared = FetchData()
 
@@ -48,43 +44,7 @@ final class FetchData {
             .replaceError(with: [ResultTvModel]())
             .eraseToAnyPublisher()
     }
-// MARK: Recive generic data
-    func fetchInstance<T: Codable>(for model: T, endpoint: Endpoint) -> AnyPublisher<T, Errors> {
-        Future<T, Errors> { [unowned self] promise in //from id: Int
-            guard let url = endpoint.finalURL else {
-                return promise(.failure(.urlError(URLError(.unsupportedURL))))
-            }
-            //debugPrint(url)
-            URLSession.shared.dataTaskPublisher(for: url)
-                .tryMap { (data, response) -> Data in //if response between 200...299 use only data or error
-                    guard let httpResponse = response as? HTTPURLResponse,
-                          200...299 ~= httpResponse.statusCode else {
-                        throw Errors.responseError(
-                            (response as? HTTPURLResponse)?.statusCode ?? 500,
-                            String(data: data, encoding: .utf8) ?? "")
-                    }
-                    return data
-                }
-                .decode(type: T.self, decoder: NetworkAPI.jsonDecoder)
-                .receive(on: RunLoop.main)
-                .sink(receiveCompletion: { (completion) in //subscribe on publisher
-                    if case let .failure(error) = completion { //if receiveCompletion has error
-                        switch error {                         //send it to promise(.failure)
-                        case let urlError as URLError:
-                            promise(.failure(.urlError(urlError)))
-                        case let decodingError as DecodingError:
-                            promise(.failure(.decodingError(decodingError)))
-                        case let apiError as Errors:
-                            promise(.failure(apiError))
-                        default: promise(.failure(.genericError))
-                        }
-                    }
-                },
-                receiveValue: { promise(.success($0)) }) //notificate about successful fetch data
-                .store(in: &self.subscriptions)
-        }
-        .eraseToAnyPublisher() //erase type of publisher and return AnyPublisher
-    }
+
 // MARK: Fetch Genres
     func fetchGenresError(from endpoint: Endpoint) -> AnyPublisher<[GenresDTO], Errors> {
         Future<[GenresDTO], Errors> { [unowned self] promise in
@@ -101,7 +61,7 @@ final class FetchData {
                             String(data: data, encoding: .utf8) ?? "")
                     }
                     return data
-                }//Errors.responseError(((response as? HTTPURLResponse)?.statusCode ?? 500,String(data: data, encoding: .utf8) ?? ""))
+                } //Errors.responseError(((response as? HTTPURLResponse)?.statusCode ?? 500,String(data: data, encoding: .utf8) ?? ""))
                 .decode(type: GenreDTO.self, decoder: NetworkAPI.jsonDecoder)//decode data to type
                 .receive(on: RunLoop.main) //send results to main thread
                 .sink(receiveCompletion: { (completion) in //subscribe on publisher
@@ -234,9 +194,9 @@ final class FetchData {
         }
         .eraseToAnyPublisher()
     }
-// MARK: Try generic for array vs resuts
-    func fetchArrayResults<T: ResultsProperty & Codable, R: Codable>(for modelWithResults: T, intsanceData: R, from endpoint: Endpoint) -> AnyPublisher<[R], Errors> {
-        Future<[R], Errors> { [unowned self] promise in
+// MARK: Try generic for array vs results
+    func fetchArrayResults<T: Codable & ResultProperty, R: Codable>(from endpoint: Endpoint, forType: T.Type) -> AnyPublisher<[R], Errors> {
+        Future<[R], Errors> { [unowned self] promise in //, intsanceData: R,
             guard let url = endpoint.finalURL else {
                 return promise(.failure(.urlError(URLError(.unsupportedURL))))
             }
@@ -271,4 +231,53 @@ final class FetchData {
         }
         .eraseToAnyPublisher() //erase type of publisher and return AnyPublisher
     }
+    // MARK: Recive generic data
+    func fetchInstance<T: Codable>(for intsance: T, endpoint: Endpoint) -> AnyPublisher<T, Errors> {
+            Future<T, Errors> { [unowned self] promise in //from id: Int
+                guard let url = endpoint.finalURL else {
+                    return promise(.failure(.urlError(URLError(.unsupportedURL))))
+                }
+                //debugPrint(url)
+                URLSession.shared.dataTaskPublisher(for: url)
+                    .tryMap { (data, response) -> Data in //if response between 200...299 use only data or error
+                        guard let httpResponse = response as? HTTPURLResponse,
+                              200...299 ~= httpResponse.statusCode else {
+                            throw Errors.responseError(
+                                (response as? HTTPURLResponse)?.statusCode ?? 500,
+                                String(data: data, encoding: .utf8) ?? "")
+                        }
+                        return data
+                    }
+                    .decode(type: T.self, decoder: NetworkAPI.jsonDecoder)
+                    .receive(on: RunLoop.main)
+                    .sink(receiveCompletion: { (completion) in //subscribe on publisher
+                        if case let .failure(error) = completion { //if receiveCompletion has error
+                            switch error {                         //send it to promise(.failure)
+                            case let urlError as URLError:
+                                promise(.failure(.urlError(urlError)))
+                            case let decodingError as DecodingError:
+                                promise(.failure(.decodingError(decodingError)))
+                            case let apiError as Errors:
+                                promise(.failure(apiError))
+                            default: promise(.failure(.genericError))
+                            }
+                        }
+                    },
+                    receiveValue: { promise(.success($0)) }) //notificate about successful fetch data
+                    .store(in: &self.subscriptions)
+            }
+            .eraseToAnyPublisher() //erase type of publisher and return AnyPublisher
+        }
 }
+
+protocol MovieResultsProperty {
+    var results: [MovieModel] { get set }
+}
+protocol TvShowResultsProperty {
+    var results: [ResultTvModel] { get set }
+}
+protocol VideoResultsProperty {
+    var results: [MovieVideoResult] { get set }
+}
+
+typealias ResultProperty = MovieResultsProperty// & TvShowResultsProperty & VideoResultsProperty

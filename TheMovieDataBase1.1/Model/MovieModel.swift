@@ -9,11 +9,11 @@
 
 import Foundation
 
-public struct MovieDataDTO: Codable {
+public struct MovieDataDTO: Codable, ResultProperty {
     let page: Int
     let totalResults: Int
     let totalPages: Int
-    let results: [MovieModel]
+    var results: [MovieModel]
 }
 
 struct MovieModel: Hashable, Codable, MovieShowViewProtocol, FilterTvShowAndMovies {
@@ -31,12 +31,6 @@ struct MovieModel: Hashable, Codable, MovieShowViewProtocol, FilterTvShowAndMovi
     let originalLanguage: String
     let originalTitle: String
     let genreIds: [Int]
-//    var posterFileManagerName: String {
-//        return "\(id)poster"
-//    }
-//    var backdropFileManagerName: String {
-//        return "\(id)backDrop"
-//    }
 }
 
 protocol MovieShowViewProtocol {
@@ -49,6 +43,4 @@ protocol MovieShowViewProtocol {
     var overview: String { get }
     var releaseDate: Date { get }
     var voteAverage: Float { get }
-//    var posterFileManagerName: String { get }
-//    var backdropFileManagerName: String { get }
 }
